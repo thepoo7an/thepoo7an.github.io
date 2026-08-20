@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -6,13 +6,53 @@ interface HeroProps {
   heroImgRef?: React.RefObject<HTMLImageElement>;
 }
 
+function resolveAssetUrl(relativePath: string): string {
+  const cleanPath = relativePath.replace(/^\.?\/+/, '');
+  
+  if (typeof window !== 'undefined') {
+    const pathname = window.location.pathname;
+    // Derive directory path on GitHub Pages (e.g. /thepoo7an_site/) or root (/)
+    const folder = pathname.endsWith('.html')
+      ? pathname.substring(0, pathname.lastIndexOf('/') + 1)
+      : pathname.endsWith('/')
+        ? pathname
+        : `${pathname}/`;
+    return `${folder}${cleanPath}`;
+  }
+  
+  const base = import.meta.env.BASE_URL || './';
+  const cleanBase = base.endsWith('/') ? base : `${base}/`;
+  return `${cleanBase}${cleanPath}`;
+}
+
 export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
   const { theme } = useTheme();
   const { isEn } = useLanguage();
-  const [imgError, setImgError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
-  const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
-  const logoSrc = theme === 'light' ? `${baseUrl}images/hero/logo-light.png` : `${baseUrl}images/hero/logo.png`;
+  const isLight = theme === 'light';
+
+  const { pngSrc, webpSrc } = useMemo(() => {
+    const pngPath = isLight ? 'images/hero/logo-light.png' : 'images/hero/logo.png';
+    const webpPath = isLight ? 'images/hero/logo-light.webp' : 'images/hero/logo.webp';
+    return {
+      pngSrc: resolveAssetUrl(pngPath),
+      webpSrc: resolveAssetUrl(webpPath),
+    };
+  }, [isLight]);
+
+  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.currentTarget;
+    if (retryCount === 0) {
+      // First fallback: try direct relative path './images/hero/...'
+      setRetryCount(1);
+      target.src = isLight ? './images/hero/logo-light.png' : './images/hero/logo.png';
+    } else if (retryCount === 1) {
+      // Second fallback: try absolute root path '/images/hero/...'
+      setRetryCount(2);
+      target.src = isLight ? '/images/hero/logo-light.png' : '/images/hero/logo.png';
+    }
+  };
 
   return (
     <section className="hero" id="home">
@@ -49,18 +89,20 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
         </a>
       </div>
       <div className="hero-media rv d3">
-        {!imgError && (
+        <picture>
+          <source srcSet={webpSrc} type="image/webp" />
           <img
             id="heroImg"
             ref={heroImgRef}
-            src={logoSrc}
+            src={pngSrc}
             alt={isEn ? "THEPOO7AN Logo" : "لوگوی THEPOO7AN"}
             width={720}
             height={180}
             fetchPriority="high"
-            onError={() => setImgError(true)}
+            decoding="async"
+            onError={handleImgError}
           />
-        )}
+        </picture>
         <div className="hero-glow" aria-hidden="true"></div>
       </div>
     </section>
