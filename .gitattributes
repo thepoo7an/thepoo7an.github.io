@@ -1,0 +1,13 @@
+# Explicitly mark font and image files as binary to prevent Git from altering line endings or corrupting bytes during push/clone
+*.woff2 binary
+*.woff binary
+*.ttf binary
+*.eot binary
+*.otf binary
+*.webp binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text
