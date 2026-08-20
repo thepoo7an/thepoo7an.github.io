@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://thepoo7an.github.io/thepoo7an_sitte/sitemap.xml
+Sitemap: https://thepoo7an.github.io/thepoo7an_site/sitemap.xml

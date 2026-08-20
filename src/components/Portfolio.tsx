@@ -11,6 +11,8 @@ export interface PortfolioItem {
   image: string;
 }
 
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
 export const PORTFOLIO: PortfolioItem[] = [
   {
     id: 'lyric-typography',
@@ -19,7 +21,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     type: 'typography',
     descriptionFa: 'انیمیت و طراحی متحرک متن آهنگ هماهنگ با ریتم و ضرب‌های موزیک برای ریلز.',
     descriptionEn: 'Kinetic typography animated to the rhythm and transients of the track for Instagram Reels.',
-    image: '/images/portfolio/work-typography.png',
+    image: `${baseUrl}images/portfolio/work-typography.png`,
   },
   {
     id: 'music-video-visuals',
@@ -28,7 +30,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     type: 'edit',
     descriptionFa: 'ادیت ویدیویی سینمایی همراه با افکت‌های بصری اختصاصی و جلوه‌های صوتی.',
     descriptionEn: 'Cinematic video editing with custom audio visualizers and motion visual effects.',
-    image: '/images/portfolio/work-visuals.png',
+    image: `${baseUrl}images/portfolio/work-visuals.png`,
   },
   {
     id: 'reels-cover',
@@ -37,7 +39,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     type: 'cover',
     descriptionFa: 'طراحی کاور جذاب و حرفه‌ای برای افزایش نرخ کلیک و هویت بصری یکپارچه.',
     descriptionEn: 'High-impact 3D cover art designed for high CTR and unified release aesthetics.',
-    image: '/images/portfolio/work-cover.png',
+    image: `${baseUrl}images/portfolio/work-cover.png`,
   },
   {
     id: 'full-lyric-video',
@@ -46,7 +48,7 @@ export const PORTFOLIO: PortfolioItem[] = [
     type: 'edit',
     descriptionFa: 'تولید لیریک ویدیو کامل برای تمام مدت تِرک جهت انتشار در یوتیوب و شبکه‌های اجتماعی.',
     descriptionEn: 'Complete full-length lyric video for YouTube and streaming visualizers.',
-    image: '/images/portfolio/work-visuals.png',
+    image: `${baseUrl}images/portfolio/work-visuals.png`,
   },
 ];
 
@@ -114,6 +116,7 @@ const PortfolioCard: React.FC<PortfolioCardProps> = ({
             src={item.image}
             alt={title}
             loading="lazy"
+            decoding="async"
             onLoad={() => setLoaded(true)}
             onError={() => {
               setHasError(true);

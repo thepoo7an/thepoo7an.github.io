@@ -11,7 +11,8 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
   const { isEn } = useLanguage();
   const [imgError, setImgError] = useState(false);
 
-  const logoSrc = theme === 'light' ? '/images/hero/logo-light.png' : '/images/hero/logo.png';
+  const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+  const logoSrc = theme === 'light' ? `${baseUrl}images/hero/logo-light.png` : `${baseUrl}images/hero/logo.png`;
 
   return (
     <section className="hero" id="home">

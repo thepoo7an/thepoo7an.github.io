@@ -1,13 +1,13 @@
 {
-  "name": "react-example",
+  "name": "thepoo7an-site",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
-    "clean": "rm -rf dist server.js",
+    "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit",
     "compress-images": "node scripts/compress-images.js"
   },
