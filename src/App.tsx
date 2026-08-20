@@ -6,7 +6,6 @@ import { LanguageToggle } from './components/LanguageToggle';
 import { Hero } from './components/Hero';
 import { Portfolio } from './components/Portfolio';
 import { Services } from './components/Services';
-import { Pricing } from './components/Pricing';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 
@@ -88,16 +87,14 @@ export const AppContent: React.FC = () => {
             <span className="ltr">thepoo7an</span>
           </a>
           <div className="nav-links">
-            <a href="#portfolio">{isEn ? 'Portfolio' : 'نمونه‌کارها'}</a>
             <a href="#services">{isEn ? 'Services' : 'خدمات'}</a>
-            <a href="#pricing">{isEn ? 'Pricing' : 'تعرفه‌ها'}</a>
             <a href="#contact">{isEn ? 'Contact' : 'ارتباط'}</a>
           </div>
           <div className="nav-act">
             <ThemeToggle />
             <LanguageToggle />
-            <a className="nav-cta" href="#contact">
-              {isEn ? 'Order Lyric Video' : 'ثبت سفارش لیریک'}
+            <a className="nav-cta" href="./order.html">
+              {isEn ? 'Start Order' : 'ثبت سفارش'}
             </a>
             <button
               id="menuBtn"
@@ -114,14 +111,8 @@ export const AppContent: React.FC = () => {
 
       {/* Mobile Drawer Sheet */}
       <div className="sheet" id="sheet">
-        <a href="#portfolio" onClick={closeMenu}>
-          {isEn ? 'Portfolio' : 'نمونه‌کارها'}
-        </a>
         <a href="#services" onClick={closeMenu}>
           {isEn ? 'Services' : 'خدمات'}
-        </a>
-        <a href="#pricing" onClick={closeMenu}>
-          {isEn ? 'Pricing' : 'تعرفه‌ها'}
         </a>
         <a href="#contact" onClick={closeMenu}>
           {isEn ? 'Contact Me' : 'ارتباط با من'}
@@ -132,7 +123,6 @@ export const AppContent: React.FC = () => {
         <Hero heroImgRef={heroImgRef} />
         <Portfolio />
         <Services />
-        <Pricing />
         <Contact />
       </main>
 

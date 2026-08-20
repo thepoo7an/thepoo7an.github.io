@@ -205,87 +205,82 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
 
 <main>
   <header class="page-head">
-    <p class="eyebrow rv"><b>✦ فرم سفارش</b> — شروع همکاری</p>
+    <p class="eyebrow rv"><b>✦ فرم ثبت سفارش</b> — THEPOO7AN</p>
     <h1 class="rv d1">پروژه‌ات را <span class="chrome">استارت بزن.</span></h1>
-    <p class="sub rv d2">فرم را پر کن؛ متن سفارش به‌صورت خودکار آماده می‌شود و مستقیم به دایرکت اینستاگرام می‌رود.</p>
+    <p class="sub rv d2">اطلاعات پروژه‌ات را وارد کن؛ بریف آماده شده و مستقیم به دایرکت اینستاگرام هدایت می‌شود.</p>
   </header>
 
   <div class="info-row rv d2">
-    <div class="info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><b>پاسخ در کمتر از ۲۴ ساعت</b><span>بررسی بریف و اعلام قیمت نهایی</span></div>
-    <div class="info"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><b>کپی خودکار متن سفارش</b><span>بدون نیاز به تایپ دوباره</span></div>
-    <div class="info"><svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg><b>اتصال مستقیم به دایرکت</b><span>@thepoo7an در اینستاگرام</span></div>
+    <div class="info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><b>تحویل ۱ تا ۳ روزه</b><span>۱ روز برای تایپوگرافی / ۲–۳ روز ادیت</span></div>
+    <div class="info"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg><b>هماهنگی کانسپت قبل از شروع</b><span>تعیین دقیق سبک بصری و بدون ابهام</span></div>
+    <div class="info"><svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg><b>ارسال مستقیم به دایرکت</b><span>@thepoo7an در اینستاگرام و تلگرام</span></div>
   </div>
 
   <div class="form-wrap">
     <form class="form-card rv d2" id="orderForm" novalidate>
-      <h2 class="form-title">اطلاعات پروژه</h2>
-      <p class="form-lead">هرچه دقیق‌تر پر کنی، برآورد قیمت و زمان دقیق‌تر خواهد بود.</p>
+      <h2 class="form-title">مشخصات سفارش</h2>
+      <p class="form-lead">اطلاعات اولیه اثر را بنویسید تا بررسی و هماهنگی دقیق‌تر انجام شود.</p>
 
       <div class="grid-2">
         <div class="field" id="f-name">
           <label for="name">نام / نام هنری</label>
           <input type="text" id="name" placeholder="مثلاً: آرتین" autocomplete="name">
-          <span class="err">لطفاً نام خود را وارد کنید.</span>
+          <span class="err">لطفاً نام یا نام هنری خود را وارد کنید.</span>
         </div>
         <div class="field" id="f-contact">
-          <label for="contact">آیدی تلگرام یا اینستاگرام</label>
+          <label for="contact">آیدی اینستاگرام یا تلگرام</label>
           <input type="text" id="contact" placeholder="@username" dir="ltr">
-          <span class="err">لطفاً یک راه ارتباطی وارد کنید.</span>
+          <span class="err">لطفاً یک راه ارتباطی (آیدی) وارد کنید.</span>
         </div>
       </div>
 
       <div class="grid-2">
         <div class="field" id="f-type">
-          <label for="type">نوع پروژه</label>
+          <label for="type">نوع خدمت</label>
           <select id="type">
             <option value="">انتخاب کنید…</option>
-            <option>تایپوگرافی موزیک</option>
-            <option>لیریک ویدیو</option>
-            <option>ادیت ویدیو و اکولایزر</option>
-            <option>کاور پست و ریلز</option>
-            <option>جلوه‌های بصری خاص</option>
-            <option>سایر</option>
+            <option value="تایپوگرافی لیریک موزیک (۱۵ الی ۲۰ ثانیه)">تایپوگرافی لیریک موزیک (۱۵–۲۰ ثانیه / ۱ روزه)</option>
+            <option value="ادیت ویدیو + تایپوگرافی لیریک">ادیت ویدیو + تایپوگرافی لیریک (۲–۳ روزه)</option>
+            <option value="طراحی کاور موزیک">طراحی کاور موزیک</option>
           </select>
-          <span class="err">لطفاً نوع پروژه را انتخاب کنید.</span>
+          <span class="err">لطفاً نوع خدمت را انتخاب کنید.</span>
         </div>
-        <div class="field" id="f-budget">
-          <label for="budget">بودجه تقریبی</label>
-          <select id="budget">
-            <option value="">انتخاب کنید…</option>
-            <option>کمتر از ۲۰۰ هزار تومان</option>
-            <option>۱۵۰ هزار تا ۳۰۰ هزار تومان</option>
-            <option>۳۰۰ تا ۴۹۰ هزار تومان</option>
-            <option>بیشتر از ۵۰۰ هزار تومان</option>
-            <option>هنوز مطمئن نیستم</option>
-          </select>
-          <span class="err">لطفاً محدوده بودجه را مشخص کنید.</span>
+        <div class="field" id="f-track">
+          <label for="track">نام قطعه / پروژه <span class="opt">(اختیاری)</span></label>
+          <input type="text" id="track" placeholder="مثلاً: Track Name">
         </div>
       </div>
 
-      <div class="field" id="f-time">
-        <label for="time">زمان موردنظر تحویل</label>
-        <select id="time">
-          <option value="">انتخاب کنید…</option>
-          <option>فوری (۲۴–۴۸ ساعت)</option>
-          <option>معمولی (۳ تا ۷ روز)</option>
-          <option>انعطاف‌پذیر</option>
-        </select>
-        <span class="err">لطفاً زمان تحویل را انتخاب کنید.</span>
+      <div class="field" id="f-lyrics">
+        <div class="hint-row">
+          <label for="lyrics">متن ترانه (لیریک) <span class="opt">(اختیاری)</span></label>
+        </div>
+        <textarea id="lyrics" placeholder="متن بخش مورد نظر آهنگ را اینجا وارد کنید (ارسال متن توسط شما اولویت دارد، اما در صورت نیاز استخراج لیریک توسط ما نیز امکان‌پذیر است)…" style="min-height: 90px;"></textarea>
       </div>
 
       <div class="field" id="f-desc">
         <div class="hint-row">
-          <label for="desc">توضیحات پروژه</label>
-          <span class="count" id="descCount">0 / 30+</span>
+          <label for="desc">توضیحات و کانسپت مدنظر</label>
+          <span class="count" id="descCount">0 کاراکتر</span>
         </div>
-        <textarea id="desc" placeholder="سبک موردنظر، حس ترک، رفرنس‌های بصری و هر نکته‌ای که در ذهنت داری…"></textarea>
-        <span class="err">لطفاً حداقل ۳۰ کاراکتر توضیح بده تا بریف کامل باشد.</span>
+        <textarea id="desc" placeholder="سبک و حس بصری مدنظرتان، رنگ‌ها، و توضیحات اولیه (کانسپت و استایل قبل از شروع تولید به طور کامل هماهنگ و نهایی می‌شود)…"></textarea>
+        <span class="err">لطفاً توضیحات یا ایده اولیه‌تان را بنویسید.</span>
       </div>
 
-      <div class="field" id="f-ref">
-        <label for="ref">لینک رفرنس <span class="opt">(اختیاری)</span></label>
-        <input type="url" id="ref" placeholder="https://instagram.com/…" dir="ltr">
-        <span class="err">لطفاً یک لینک معتبر وارد کنید.</span>
+      <div class="grid-2">
+        <div class="field" id="f-time">
+          <label for="time">زمان‌بندی تحویل <span class="opt">(اختیاری)</span></label>
+          <select id="time">
+            <option value="عادی (طبق زمان‌بندی استاندارد خدمت)">عادی (طبق زمان‌بندی استاندارد خدمت)</option>
+            <option value="فوری (۱ روز کاری)">فوری (۱ روز کاری)</option>
+            <option value="منعطف">منعطف</option>
+          </select>
+        </div>
+        <div class="field" id="f-ref">
+          <label for="ref">لینک رفرنس یا فایل <span class="opt">(اختیاری)</span></label>
+          <input type="url" id="ref" placeholder="https://…" dir="ltr">
+          <span class="err">لطفاً یک لینک معتبر وارد کنید.</span>
+        </div>
       </div>
 
       <div class="submit-row">
@@ -295,7 +290,7 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
         </button>
         <p class="submit-note">
           <svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
-          با ارسال فرم، متن سفارش کپی شده و دایرکت اینستاگرام @thepoo7an باز می‌شود.
+          با ثبت فرم، بریف کامل کپی شده و دایرکت اینستاگرام @thepoo7an باز می‌شود.
         </p>
       </div>
     </form>
@@ -304,7 +299,7 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
 
 <footer>
   © ۱۴۰۵ — تمام حقوق برای پیج thepoo7an محفوظ است.
-  <span class="ltr">THEPOO7AN — TYPOGRAPHY & VISUAL ARTS</span>
+  <span class="ltr">THEPOO7AN — LYRIC TYPOGRAPHY & VIDEO EDITING</span>
 </footer>
 
 <div id="toast" role="status"></div>
@@ -343,8 +338,8 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
   var countEl = document.getElementById('descCount');
   descEl.addEventListener('input', function(){
     var n = descEl.value.trim().length;
-    countEl.textContent = n + ' / 30+';
-    countEl.style.color = n >= 30 ? 'var(--link)' : '';
+    countEl.textContent = n + ' کاراکتر';
+    countEl.style.color = n > 0 ? 'var(--link)' : '';
   });
 
   /* Toast */
@@ -361,7 +356,7 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
     document.getElementById(fieldId).classList.toggle('invalid', invalid);
     return invalid;
   }
-  function validUrl(v){ return /^(https?:\/\/)?([\w-]+\.)+[a-z]{2,}(\/\S*)?$/i.test(v); }
+  function validUrl(v){ return !v || /^(https?:\/\/)?([\w-]+\.)+[a-z]{2,}(\/\S*)?$/i.test(v); }
 
   /* Submit */
   document.getElementById('orderForm').addEventListener('submit', function(e){
@@ -369,36 +364,36 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
     var name = document.getElementById('name').value.trim();
     var contact = document.getElementById('contact').value.trim();
     var type = document.getElementById('type').value;
-    var budget = document.getElementById('budget').value;
-    var time = document.getElementById('time').value;
+    var track = document.getElementById('track').value.trim();
+    var lyrics = document.getElementById('lyrics').value.trim();
     var desc = descEl.value.trim();
+    var time = document.getElementById('time').value;
     var ref = document.getElementById('ref').value.trim();
 
     var bad = false;
     bad = setInvalid('f-name', !name) || bad;
     bad = setInvalid('f-contact', !contact) || bad;
     bad = setInvalid('f-type', !type) || bad;
-    bad = setInvalid('f-budget', !budget) || bad;
-    bad = setInvalid('f-time', !time) || bad;
-    bad = setInvalid('f-desc', desc.length < 30) || bad;
+    bad = setInvalid('f-desc', !desc) || bad;
     bad = setInvalid('f-ref', !!ref && !validUrl(ref)) || bad;
 
     if(bad){
       var firstInvalid = document.querySelector('.field.invalid input, .field.invalid select, .field.invalid textarea');
       if(firstInvalid){ firstInvalid.focus({preventScroll:false}); }
-      showToast('لطفاً موارد قرمز را کامل کن.');
+      showToast('لطفاً موارد مشخص‌شده را تکمیل کنید.');
       return;
     }
 
-    var msg = 'سلام پویان ✦ میخوام یه پروژه سفارش بدم:\n\n'
-      + '👤 نام: ' + name + '\n'
+    var msg = 'سلام پویان ✦ ثبت سفارش پروژه جدید:\n\n'
+      + '👤 نام / نام هنری: ' + name + '\n'
       + '📮 راه ارتباطی: ' + contact + '\n'
-      + '🎬 نوع پروژه: ' + type + '\n'
-      + '💰 بودجه تقریبی: ' + budget + '\n'
-      + '⏱ زمان تحویل: ' + time + '\n'
-      + '📝 توضیحات:\n' + desc + '\n'
-      + (ref ? '🔗 رفرنس:\n' + ref + '\n' : '')
-      + '\n— ارسال‌شده از فرم سایت thepoo7an';
+      + '🎬 نوع خدمت: ' + type + '\n'
+      + (track ? '🎵 نام قطعه / پروژه: ' + track + '\n' : '')
+      + (lyrics ? '📝 لیریک (متن ترانه):\n' + lyrics + '\n\n' : '')
+      + '💡 کانسپت و توضیحات:\n' + desc + '\n'
+      + '⏱ زمان‌بندی: ' + time + '\n'
+      + (ref ? '🔗 لینک رفرنس:\n' + ref + '\n' : '')
+      + '\n— ارسال‌شده از سایت thepoo7an';
 
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(msg).catch(function(){});

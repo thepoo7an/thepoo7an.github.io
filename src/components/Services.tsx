@@ -18,72 +18,72 @@ export interface ServiceItem {
 
 export const SERVICES: ServiceItem[] = [
   {
-    id: 'kinetic-typography',
-    badgeFa: 'پرفروش',
-    badgeEn: 'Popular',
-    titleFa: 'تایپوگرافی کینتیک و کروم',
-    titleEn: 'Kinetic & Chrome Typography',
-    descFa: 'طراحی متن آهنگ با فونت‌های سفارشی، افکت‌های متالیک کروم سه‌بعدی و حرکت داینامیک هماهنگ با ضرب‌آهنگ موزیک.',
-    descEn: 'Custom typography motion with 3D metallic chrome textures and dynamic animation locked to music beats.',
+    id: 'lyric-typography',
+    badgeFa: 'خدمت اصلی • تحویل ۱ روزه',
+    badgeEn: 'Core Service • 1-Day Delivery',
+    titleFa: 'تایپوگرافی لیریک موزیک',
+    titleEn: 'Music Lyric Typography',
+    descFa: 'طراحی و انیمیشن متن آهنگ روی ویدیو، هماهنگ با ریتم و ضرب‌های موزیک؛ مناسب برای ریلز و استوری اینستاگرام.',
+    descEn: 'On-video animated lyric typography synced precisely to the rhythm and beat of the song, tailored for Instagram Reels.',
     featuresFa: [
-      'انیمیشن متن هماهنگ با بیت',
-      'افکت‌های نوری، نئون و متالیک',
-      'فرمت ۹:۱۶ مناسب ریلز و استوری',
-      'کیفیت Full HD / ۴K',
+      'مدت‌زمان معمول: ۱۵ الی ۲۰ ثانیه',
+      'خروجی: فرمت MP4 با کیفیت 1080p و ۳۰ فریم',
+      'امکان ارسال متن توسط شما یا استخراج لیریک',
+      'زمان تحویل: ۱ روز کاری',
     ],
     featuresEn: [
-      'Beat-synced typography motion',
-      'Neon, glow & 3D metallic chrome fx',
-      '9:16 vertical ratio optimized for Reels',
-      'Crisp Full HD / 4K exports',
+      'Typical duration: 15–20 seconds',
+      'Output: MP4, 1080p, 30 FPS',
+      'Client lyrics preferred (extraction also available)',
+      'Turnaround: 1 business day',
     ],
     ctaFa: 'سفارش تایپوگرافی',
     ctaEn: 'Order Typography',
     delayClass: '',
   },
   {
-    id: 'video-editing',
-    badgeFa: 'ویدیو',
-    badgeEn: 'Video',
-    titleFa: 'ادیت ویدیو موزیک و تیزر',
-    titleEn: 'Music Video Edit & Teaser',
-    descFa: 'تدوین ویدیوهای کوتاه، تیزر ترک‌های جدید و آماده‌سازی محتوای ویدیویی جذاب برای انتشار در اینستاگرام.',
-    descEn: 'Short-form editing, teaser visuals, and engaging promotional clips ready for social releases.',
+    id: 'video-editing-typography',
+    badgeFa: 'تدوین + لیریک • ۲ تا ۳ روز',
+    badgeEn: 'Edit + Lyrics • 2–3 Days',
+    titleFa: 'ادیت ویدیو + تایپوگرافی لیریک',
+    titleEn: 'Video Editing + Lyric Typography',
+    descFa: 'ترکیب تدوین ویدیویی متناسب با استایل موزیک به همراه تایپوگرافی متن آهنگ بر روی تصویر.',
+    descEn: 'Full video editing synchronized with track energy combined with lyric typography placement.',
     featuresFa: [
-      'تدوین ریتمیک متناسب با استایل موزیک',
-      'کالر گریدینگ و اصلاح رنگ سینمایی',
-      'افکت‌های گلیچ، زوم و ترنزیشن‌های ترند',
-      'خروجی بهینه برای اینستاگرام و تیک‌تاک',
+      'مدت‌زمان متناسب با آهنگ و پروژه',
+      'خروجی: فرمت MP4 با کیفیت 1080p و ۳۰ فریم',
+      'تدوین ریتمیک همراه با متحرک‌سازی لیریک',
+      'زمان تحویل: ۲ الی ۳ روز کاری',
     ],
     featuresEn: [
-      'Rhythmic pacing tailored to track mood',
-      'Cinematic color grading & LUTs',
-      'Glitch, zoom & trending dynamic transitions',
-      'Platform-optimized compression',
+      'Duration customized to music and project scope',
+      'Output: MP4, 1080p, 30 FPS',
+      'Rhythmic video cuts with synchronized typography',
+      'Turnaround: 2–3 business days',
     ],
-    ctaFa: 'سفارش ادیت ویدیو',
-    ctaEn: 'Order Video Edit',
+    ctaFa: 'سفارش ادیت + لیریک',
+    ctaEn: 'Order Video + Lyrics',
     delayClass: 'd1',
   },
   {
     id: 'cover-design',
-    badgeFa: 'طراحی',
-    badgeEn: 'Design',
-    titleFa: 'طراحی کاور و هویت بصری',
-    titleEn: 'Cover Art & Visual Identity',
-    descFa: 'کاور آرت سینگل‌ترک، آلبوم و تم یکپارچه برای صفحه اینستاگرام و پلتفرم‌های پخش موزیک (اسپاتیفای، ساوندکلاود).',
-    descEn: 'Single and album artwork with consistent branding for Spotify, SoundCloud, and Instagram.',
+    badgeFa: 'کاور آرت',
+    badgeEn: 'Cover Artwork',
+    titleFa: 'طراحی کاور موزیک',
+    titleEn: 'Music Cover Design',
+    descFa: 'طراحی کاور آرت اختصاصی برای انتشار سینگل‌ترک و آلبوم در پلتفرم‌های پخش موزیک و شبکه‌های اجتماعی.',
+    descEn: 'Custom music release cover artwork designed for single releases and digital platforms.',
     featuresFa: [
-      'طراحی کاور در ابعاد ۱:۱ و ۹:۱۶',
-      'طراحی لوگوتایپ و هویت بصری آرتیست',
-      'فایل آماده چاپ و انتشار دیجیتال',
-      'تحویل در فرمت‌های مختلف با کیفیت بالا',
+      'طراحی کاور متناسب با کانسپت و سبک آهنگ',
+      'کیفیت بالا و آماده انتشار در پلتفرم‌ها',
+      'هماهنگی دقیق سلیقه بصری پیش از اجرا',
+      'تحویل فایل نهایی با رزولوشن استاندارد',
     ],
     featuresEn: [
-      '1:1 square & 9:16 vertical artboards',
-      'Custom logotype & artist branding',
-      'Print-ready & digital streaming assets',
-      'High-resolution source file delivery',
+      'Artwork tailored to track mood and concept',
+      'High-resolution output for streaming platforms',
+      'Visual direction finalized before production',
+      'Standard high-res release files',
     ],
     ctaFa: 'سفارش طراحی کاور',
     ctaEn: 'Order Cover Art',
@@ -98,15 +98,15 @@ export const Services: React.FC = () => {
     <section className="svc-sec" id="services" aria-label={isEn ? "Services" : "خدمات"}>
       <div className="svc-header">
         <p className="eyebrow rv">
-          <b>{isEn ? "✦ What We Do" : "✦ خدمات ما"}</b>
+          <b>{isEn ? "✦ Services" : "✦ خدمات"}</b>
         </p>
         <h2 className="rv d1">
-          {isEn ? "Specialized Visual Production" : "خدمات تخصصی تولید محتوای موزیک"}
+          {isEn ? "What I Create for Your Releases" : "خدمات تخصصی برای انتشار موسیقی"}
         </h2>
         <p className="sub rv d2">
           {isEn
-            ? "From dynamic kinetic typography to full teaser cuts and artwork tailored for music artists."
-            : "از تایپوگرافی متن آهنگ تا ساخت تیزر و طراحی کاور — متناسب با نیاز آرتیست‌ها و پرودیوسرها."}
+            ? "Clear workflows, beat-synchronized outputs, and direct communication for music artists and promotion teams."
+            : "روند کاری مشخص، خروجی‌های استاندارد 1080p و تحویل سریع برای آرتیست‌ها و تیم‌های مارکتینگ موسیقی."}
         </p>
       </div>
 
@@ -129,7 +129,7 @@ export const Services: React.FC = () => {
               ))}
             </ul>
             <div className="svc-card-bottom">
-              <a className="pill" href="#contact">
+              <a className="pill" href="./order.html">
                 {isEn ? s.ctaEn : s.ctaFa}
               </a>
             </div>

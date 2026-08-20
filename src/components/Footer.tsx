@@ -7,9 +7,7 @@ export const Footer: React.FC = () => {
   return (
     <footer>
       <div className="f-cols">
-        <a href="#portfolio">{isEn ? "Portfolio" : "نمونه‌کارها"}</a>
         <a href="#services">{isEn ? "Services" : "خدمات"}</a>
-        <a href="#pricing">{isEn ? "Pricing" : "تعرفه‌ها"}</a>
         <a href="#contact">{isEn ? "Contact Me" : "ارتباط با من"}</a>
         <a href="https://instagram.com/thepoo7an" target="_blank" rel="noopener noreferrer">
           {isEn ? "Instagram" : "اینستاگرام"}

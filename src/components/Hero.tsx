@@ -17,32 +17,32 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
   return (
     <section className="hero" id="home">
       <p className="eyebrow rv">
-        <b>{isEn ? "✦ Music Lyric Typography" : "✦ تایپوگرافی لیریک موزیک"}</b>
+        <b>{isEn ? "✦ THEPOO7AN — Pooyan Karimi" : "✦ THEPOO7AN — پویان کریمی"}</b>
       </p>
       <h1 className="rv d1">
         {isEn ? (
           <>
-            See your music lyrics come alive on video.<br />
-            <span className="chrome">Chrome. Kinetic. Cinematic.</span>
+            Lyric Typography & Video Editing for Music.<br />
+            <span className="chrome">Crafted for Reels & Social Releases.</span>
           </>
         ) : (
           <>
-            لیریک موزیکت را روی ویدیو ببین.<br />
-            <span className="chrome">کروم. کینتیک. سینمایی.</span>
+            تایپوگرافی لیریک و ادیت ویدیویی موزیک.<br />
+            <span className="chrome">ویژه انتشار در ریلز و شبکه‌های اجتماعی.</span>
           </>
         )}
       </h1>
       <p className="sub rv d2">
         {isEn
-          ? "Custom lyric typography, video editing synced with music beats, and music cover art — tailored for Reels and social media."
-          : "طراحی تایپوگرافی لیریک، ادیت ویدیو با متن آهنگ و طراحی کاور موزیک — آماده برای انتشار در ریلز و شبکه‌های اجتماعی."}
+          ? "Specialized visual production for emerging music artists and release marketing teams. Fast turnaround, 1080p MP4 exports, and beat-synced visuals."
+          : "تولید محتوای بصری برای آرتیست‌های مستقل و تیم‌های مارکتینگ موسیقی. تحویل سریع، خروجی 1080p و هماهنگی دقیق با ریتم آهنگ."}
       </p>
       <div className="cta-row rv d3">
-        <a className="pill" href="#contact">
-          {isEn ? "Order Lyric Video" : "ثبت سفارش لیریک"}
+        <a className="pill pill-primary" href="./order.html" id="heroStartOrderBtn">
+          {isEn ? "Start Order" : "ثبت سفارش"}
         </a>
-        <a className="tlink" href="#portfolio">
-          {isEn ? "View Portfolio" : "مشاهده نمونه‌کارها"}
+        <a className="pill-secondary" href="#services" id="heroViewServicesBtn">
+          {isEn ? "View Services" : "مشاهده خدمات"}
           <svg viewBox="0 0 24 24" style={{ transform: isEn ? 'none' : 'scaleX(-1)' }}>
             <path d="M5 12h14M13 6l6 6-6 6" />
           </svg>
@@ -54,7 +54,7 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
             id="heroImg"
             ref={heroImgRef}
             src={logoSrc}
-            alt={isEn ? "THEPOO7AN Chrome Logo" : "لوگوی کروم THEPOO7AN"}
+            alt={isEn ? "THEPOO7AN Logo" : "لوگوی THEPOO7AN"}
             width={720}
             height={180}
             fetchPriority="high"

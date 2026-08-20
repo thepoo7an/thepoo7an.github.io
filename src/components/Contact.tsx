@@ -19,25 +19,25 @@ export const Contact: React.FC = () => {
       <h2 className="rv">
         {isEn ? (
           <>
-            Start Collaboration & <span className="chrome">Place Order</span>
+            Start Your Project & <span className="chrome">Submit Details</span>
           </>
         ) : (
           <>
-            شروع همکاری و <span className="chrome">ثبت سفارش</span>
+            شروع پروژه و <span className="chrome">ثبت سفارش</span>
           </>
         )}
       </h2>
       <p className="rv d1">
         {isEn
-          ? "To order custom lyric typography, video editing, or cover art, reach out directly via Instagram Direct or Telegram."
-          : "برای سفارش تایپوگرافی لیریک، ادیت ویدیو با متن آهنگ یا طراحی کاور موزیک، از طریق دایرکت اینستاگرام یا تلگرام پیام دهید."}
+          ? "Fill out the project order form or reach out directly on Instagram / Telegram. For typography projects, providing your lyrics is preferred (extraction is also available). Concept and style are finalized before production."
+          : "فرم ثبت سفارش را تکمیل کنید یا مستقیماً از طریق دایرکت اینستاگرام و تلگرام پیام دهید. در پروژه‌های لیریک، ارسال متن توسط شما اولویت دارد (استخراج لیریک نیز امکان‌پذیر است). کانسپت و سبک بصری پیش از شروع تولید هماهنگ می‌شود."}
       </p>
       <div className="cta-row rv d2">
-        <a className="pill" href="https://instagram.com/thepoo7an" target="_blank" rel="noopener noreferrer">
-          {isEn ? "Order via Instagram Direct" : "ثبت سفارش از دایرکت"}
+        <a className="pill" href="./order.html">
+          {isEn ? "Open Order Form" : "تکمیل فرم ثبت سفارش"}
         </a>
-        <a className="tlink" href="https://t.me/thepoo7an" target="_blank" rel="noopener noreferrer">
-          {isEn ? "Chat on Telegram" : "گفتگو در تلگرام"}
+        <a className="tlink" href="https://instagram.com/thepoo7an" target="_blank" rel="noopener noreferrer">
+          {isEn ? "Direct on Instagram" : "دایرکت اینستاگرام"}
           <svg viewBox="0 0 24 24" style={{ transform: isEn ? 'none' : 'scaleX(-1)' }}>
             <path d="M5 12h14M13 6l6 6-6 6" />
           </svg>
