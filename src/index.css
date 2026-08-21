@@ -1,5 +1,42 @@
 @import "tailwindcss";
 
+/* Typography Definition - Local Self-Hosted Fonts */
+@font-face {
+  font-family: 'Vazirmatn';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Vazirmatn'), local('Vazirmatn-Regular'),
+       url('./assets/fonts/Vazirmatn-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Vazirmatn';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Vazirmatn Bold'), local('Vazirmatn-Bold'),
+       url('./assets/fonts/Vazirmatn-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Vazirmatn';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: local('Vazirmatn ExtraBold'), local('Vazirmatn-ExtraBold'),
+       url('./assets/fonts/Vazirmatn-ExtraBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: local('Unbounded'),
+       url('./assets/fonts/unbounded-latin-wght-normal.woff2') format('woff2');
+}
+
 /* ============ Apple-product design system, RTL Persian ============ */
 :root {
   --fa: 'Vazirmatn', Tahoma, sans-serif;
