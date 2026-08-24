@@ -6,6 +6,8 @@ import { LanguageToggle } from './components/LanguageToggle';
 import { Hero } from './components/Hero';
 import { Portfolio } from './components/Portfolio';
 import { Services } from './components/Services';
+import { Pricing } from './components/Pricing';
+import { FAQ } from './components/FAQ';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 
@@ -88,6 +90,8 @@ export const AppContent: React.FC = () => {
           </a>
           <div className="nav-links">
             <a href="#services">{isEn ? 'Services' : 'خدمات'}</a>
+            <a href="#pricing">{isEn ? 'Pricing' : 'تعرفه‌ها'}</a>
+            <a href="#faq">{isEn ? 'FAQ' : 'سوالات'}</a>
             <a href="#contact">{isEn ? 'Contact' : 'ارتباط'}</a>
           </div>
           <div className="nav-act">
@@ -114,6 +118,12 @@ export const AppContent: React.FC = () => {
         <a href="#services" onClick={closeMenu}>
           {isEn ? 'Services' : 'خدمات'}
         </a>
+        <a href="#pricing" onClick={closeMenu}>
+          {isEn ? 'Pricing' : 'تعرفه‌ها'}
+        </a>
+        <a href="#faq" onClick={closeMenu}>
+          {isEn ? 'FAQ' : 'سؤالات پرتکرار'}
+        </a>
         <a href="#contact" onClick={closeMenu}>
           {isEn ? 'Contact Me' : 'ارتباط با من'}
         </a>
@@ -123,6 +133,8 @@ export const AppContent: React.FC = () => {
         <Hero heroImgRef={heroImgRef} />
         <Portfolio />
         <Services />
+        <Pricing />
+        <FAQ />
         <Contact />
       </main>
 

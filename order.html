@@ -270,6 +270,7 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
             <option value="">انتخاب کنید…</option>
             <option value="تایپوگرافی لیریک موزیک (۱۵ الی ۲۰ ثانیه)">تایپوگرافی لیریک موزیک (۱۵–۲۰ ثانیه / ۱ روزه)</option>
             <option value="ادیت ویدیو + تایپوگرافی لیریک">ادیت ویدیو + تایپوگرافی لیریک (۲–۳ روزه)</option>
+            <option value="پروژه ویژه / سفارشی">پروژه ویژه / سفارشی</option>
             <option value="طراحی کاور موزیک">طراحی کاور موزیک</option>
           </select>
           <span class="err">لطفاً نوع خدمت را انتخاب کنید.</span>
@@ -348,6 +349,24 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
     try{ localStorage.setItem('tp7-theme', next); }catch(e){}
     syncMeta();
   });
+
+  /* Plan query preselection */
+  try {
+    var urlParams = new URLSearchParams(window.location.search);
+    var plan = urlParams.get('plan');
+    var typeSelect = document.getElementById('type');
+    if (plan && typeSelect) {
+      if (plan === 'base' || plan === 'lyric') {
+        typeSelect.value = 'تایپوگرافی لیریک موزیک (۱۵ الی ۲۰ ثانیه)';
+      } else if (plan === 'pro' || plan === 'edit') {
+        typeSelect.value = 'ادیت ویدیو + تایپوگرافی لیریک';
+      } else if (plan === 'special') {
+        typeSelect.value = 'پروژه ویژه / سفارشی';
+      } else if (plan === 'cover') {
+        typeSelect.value = 'طراحی کاور موزیک';
+      }
+    }
+  } catch(e) {}
 
   /* Nav scroll */
   var navEl = document.getElementById('nav');

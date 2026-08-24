@@ -8,6 +8,8 @@ export const Footer: React.FC = () => {
     <footer>
       <div className="f-cols">
         <a href="#services">{isEn ? "Services" : "خدمات"}</a>
+        <a href="#pricing">{isEn ? "Pricing" : "تعرفه‌ها"}</a>
+        <a href="#faq">{isEn ? "FAQ" : "سؤالات پرتکرار"}</a>
         <a href="#contact">{isEn ? "Contact Me" : "ارتباط با من"}</a>
         <a href="https://instagram.com/thepoo7an" target="_blank" rel="noopener noreferrer">
           {isEn ? "Instagram" : "اینستاگرام"}
