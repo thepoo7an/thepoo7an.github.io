@@ -62,15 +62,14 @@ export const FAQ: React.FC = () => {
         </p>
       </div>
 
-      <div className="faq-list">
-        {FAQS.map((item, idx) => {
+      <div className="faq-list rv d2">
+        {FAQS.map((item) => {
           const isOpen = openId === item.id;
-          const delayClass = idx === 0 ? '' : `d${Math.min(idx, 3)}`;
 
           return (
             <div
               key={item.id}
-              className={`faq-item ${isOpen ? 'open' : ''} rv ${delayClass}`.trim()}
+              className={`faq-item ${isOpen ? 'open' : ''}`.trim()}
             >
               <button
                 type="button"
