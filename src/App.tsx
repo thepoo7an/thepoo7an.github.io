@@ -89,6 +89,7 @@ export const AppContent: React.FC = () => {
             <span className="ltr">thepoo7an</span>
           </a>
           <div className="nav-links">
+            <a href="#portfolio">{isEn ? 'Portfolio' : 'نمونهکارها'}</a>
             <a href="#services">{isEn ? 'Services' : 'خدمات'}</a>
             <a href="#pricing">{isEn ? 'Pricing' : 'تعرفه‌ها'}</a>
             <a href="#faq">{isEn ? 'FAQ' : 'سوالات'}</a>
@@ -115,6 +116,9 @@ export const AppContent: React.FC = () => {
 
       {/* Mobile Drawer Sheet */}
       <div className="sheet" id="sheet">
+        <a href="#portfolio" onClick={closeMenu}>
+          {isEn ? 'Portfolio' : 'نمونهکارها'}
+        </a>
         <a href="#services" onClick={closeMenu}>
           {isEn ? 'Services' : 'خدمات'}
         </a>
