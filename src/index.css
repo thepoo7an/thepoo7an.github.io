@@ -911,15 +911,39 @@ html[data-theme="light"] .portfolio-filter-btn:hover {
   border: 1px solid var(--line);
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
 }
 
-.svc-card:hover {
+.svc-card.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.svc-card.in:hover {
   transform: translateY(-4px);
   border-color: rgba(255, 255, 255, 0.22);
+  transition-delay: 0s !important;
 }
 
-html[data-theme="light"] .svc-card:hover {
+/* Staggered transition delays for service cards */
+.svc-grid .svc-card:nth-child(1) {
+  transition-delay: 0.08s, 0.08s, 0s, 0s;
+}
+
+.svc-grid .svc-card:nth-child(2) {
+  transition-delay: 0.22s, 0.22s, 0s, 0s;
+}
+
+.svc-grid .svc-card:nth-child(3) {
+  transition-delay: 0.36s, 0.36s, 0s, 0s;
+}
+
+html[data-theme="light"] .svc-card.in:hover {
   border-color: rgba(0, 0, 0, 0.22);
 }
 
@@ -1787,7 +1811,8 @@ footer {
     transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
-  .rv {
+  .rv,
+  .svc-card {
     opacity: 1 !important;
     transform: none !important;
   }
