@@ -158,8 +158,8 @@
   <!-- GitHub Pages SPA redirect script -->
   <script>
     (function() {
-      // If direct access to a non-existent asset, preserve route for SPA
-      var pathSegmentsToKeep = 1; // Keep /thepoo7an_site/ if on sub-path
+      // User site lives at root domain (https://thepoo7an.github.io/)
+      var pathSegmentsToKeep = 0;
       var l = window.location;
       // Only perform SPA redirect if there is an actual routing path requested
       var pathParts = l.pathname.split('/').filter(Boolean);
