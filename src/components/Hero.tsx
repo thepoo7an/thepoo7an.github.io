@@ -50,6 +50,52 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
           ? "Specialized visual production for emerging music artists and release marketing teams. Fast turnaround, 1080p MP4 exports, and beat-synced visuals."
           : "تولید محتوای بصری برای آرتیست‌های مستقل و تیم‌های مارکتینگ موسیقی. تحویل سریع، خروجی 1080p و هماهنگی دقیق با ریتم آهنگ."}
       </p>
+
+      {/* Output Specs Visualizer */}
+      <div className="specs-strip rv d2" aria-label={isEn ? "Standard output specifications" : "مشخصات استاندارد خروجی"}>
+        <div className="spec-item">
+          <div className="spec-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="2" y="2" width="20" height="20" rx="2" />
+              <line x1="7" y1="2" x2="7" y2="22" />
+              <line x1="17" y1="2" x2="17" y2="22" />
+              <line x1="2" y1="12" x2="22" y2="12" />
+              <line x1="2" y1="7" x2="7" y2="7" />
+              <line x1="2" y1="17" x2="7" y2="17" />
+              <line x1="17" y1="17" x2="22" y2="17" />
+              <line x1="17" y1="7" x2="22" y2="7" />
+            </svg>
+          </div>
+          <span className="spec-label">MP4 / H.264</span>
+        </div>
+        <div className="spec-item">
+          <div className="spec-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="5" y="2" width="14" height="20" rx="2" />
+              <line x1="12" y1="18" x2="12.01" y2="18" />
+            </svg>
+          </div>
+          <span className="spec-label">1080 × 1920 (9:16)</span>
+        </div>
+        <div className="spec-item">
+          <div className="spec-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+          </div>
+          <span className="spec-label">30 FPS</span>
+        </div>
+        <div className="spec-item">
+          <div className="spec-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M11 5L6 9H2v6h4l5 4V5z" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+            </svg>
+          </div>
+          <span className="spec-label">{isEn ? "Precise Beat Sync" : "سینک دقیق با موزیک"}</span>
+        </div>
+      </div>
+
       <div className="cta-row rv d3">
         <a className="pill pill-primary" href="./order.html" id="heroStartOrderBtn">
           {isEn ? "Start Order" : "ثبت سفارش"}

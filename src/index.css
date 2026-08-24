@@ -403,6 +403,52 @@ body.menu-open .sheet a:nth-child(5) {
   line-height: 1.7;
 }
 
+/* ---------- Specs Visualizer Strip ---------- */
+.specs-strip {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin: 28px auto 0;
+  max-width: 760px;
+  padding: 0 16px;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.spec-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--link);
+}
+
+.spec-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.spec-label {
+  font-size: 12.5px;
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
 .cta-row {
   display: flex;
   gap: 22px;
@@ -551,7 +597,71 @@ html[data-theme="light"] .hero-media img {
   pointer-events: none;
 }
 
-/* ---------- Tiles (Apple homepage grid) ---------- */
+/* ---------- Portfolio & Tiles (Apple homepage grid) ---------- */
+.portfolio-section {
+  padding-top: 40px;
+}
+
+.portfolio-head {
+  text-align: center;
+  max-width: 980px;
+  margin: 0 auto 24px;
+  padding: 40px 22px 0;
+}
+
+.portfolio-head h2 {
+  font-size: clamp(28px, 4.4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-top: 10px;
+}
+
+.portfolio-filter-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto 28px;
+  padding: 0 16px;
+  max-width: 860px;
+}
+
+.portfolio-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 40px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+.portfolio-filter-btn:hover {
+  color: var(--txt);
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+html[data-theme="light"] .portfolio-filter-btn:hover {
+  border-color: rgba(0, 0, 0, 0.24);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.portfolio-filter-btn.active {
+  background: var(--btn);
+  color: var(--btn-txt, #ffffff);
+  border-color: var(--btn);
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.3);
+}
+
 .tiles-sec {
   padding: 12px;
   max-width: 1440px;
@@ -571,6 +681,7 @@ html[data-theme="light"] .hero-media img {
   flex-direction: column;
   text-align: center;
   position: relative;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .tile-head {
@@ -1755,4 +1866,52 @@ html { scroll-padding-top: calc(var(--nav-h) + 12px); }
   .hero .sub { font-size: 15px; }
   .hero-media { margin-top: 36px; }
 }
+
+/* ---------- Sticky Mobile CTA Bar ---------- */
+.sticky-mobile-cta {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  background: var(--nav-bg);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-top: 1px solid var(--line);
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+}
+
+.sticky-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 24px;
+  border-radius: 999px;
+  background: var(--btn);
+  color: #ffffff !important;
+  font-size: 15.5px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(0, 113, 227, 0.4);
+  transition: transform 0.2s ease, filter 0.2s ease;
+  user-select: none;
+}
+
+.sticky-cta-btn:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .sticky-mobile-cta {
+    display: block;
+  }
+  main {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 

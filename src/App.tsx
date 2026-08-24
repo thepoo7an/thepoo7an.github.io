@@ -4,12 +4,12 @@ import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { ThemeToggle } from './components/ThemeToggle';
 import { LanguageToggle } from './components/LanguageToggle';
 import { Hero } from './components/Hero';
-import { Portfolio } from './components/Portfolio';
 import { Services } from './components/Services';
 import { Pricing } from './components/Pricing';
 import { FAQ } from './components/FAQ';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
+import { StickyMobileCta } from './components/StickyMobileCta';
 
 export const AppContent: React.FC = () => {
   const { isEn } = useLanguage();
@@ -89,7 +89,6 @@ export const AppContent: React.FC = () => {
             <span className="ltr">thepoo7an</span>
           </a>
           <div className="nav-links">
-            <a href="#portfolio">{isEn ? 'Portfolio' : 'نمونهکارها'}</a>
             <a href="#services">{isEn ? 'Services' : 'خدمات'}</a>
             <a href="#pricing">{isEn ? 'Pricing' : 'تعرفه‌ها'}</a>
             <a href="#faq">{isEn ? 'FAQ' : 'سوالات'}</a>
@@ -116,9 +115,6 @@ export const AppContent: React.FC = () => {
 
       {/* Mobile Drawer Sheet */}
       <div className="sheet" id="sheet">
-        <a href="#portfolio" onClick={closeMenu}>
-          {isEn ? 'Portfolio' : 'نمونهکارها'}
-        </a>
         <a href="#services" onClick={closeMenu}>
           {isEn ? 'Services' : 'خدمات'}
         </a>
@@ -135,7 +131,6 @@ export const AppContent: React.FC = () => {
 
       <main>
         <Hero heroImgRef={heroImgRef} />
-        <Portfolio />
         <Services />
         <Pricing />
         <FAQ />
@@ -143,6 +138,7 @@ export const AppContent: React.FC = () => {
       </main>
 
       <Footer />
+      <StickyMobileCta />
     </>
   );
 };
