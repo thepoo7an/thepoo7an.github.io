@@ -3,6 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 
 export interface ServiceItem {
   id: string;
+  planParam: string;
   badgeFa: string;
   badgeEn: string;
   titleFa: string;
@@ -19,6 +20,7 @@ export interface ServiceItem {
 export const SERVICES: ServiceItem[] = [
   {
     id: 'lyric-typography',
+    planParam: 'base',
     badgeFa: 'خدمت اصلی • تحویل ۱ روزه',
     badgeEn: 'Core Service • 1-Day Delivery',
     titleFa: 'تایپوگرافی لیریک موزیک',
@@ -43,6 +45,7 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     id: 'video-editing-typography',
+    planParam: 'pro',
     badgeFa: 'تدوین + لیریک • ۲ تا ۳ روز',
     badgeEn: 'Edit + Lyrics • 2–3 Days',
     titleFa: 'ادیت ویدیو + تایپوگرافی لیریک',
@@ -67,6 +70,7 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     id: 'cover-design',
+    planParam: 'cover',
     badgeFa: 'کاور آرت',
     badgeEn: 'Cover Artwork',
     titleFa: 'طراحی کاور موزیک',
@@ -129,7 +133,7 @@ export const Services: React.FC = () => {
               ))}
             </ul>
             <div className="svc-card-bottom">
-              <a className="pill" href="./order.html">
+              <a className="pill" href={`./order.html?plan=${s.planParam}`}>
                 {isEn ? s.ctaEn : s.ctaFa}
               </a>
             </div>

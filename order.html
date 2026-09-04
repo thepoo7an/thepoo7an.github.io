@@ -158,16 +158,24 @@ html[data-theme="light"] #themeBtn .moon{display:block}
 .field.invalid .err{display:block}
 
 /* ---------- Submit ---------- */
-.submit-row{margin-top:26px;display:flex;flex-direction:column;gap:12px;align-items:center}
+.submit-row{margin-top:26px;display:flex;flex-direction:column;gap:14px;align-items:center}
+.submit-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
 .pill{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;width:100%;
-  padding:12px 28px;border-radius:999px;background:var(--btn);color:var(--btn-txt);
-  font-size:16px;font-weight:700;transition:filter .2s,transform .2s,opacity .2s}
+  padding:12px 22px;border-radius:999px;background:var(--btn);color:var(--btn-txt);
+  font-size:15px;font-weight:700;transition:filter .2s,transform .2s,opacity .2s,border-color .2s;cursor:pointer;border:none}
 .pill:hover{filter:brightness(1.12);transform:scale(1.01)}
 .pill:active{transform:scale(.99)}
 .pill[disabled]{opacity:.55;pointer-events:none}
+.pill-tg{background:var(--btn);color:var(--btn-txt)}
+.pill-ig{background:var(--input-bg);color:var(--txt);border:1px solid var(--line)}
+.pill-ig:hover{border-color:rgba(255,255,255,.3)}
+html[data-theme="light"] .pill-ig:hover{border-color:rgba(0,0,0,.3)}
 .pill svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.submit-note{font-size:12px;color:var(--muted);text-align:center}
+.submit-note{font-size:12px;color:var(--muted);text-align:center;line-height:1.6}
 .submit-note svg{width:13px;height:13px;stroke:var(--link);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-2px;margin-left:4px}
+@media(max-width:620px){
+  .submit-actions{grid-template-columns:1fr}
+}
 
 /* ---------- Toast ---------- */
 #toast{position:fixed;bottom:26px;right:50%;transform:translate(50%,20px);z-index:200;
@@ -236,7 +244,7 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
   <header class="page-head">
     <p class="eyebrow rv"><b>✦ فرم ثبت سفارش</b> — THEPOO7AN</p>
     <h1 class="rv d1">پروژه‌ات را <span class="chrome">استارت بزن.</span></h1>
-    <p class="sub rv d2">اطلاعات پروژه‌ات را وارد کن؛ بریف آماده شده و مستقیم به دایرکت اینستاگرام هدایت می‌شود.</p>
+    <p class="sub rv d2">اطلاعات پروژه‌ات را وارد کن؛ بریف آماده شده و مستقیم به تلگرام یا دایرکت اینستاگرام هدایت می‌شود.</p>
   </header>
 
   <div class="info-row rv d2">
@@ -314,13 +322,19 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
       </div>
 
       <div class="submit-row">
-        <button type="submit" class="pill" id="submitBtn">
-          ارسال سفارش به دایرکت
-          <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
-        </button>
+        <div class="submit-actions">
+          <button type="button" class="pill pill-tg" id="submitTgBtn">
+            ارسال سفارش در تلگرام
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
+          </button>
+          <button type="button" class="pill pill-ig" id="submitIgBtn">
+            ارسال در دایرکت اینستاگرام
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </button>
+        </div>
         <p class="submit-note">
           <svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
-          با ثبت فرم، بریف کامل کپی شده و دایرکت اینستاگرام @thepoo7an باز می‌شود.
+          با کلیک روی هر دکمه، بریف کامل در کلیپ‌بورد کپی شده و پیام‌رسان مربوطه با متن آماده باز می‌شود.
         </p>
       </div>
     </form>
@@ -353,16 +367,17 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
   /* Plan query preselection */
   try {
     var urlParams = new URLSearchParams(window.location.search);
-    var plan = urlParams.get('plan');
+    var plan = urlParams.get('plan') || urlParams.get('type');
     var typeSelect = document.getElementById('type');
     if (plan && typeSelect) {
-      if (plan === 'base' || plan === 'lyric') {
+      var p = plan.toLowerCase();
+      if (p === 'base' || p === 'lyric' || p === 'typography') {
         typeSelect.value = 'تایپوگرافی لیریک موزیک (۱۵ الی ۲۰ ثانیه)';
-      } else if (plan === 'pro' || plan === 'edit') {
+      } else if (p === 'pro' || p === 'edit' || p === 'video') {
         typeSelect.value = 'ادیت ویدیو + تایپوگرافی لیریک';
-      } else if (plan === 'special') {
+      } else if (p === 'special' || p === 'vip' || p === 'custom') {
         typeSelect.value = 'پروژه ویژه / سفارشی';
-      } else if (plan === 'cover') {
+      } else if (p === 'cover' || p === 'artwork') {
         typeSelect.value = 'طراحی کاور موزیک';
       }
     }
@@ -406,9 +421,8 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
   }
   function validUrl(v){ return !v || /^(https?:\/\/)?([\w-]+\.)+[a-z]{2,}(\/\S*)?$/i.test(v); }
 
-  /* Submit */
-  document.getElementById('orderForm').addEventListener('submit', function(e){
-    e.preventDefault();
+  /* Submit handler helper */
+  function handleOrderSubmit(targetPlatform) {
     var name = document.getElementById('name').value.trim();
     var contact = document.getElementById('contact').value.trim();
     var type = document.getElementById('type').value;
@@ -446,8 +460,30 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(msg).catch(function(){});
     }
-    showToast('متن سفارش کپی شد؛ در حال باز کردن دایرکت…');
-    window.open('https://ig.me/m/thepoo7an?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
+
+    if (targetPlatform === 'tg') {
+      showToast('متن سفارش کپی شد؛ در حال باز کردن تلگرام…');
+      window.open('https://t.me/thepoo7an?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
+    } else {
+      showToast('متن سفارش کپی شد؛ در حال باز کردن دایرکت اینستاگرام…');
+      window.open('https://ig.me/m/thepoo7an?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  /* Submit events */
+  document.getElementById('submitTgBtn').addEventListener('click', function(e){
+    e.preventDefault();
+    handleOrderSubmit('tg');
+  });
+
+  document.getElementById('submitIgBtn').addEventListener('click', function(e){
+    e.preventDefault();
+    handleOrderSubmit('ig');
+  });
+
+  document.getElementById('orderForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    handleOrderSubmit('tg');
   });
 
   /* Clear error on input */

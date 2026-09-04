@@ -6,6 +6,7 @@ import { LanguageToggle } from './components/LanguageToggle';
 import { Hero } from './components/Hero';
 import { Work } from './components/Work';
 import { Services } from './components/Services';
+import { Process } from './components/Process';
 import { Pricing } from './components/Pricing';
 import { FAQ } from './components/FAQ';
 import { Contact } from './components/Contact';
@@ -92,6 +93,7 @@ export const AppContent: React.FC = () => {
           <div className="nav-links">
             <a href="#work">{isEn ? 'Work' : 'نمونه'}</a>
             <a href="#services">{isEn ? 'Services' : 'خدمات'}</a>
+            <a href="#process">{isEn ? 'Process' : 'مراحل'}</a>
             <a href="#pricing">{isEn ? 'Pricing' : 'تعرفه‌ها'}</a>
             <a href="#contact">{isEn ? 'Contact' : 'ارتباط'}</a>
           </div>
@@ -122,6 +124,9 @@ export const AppContent: React.FC = () => {
         <a href="#services" onClick={closeMenu}>
           {isEn ? 'Services' : 'خدمات'}
         </a>
+        <a href="#process" onClick={closeMenu}>
+          {isEn ? 'Process' : 'مراحل همکاری'}
+        </a>
         <a href="#pricing" onClick={closeMenu}>
           {isEn ? 'Pricing' : 'تعرفه‌ها'}
         </a>
@@ -134,6 +139,7 @@ export const AppContent: React.FC = () => {
         <Hero heroImgRef={heroImgRef} />
         <Work />
         <Services />
+        <Process />
         <Pricing />
         <FAQ />
         <Contact />
