@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { trackContactClick } from '../utils/analytics';
 
 export const Contact: React.FC = () => {
   const { isEn } = useLanguage();
@@ -33,10 +34,16 @@ export const Contact: React.FC = () => {
           : "فرم ثبت سفارش را تکمیل کنید یا مستقیماً از طریق دایرکت اینستاگرام و تلگرام پیام دهید. در پروژه‌های لیریک، ارسال متن توسط شما اولویت دارد (استخراج لیریک نیز امکان‌پذیر است). کانسپت و سبک بصری پیش از شروع تولید هماهنگ می‌شود."}
       </p>
       <div className="cta-row rv d2">
-        <a className="pill" href="./order.html">
+        <a className="pill" href="./order.html" onClick={() => trackContactClick('order_page')}>
           {isEn ? "Open Order Form" : "تکمیل فرم ثبت سفارش"}
         </a>
-        <a className="tlink" href="https://instagram.com/thepoo7an" target="_blank" rel="noopener noreferrer">
+        <a
+          className="tlink"
+          href="https://instagram.com/thepoo7an"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackContactClick('instagram')}
+        >
           {isEn ? "Direct on Instagram" : "دایرکت اینستاگرام"}
           <svg viewBox="0 0 24 24" style={{ transform: isEn ? 'none' : 'scaleX(-1)' }}>
             <path d="M5 12h14M13 6l6 6-6 6" />
@@ -46,7 +53,13 @@ export const Contact: React.FC = () => {
 
       <div className="socials rv d3">
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-          <a className="soc" href="https://instagram.com/thepoo7an" target="_blank" rel="noopener noreferrer">
+          <a
+            className="soc"
+            href="https://instagram.com/thepoo7an"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackContactClick('instagram')}
+          >
             <svg viewBox="0 0 24 24">
               <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
               <circle cx="12" cy="12" r="4" />
@@ -80,7 +93,13 @@ export const Contact: React.FC = () => {
         </div>
 
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-          <a className="soc" href="https://t.me/thepoo7an" target="_blank" rel="noopener noreferrer">
+          <a
+            className="soc"
+            href="https://t.me/thepoo7an"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackContactClick('telegram')}
+          >
             <svg viewBox="0 0 24 24">
               <path d="M21 4L3 11.5l5.5 2L10 19l3-3.5 5 3.5z" />
             </svg>

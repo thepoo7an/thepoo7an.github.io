@@ -12,12 +12,27 @@ import { FAQ } from './components/FAQ';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { StickyMobileCta } from './components/StickyMobileCta';
+import { AmbientBackground } from './components/AmbientBackground';
+import { initAnalytics, trackPageView } from './utils/analytics';
 
 export const AppContent: React.FC = () => {
   const { isEn } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const heroImgRef = useRef<HTMLImageElement>(null);
+
+  // Initialize Analytics and monitor hash navigation
+  useEffect(() => {
+    initAnalytics();
+
+    const handleHashChange = () => {
+      const section = window.location.hash || '#home';
+      trackPageView(section, `THEPOO7AN - ${section.replace('#', '')}`);
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   // Sync scroll state and hero parallax
   useEffect(() => {
@@ -79,6 +94,8 @@ export const AppContent: React.FC = () => {
 
   return (
     <>
+      <AmbientBackground />
+
       {/* ===== Global Navigation ===== */}
       <nav
         className={`nav ${isScrolled ? 'scrolled' : ''}`}

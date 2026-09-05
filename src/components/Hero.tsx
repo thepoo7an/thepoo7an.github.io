@@ -53,26 +53,23 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
       {/* 9:16 Sample Reel Frame */}
       <div className="hero-frame-wrap rv d3">
         <div className="hero-reel-frame">
-          <picture>
-            <source srcSet="./images/portfolio/work-visuals.webp" type="image/webp" />
-            <img
-              id="heroImg"
-              ref={heroImgRef}
-              src="./images/portfolio/work-visuals.png"
-              alt={isEn ? "Sample 9:16 Reels output" : "نمونه خروجی ریلز ۹:۱۶"}
-              width={360}
-              height={640}
-              fetchPriority="high"
-              decoding="async"
-              className="hero-reel-img"
-              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                const target = e.currentTarget;
-                if (!target.src.endsWith('work-visuals.webp')) {
-                  target.src = './images/portfolio/work-visuals.webp';
-                }
-              }}
-            />
-          </picture>
+          <img
+            id="heroImg"
+            ref={heroImgRef}
+            src="./images/portfolio/sample-1.png"
+            alt={isEn ? "Sample 9:16 Reels output" : "نمونه خروجی ریلز ۹:۱۶"}
+            width={360}
+            height={640}
+            fetchPriority="high"
+            decoding="async"
+            className="hero-reel-img"
+            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+              const target = e.currentTarget;
+              if (!target.src.endsWith('Screenshot_20260819-203518.png')) {
+                target.src = './images/portfolio/Screenshot_20260819-203518.png';
+              }
+            }}
+          />
         </div>
         <p className="hero-frame-caption">
           {isEn ? "Sample 9:16 Reels output" : "نمونه خروجی ریلز ۹:۱۶"}

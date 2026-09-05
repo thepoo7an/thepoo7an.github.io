@@ -624,6 +624,8 @@ html[data-theme="light"] .hero-reel-frame {
   transition: transform 0.3s ease, border-color 0.3s ease;
   position: relative;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .work-card:hover .work-frame {
@@ -640,14 +642,117 @@ html[data-theme="light"] .work-card:hover .work-frame {
   outline-offset: 3px;
 }
 
+.work-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000000;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.work-play-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(12, 12, 12, 0.76);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  z-index: 3;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  white-space: nowrap;
+}
+
+html[dir="rtl"] .work-play-badge {
+  left: auto;
+  right: 12px;
+}
+
+.work-play-badge.playing {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.work-audio-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  background: rgba(12, 12, 12, 0.76);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 4;
+  opacity: 0.88;
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+html[dir="rtl"] .work-audio-btn {
+  right: auto;
+  left: 12px;
+}
+
+.work-audio-btn:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.06);
+}
+
+.work-audio-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.work-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.work-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), #ffffff);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  transition: width 0.08s linear;
+}
+
 .work-zoom-btn {
   position: absolute;
   bottom: 12px;
   right: 12px;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(12, 12, 12, 0.76);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -655,25 +760,32 @@ html[data-theme="light"] .work-card:hover .work-frame {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.82;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  pointer-events: none;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+  z-index: 4;
+}
+
+html[dir="rtl"] .work-zoom-btn {
+  right: auto;
+  left: 12px;
 }
 
 .work-card:hover .work-zoom-btn,
 .work-frame:focus-visible .work-zoom-btn {
   opacity: 1;
+  transform: scale(1.06);
+}
+
+.work-zoom-btn:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.22);
   transform: scale(1.08);
 }
 
-.work-zoom-btn svg {
-  width: 14px;
-  height: 14px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.work-zoom-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* Lightbox Modal */
@@ -748,21 +860,61 @@ html[data-theme="light"] .work-card:hover .work-frame {
 }
 
 .work-lightbox-frame {
-  height: min(78vh, 640px);
+  height: min(76vh, 640px);
   aspect-ratio: 9 / 16;
   border-radius: 24px;
   border: 1.5px solid rgba(255, 255, 255, 0.2);
   overflow: hidden;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
   background: #000000;
+  position: relative;
 }
 
-.work-lightbox-img {
+.work-lightbox-img,
+.work-lightbox-video {
   width: 100%;
   height: 100%;
   object-fit: contain;
   background: #000000;
   display: block;
+}
+
+.work-lightbox-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  background: rgba(22, 22, 22, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 6px 16px;
+  border-radius: 999px;
+  z-index: 1002;
+}
+
+.work-lightbox-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.work-lightbox-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: scale(1.06);
+}
+
+.work-lightbox-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .work-lightbox-caption {
@@ -2153,5 +2305,162 @@ html { scroll-padding-top: calc(var(--nav-h) + 12px); }
     padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
   }
 }
+
+main,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   Ambient Kinetic Chrome Mesh & Subtle Analog Film Grain
+   Ultra-lightweight, 0KB payload, 60fps GPU compositor transforms
+   ========================================================================== */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
+  contain: strict;
+  transform: translateZ(0);
+}
+
+.ambient-mesh {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(55px);
+  -webkit-filter: blur(55px);
+  opacity: 0.88;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .ambient-orb {
+    filter: blur(95px);
+    -webkit-filter: blur(95px);
+  }
+}
+
+/* Orb 1: Upper Left Hero specular sheen (Silver / Chrome) */
+.ambient-orb-1 {
+  width: min(650px, 85vw);
+  height: min(650px, 85vw);
+  top: -12%;
+  left: -10%;
+  background: var(--ambient-orb-1, radial-gradient(circle, rgba(245, 245, 247, 0.075) 0%, rgba(180, 185, 195, 0.025) 45%, transparent 70%));
+  transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+  animation: ambient-drift-1 26s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
+}
+
+/* Orb 2: Middle-Right subtle graphite / chrome smoke */
+.ambient-orb-2 {
+  width: min(720px, 90vw);
+  height: min(720px, 90vw);
+  top: 32%;
+  right: -14%;
+  background: var(--ambient-orb-2, radial-gradient(circle, rgba(160, 165, 180, 0.058) 0%, rgba(110, 115, 125, 0.02) 48%, transparent 72%));
+  transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+  animation: ambient-drift-2 32s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
+}
+
+/* Orb 3: Bottom Left studio electric steel / cold cyan resonance */
+.ambient-orb-3 {
+  width: min(600px, 80vw);
+  height: min(600px, 80vw);
+  bottom: -10%;
+  left: 8%;
+  background: var(--ambient-orb-3, radial-gradient(circle, rgba(41, 151, 255, 0.052) 0%, rgba(20, 60, 120, 0.015) 45%, transparent 70%));
+  transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+  animation: ambient-drift-3 29s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
+}
+
+/* Default CSS fallback variables for themes */
+html[data-theme="dark"] {
+  --ambient-orb-1: radial-gradient(circle, rgba(245, 245, 247, 0.075) 0%, rgba(180, 185, 195, 0.025) 45%, transparent 70%);
+  --ambient-orb-2: radial-gradient(circle, rgba(160, 165, 180, 0.058) 0%, rgba(110, 115, 125, 0.02) 48%, transparent 72%);
+  --ambient-orb-3: radial-gradient(circle, rgba(41, 151, 255, 0.052) 0%, rgba(20, 60, 120, 0.015) 45%, transparent 70%);
+}
+
+html[data-theme="light"] {
+  --ambient-orb-1: radial-gradient(circle, rgba(0, 0, 0, 0.035) 0%, rgba(120, 125, 140, 0.012) 45%, transparent 70%);
+  --ambient-orb-2: radial-gradient(circle, rgba(185, 195, 210, 0.45) 0%, rgba(220, 225, 235, 0.15) 50%, transparent 72%);
+  --ambient-orb-3: radial-gradient(circle, rgba(0, 113, 227, 0.038) 0%, rgba(41, 151, 255, 0.01) 45%, transparent 70%);
+}
+
+/* Analog Micro-Texture (Cinematic Grain) - pure SVG data URI, 0KB network payload */
+.ambient-grain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+html[data-theme="light"] .ambient-grain {
+  opacity: 0.018;
+}
+
+/* Hardware-accelerated 3D Transform Keyframes (Zero CPU, GPU-only compositor) */
+@keyframes ambient-drift-1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6vw, 5vh, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(3vw, 10vh, 0) scale(0.96);
+  }
+}
+
+@keyframes ambient-drift-2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-5vw, -6vh, 0) scale(1.09);
+  }
+  100% {
+    transform: translate3d(-8vw, 4vh, 0) scale(0.95);
+  }
+}
+
+@keyframes ambient-drift-3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(5vw, -5vh, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(-3vw, -8vh, 0) scale(0.98);
+  }
+}
+
+/* Accessibility: Respect Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-orb {
+    animation: none !important;
+  }
+}
+
 
 

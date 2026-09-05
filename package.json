@@ -12,6 +12,7 @@
     "compress-images": "node scripts/compress-images.js"
   },
   "dependencies": {
+    "lucide-react": "^1.41.0",
     "react": "^19.0.1",
     "react-dom": "^19.0.1"
   },

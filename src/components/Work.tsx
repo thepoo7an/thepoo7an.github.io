@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { Play, Pause, Volume2, VolumeX, Maximize2, X } from 'lucide-react';
+import { trackWorkPreview } from '../utils/analytics';
 
 interface WorkItem {
   id: string;
+  videoSrc?: string;
+  videoFallbacks?: string[];
   primarySrc: string;
   fallbacks: string[];
   labelFa: string;
@@ -12,33 +16,249 @@ interface WorkItem {
 const WORK_ITEMS: WorkItem[] = [
   {
     id: 'work-sample-1',
+    videoSrc: './videos/portfolio/sample-reel.mp4',
+    videoFallbacks: [
+      './videos/portfolio/sample-1.mp4',
+      './videos/portfolio/sample-lyric.mp4',
+      './images/portfolio/sample-1.mp4',
+      './sample-reel.mp4',
+    ],
     primarySrc: './images/portfolio/sample-1.png',
     fallbacks: [
       './images/portfolio/Screenshot_20260819-203518.png',
       './Screenshot_20260819-203518.png',
       './images/portfolio/work-cover.png',
-      './images/portfolio/work-cover.webp',
     ],
     labelFa: 'پشیمون میشی و برمیگردی',
     labelEn: 'Lyric Typography Reel',
   },
   {
     id: 'work-sample-2',
+    videoSrc: './videos/portfolio/sample-2.mp4',
+    videoFallbacks: [
+      './images/portfolio/sample-2.mp4',
+      './videos/portfolio/sample-2.mp4',
+      './sample-2.mp4',
+    ],
     primarySrc: './images/portfolio/sample-2.png',
     fallbacks: [
       './images/portfolio/Screenshot_20260819-203436.png',
       './Screenshot_20260819-203436.png',
       './images/portfolio/work-visuals.png',
-      './images/portfolio/work-visuals.webp',
     ],
     labelFa: 'دورم کن — میراد',
     labelEn: 'Dooram Kon — Meyraad',
   },
 ];
 
+interface WorkCardProps {
+  key?: React.Key;
+  item: WorkItem;
+  idx: number;
+  isEn: boolean;
+  onOpenLightbox: (item: WorkItem) => void;
+}
+
+function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [videoSource, setVideoSource] = useState(item.videoSrc);
+  const [videoAttempt, setVideoAttempt] = useState(0);
+  const [videoFailed, setVideoFailed] = useState(false);
+
+  const handlePlay = useCallback(() => {
+    if (!videoRef.current || videoFailed) return;
+    videoRef.current.muted = isMuted;
+    const promise = videoRef.current.play();
+    if (promise !== undefined) {
+      promise
+        .then(() => {
+          setIsPlaying(true);
+          trackWorkPreview(item.id, 'play');
+        })
+        .catch(() => {
+          setIsPlaying(false);
+        });
+    }
+  }, [isMuted, videoFailed, item.id]);
+
+  const handlePause = useCallback(() => {
+    if (!videoRef.current) return;
+    videoRef.current.pause();
+    setIsPlaying(false);
+    setProgress(0);
+    try {
+      videoRef.current.currentTime = 0;
+    } catch {
+      // Ignore if element is not loaded
+    }
+  }, []);
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    const nextMuted = !isMuted;
+    setIsMuted(nextMuted);
+    videoRef.current.muted = nextMuted;
+  };
+
+  const handleTimeUpdate = () => {
+    if (!videoRef.current) return;
+    const { currentTime, duration } = videoRef.current;
+    if (duration > 0) {
+      setProgress((currentTime / duration) * 100);
+    }
+  };
+
+  const handleVideoError = () => {
+    const fallbacks = item.videoFallbacks || [];
+    if (videoAttempt < fallbacks.length) {
+      setVideoSource(fallbacks[videoAttempt]);
+      setVideoAttempt((prev) => prev + 1);
+    } else {
+      setVideoFailed(true);
+      setIsPlaying(false);
+    }
+  };
+
+  return (
+    <div className={`work-card rv ${idx === 0 ? '' : `d${idx}`}`}>
+      <div
+        className="work-frame"
+        role="button"
+        tabIndex={0}
+        aria-label={
+          isEn
+            ? `${item.labelEn} - ${isPlaying ? 'Pause video' : 'Hover or tap to play'}`
+            : `${item.labelFa} - ${isPlaying ? 'توقف پخش' : 'هاور یا لمس برای پخش ویدیو'}`
+        }
+        onMouseEnter={handlePlay}
+        onMouseLeave={handlePause}
+        onClick={() => {
+          if (isPlaying) {
+            handlePause();
+          } else {
+            handlePlay();
+          }
+        }}
+        onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (isPlaying) {
+              handlePause();
+            } else {
+              handlePlay();
+            }
+          }
+        }}
+      >
+        {!videoFailed && videoSource ? (
+          <video
+            ref={videoRef}
+            src={videoSource}
+            poster={item.primarySrc}
+            playsInline
+            loop
+            muted={isMuted}
+            preload="metadata"
+            className="work-video"
+            onTimeUpdate={handleTimeUpdate}
+            onError={handleVideoError}
+          />
+        ) : (
+          <img
+            src={item.primarySrc}
+            alt={isEn ? item.labelEn : item.labelFa}
+            width={360}
+            height={640}
+            loading="lazy"
+            decoding="async"
+            className="work-img"
+            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+              const target = e.currentTarget;
+              const currentAttempt = parseInt(target.dataset.attempt || '0', 10);
+              if (currentAttempt < item.fallbacks.length) {
+                target.dataset.attempt = String(currentAttempt + 1);
+                target.src = item.fallbacks[currentAttempt];
+              }
+            }}
+          />
+        )}
+
+        {/* Hover / Tap to Play Badge */}
+        <div
+          className={`work-play-badge ${isPlaying ? 'playing' : ''}`}
+          aria-hidden="true"
+        >
+          <Play className="w-3 h-3 fill-current" />
+          <span>{isEn ? 'Hover to play' : 'هاور برای پخش'}</span>
+        </div>
+
+        {/* Sound toggle button */}
+        {isPlaying && (
+          <button
+            type="button"
+            className="work-audio-btn"
+            onClick={toggleMute}
+            aria-label={
+              isEn
+                ? isMuted
+                  ? 'Unmute sound'
+                  : 'Mute sound'
+                : isMuted
+                  ? 'وصل کردن صدا'
+                  : 'قطع کردن صدا'
+            }
+          >
+            {isMuted ? (
+              <VolumeX className="w-4 h-4" />
+            ) : (
+              <Volume2 className="w-4 h-4" />
+            )}
+          </button>
+        )}
+
+        {/* Progress bar */}
+        {isPlaying && (
+          <div className="work-progress-track" aria-hidden="true">
+            <div
+              className="work-progress-fill"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        )}
+
+        {/* Expand / Lightbox Button */}
+        <button
+          type="button"
+          className="work-zoom-btn"
+          aria-label={isEn ? `Expand ${item.labelEn}` : `بزرگ‌نمایی ${item.labelFa}`}
+          onClick={(e: React.MouseEvent) => {
+            e.stopPropagation();
+            onOpenLightbox(item);
+          }}
+        >
+          <Maximize2 className="w-4 h-4" />
+        </button>
+      </div>
+
+      <div className="work-meta">
+        <span className="work-label">
+          {isEn ? item.labelEn : item.labelFa}
+        </span>
+      </div>
+    </div>
+  );
+};
+
 export const Work: React.FC = () => {
   const { isEn } = useLanguage();
   const [activeItem, setActiveItem] = useState<WorkItem | null>(null);
+  const lightboxVideoRef = useRef<HTMLVideoElement>(null);
+  const [lightboxPlaying, setLightboxPlaying] = useState(true);
+  const [lightboxMuted, setLightboxMuted] = useState(false);
 
   const closeModal = useCallback(() => {
     setActiveItem(null);
@@ -63,62 +283,48 @@ export const Work: React.FC = () => {
     };
   }, [activeItem, closeModal]);
 
+  const toggleLightboxPlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!lightboxVideoRef.current) return;
+    if (lightboxPlaying) {
+      lightboxVideoRef.current.pause();
+      setLightboxPlaying(false);
+    } else {
+      lightboxVideoRef.current.play();
+      setLightboxPlaying(true);
+    }
+  };
+
+  const toggleLightboxMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!lightboxVideoRef.current) return;
+    const next = !lightboxMuted;
+    setLightboxMuted(next);
+    lightboxVideoRef.current.muted = next;
+  };
+
   return (
-    <section className="work-sec" id="work" aria-label={isEn ? "Selected output" : "نمونه خروجی"}>
+    <section className="work-sec" id="work" aria-label={isEn ? 'Selected output' : 'نمونه خروجی'}>
       <div className="work-header">
         <h2 className="rv">
-          {isEn ? "Selected output" : "نمونه خروجی"}
+          {isEn ? 'Selected output' : 'نمونه خروجی'}
         </h2>
       </div>
 
       <div className="work-grid">
         {WORK_ITEMS.map((item, idx) => (
-          <div
+          <WorkCard
             key={item.id}
-            className={`work-card rv ${idx === 0 ? '' : `d${idx}`}`}
-          >
-            <div
-              className="work-frame"
-              role="button"
-              tabIndex={0}
-              aria-label={isEn ? `Preview ${item.labelEn}` : `مشاهده ${item.labelFa}`}
-              onClick={() => setActiveItem(item)}
-              onKeyDown={(e: React.KeyboardEvent) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  setActiveItem(item);
-                }
-              }}
-            >
-              <img
-                src={item.primarySrc}
-                alt={isEn ? item.labelEn : item.labelFa}
-                width={360}
-                height={640}
-                loading="lazy"
-                decoding="async"
-                className="work-img"
-                onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                  const target = e.currentTarget;
-                  const currentAttempt = parseInt(target.dataset.attempt || '0', 10);
-                  if (currentAttempt < item.fallbacks.length) {
-                    target.dataset.attempt = String(currentAttempt + 1);
-                    target.src = item.fallbacks[currentAttempt];
-                  }
-                }}
-              />
-              <div className="work-zoom-btn" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
-                </svg>
-              </div>
-            </div>
-            <div className="work-meta">
-              <span className="work-label">
-                {isEn ? item.labelEn : item.labelFa}
-              </span>
-            </div>
-          </div>
+            item={item}
+            idx={idx}
+            isEn={isEn}
+            onOpenLightbox={(selected) => {
+              setActiveItem(selected);
+              setLightboxPlaying(true);
+              setLightboxMuted(false);
+              trackWorkPreview(selected.id, 'lightbox');
+            }}
+          />
         ))}
       </div>
 
@@ -135,34 +341,61 @@ export const Work: React.FC = () => {
             type="button"
             className="work-lightbox-close"
             onClick={closeModal}
-            aria-label={isEn ? "Close preview" : "بستن پیش‌نمایش"}
+            aria-label={isEn ? 'Close preview' : 'بستن پیش‌نمایش'}
           >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
+            <X className="w-5 h-5" />
           </button>
+
           <div
             className="work-lightbox-content"
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
             <div className="work-lightbox-frame">
-              <img
-                src={activeItem.primarySrc}
-                alt={isEn ? activeItem.labelEn : activeItem.labelFa}
-                width={360}
-                height={640}
-                className="work-lightbox-img"
-                onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                  const target = e.currentTarget;
-                  const currentAttempt = parseInt(target.dataset.attempt || '0', 10);
-                  if (currentAttempt < activeItem.fallbacks.length) {
-                    target.dataset.attempt = String(currentAttempt + 1);
-                    target.src = activeItem.fallbacks[currentAttempt];
-                  }
-                }}
-              />
+              {activeItem.videoSrc ? (
+                <video
+                  ref={lightboxVideoRef}
+                  src={activeItem.videoSrc}
+                  poster={activeItem.primarySrc}
+                  playsInline
+                  autoPlay
+                  loop
+                  muted={lightboxMuted}
+                  className="work-lightbox-video"
+                  onClick={toggleLightboxPlay}
+                />
+              ) : (
+                <img
+                  src={activeItem.primarySrc}
+                  alt={isEn ? activeItem.labelEn : activeItem.labelFa}
+                  width={360}
+                  height={640}
+                  className="work-lightbox-img"
+                />
+              )}
             </div>
+
+            {/* Lightbox Control Bar */}
+            {activeItem.videoSrc && (
+              <div className="work-lightbox-bar">
+                <button
+                  type="button"
+                  className="work-lightbox-btn"
+                  onClick={toggleLightboxPlay}
+                  aria-label={isEn ? (lightboxPlaying ? 'Pause' : 'Play') : (lightboxPlaying ? 'توقف' : 'پخش')}
+                >
+                  {lightboxPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 fill-current" />}
+                </button>
+                <button
+                  type="button"
+                  className="work-lightbox-btn"
+                  onClick={toggleLightboxMute}
+                  aria-label={isEn ? (lightboxMuted ? 'Unmute' : 'Mute') : (lightboxMuted ? 'وصل صدا' : 'قطع صدا')}
+                >
+                  {lightboxMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                </button>
+              </div>
+            )}
+
             <p className="work-lightbox-caption">
               {isEn ? activeItem.labelEn : activeItem.labelFa}
             </p>

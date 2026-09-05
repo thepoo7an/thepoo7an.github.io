@@ -1,6 +1,6 @@
 {
-  "name": "Pooyan Portfolio | تایپوگرافی و ادیت موزیک",
-  "description": "پورتفولیو پویان (@thepoo7an) - ادیتور ویدیو و طراح تایپوگرافی متحرک موسیقی و لیریک ویدیو",
+  "name": "تایپوگرافی لیریک و ادیت موزیک | THEPOO7AN",
+  "description": "سفارش تایپوگرافی لیریک موزیک، ادیت ویدیو با متن آهنگ و طراحی کاور موزیک — پویان کریمی (@thepoo7an).",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
