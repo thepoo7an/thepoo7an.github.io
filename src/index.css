@@ -1,42 +1,5 @@
 @import "tailwindcss";
 
-/* Typography Definition - Local Self-Hosted Fonts */
-@font-face {
-  font-family: 'Vazirmatn';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: local('Vazirmatn'), local('Vazirmatn-Regular'),
-       url('./assets/fonts/Vazirmatn-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Vazirmatn';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: local('Vazirmatn Bold'), local('Vazirmatn-Bold'),
-       url('./assets/fonts/Vazirmatn-Bold.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Vazirmatn';
-  font-style: normal;
-  font-weight: 800;
-  font-display: swap;
-  src: local('Vazirmatn ExtraBold'), local('Vazirmatn-ExtraBold'),
-       url('./assets/fonts/Vazirmatn-ExtraBold.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Unbounded';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: local('Unbounded'),
-       url('./assets/fonts/unbounded-latin-wght-normal.woff2') format('woff2');
-}
-
 /* ============ Apple-product design system, RTL Persian ============ */
 :root {
   --fa: 'Vazirmatn', Tahoma, sans-serif;
@@ -61,6 +24,9 @@ html[data-theme="dark"] {
   --focus-ring-halo: rgba(255, 255, 255, 0.9);
   --chrome-text: linear-gradient(100deg, #86868b 0%, #f5f5f7 30%, #6e6e73 50%, #ffffff 70%, #86868b 100%);
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  --cm-stroke: rgba(255, 255, 255, 0.12);
+  --cm-sweep-color: rgba(255, 255, 255, 0.06);
+  --cm-dot-color: rgba(255, 255, 255, 0.45);
   color-scheme: dark;
 }
 
@@ -80,6 +46,9 @@ html[data-theme="light"] {
   --focus-ring-halo: rgba(0, 0, 0, 0.75);
   --chrome-text: linear-gradient(100deg, #6e6e73 0%, #1d1d1f 30%, #86868b 50%, #000000 70%, #6e6e73 100%);
   --shadow: 0 20px 50px rgba(0, 0, 0, 0.10);
+  --cm-stroke: rgba(0, 0, 0, 0.07);
+  --cm-sweep-color: rgba(0, 0, 0, 0.035);
+  --cm-dot-color: rgba(0, 0, 0, 0.25);
   color-scheme: light;
 }
 
@@ -143,6 +112,8 @@ button:focus-visible,
 .nav-cta:focus-visible,
 .tlink:focus-visible,
 #themeBtn:focus-visible,
+#motionBtn:focus-visible,
+#langBtn:focus-visible,
 #menuBtn:focus-visible,
 .rail-btn:focus-visible {
   outline: 2px solid var(--focus-ring);
@@ -255,6 +226,63 @@ html[data-theme="dark"] #themeBtn .sun {
 
 html[data-theme="light"] #themeBtn .moon {
   display: block;
+}
+
+#motionBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--txt);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+  padding: 0;
+}
+
+#motionBtn:hover {
+  background: rgba(128, 128, 140, 0.2);
+}
+
+#motionBtn svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--txt);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#motionBtn.motion-disabled {
+  opacity: 0.65;
+}
+
+#langBtn,
+.lang-toggle-btn {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--txt);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+#langBtn:hover,
+.lang-toggle-btn:hover {
+  background: rgba(128, 128, 140, 0.2);
+  border-color: var(--txt);
 }
 
 .nav-cta {
@@ -2410,7 +2438,7 @@ footer {
 }
 
 /* ==========================================================================
-   Ambient Kinetic Chrome Mesh & Subtle Analog Film Grain
+   Ambient Kinetic Chrome Mesh, Studio Spotlight & Subtle Analog Film Grain
    Ultra-lightweight, 0KB payload, 60fps GPU compositor transforms
    ========================================================================== */
 .ambient-bg {
@@ -2427,76 +2455,148 @@ footer {
   transform: translateZ(0);
 }
 
+/* Top Studio Spotlight: direct atmospheric radiance behind hero and brand */
+.ambient-spotlight {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1280px, 100vw);
+  height: min(720px, 85vh);
+  background: var(--ambient-spotlight, radial-gradient(ellipse 85% 65% at 50% -5%, rgba(255, 255, 255, 0.20) 0%, rgba(210, 220, 235, 0.10) 32%, rgba(140, 150, 175, 0.03) 58%, transparent 80%));
+  filter: blur(40px);
+  -webkit-filter: blur(40px);
+  pointer-events: none;
+  opacity: 0.95;
+  transition: background 0.8s ease, opacity 0.8s ease;
+}
+
+/* Interactive Liquid Chrome Touch Glow (Subtle Specular Sheen, No Hard Borders or Icons) */
+.ambient-touch-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 280px;
+  margin-top: -140px;
+  margin-left: -140px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle 140px at center, rgba(255, 255, 255, 0.16) 0%, rgba(220, 230, 245, 0.07) 40%, transparent 72%);
+  filter: blur(36px);
+  -webkit-filter: blur(36px);
+  opacity: var(--touch-opacity, 0);
+  transform: translate3d(var(--touch-x, -500px), var(--touch-y, -500px), 0);
+  will-change: transform, opacity;
+  transition: opacity 0.35s ease-out;
+}
+
+html[data-theme="light"] .ambient-touch-glow {
+  background: radial-gradient(circle 140px at center, rgba(160, 175, 205, 0.22) 0%, rgba(200, 215, 235, 0.08) 45%, transparent 72%);
+}
+
 .ambient-mesh {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  transform: translate3d(calc(var(--tilt-x, 0) * 26px), calc(var(--tilt-y, 0) * 26px), 0);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.35, 1);
+  will-change: transform;
 }
 
 .ambient-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(55px);
-  -webkit-filter: blur(55px);
-  opacity: 0.88;
-  will-change: transform;
+  filter: blur(52px);
+  -webkit-filter: blur(52px);
+  opacity: 0.90;
+  will-change: transform, border-radius;
   transform: translate3d(0, 0, 0);
   pointer-events: none;
 }
 
 @media (min-width: 768px) {
   .ambient-orb {
-    filter: blur(95px);
-    -webkit-filter: blur(95px);
+    filter: blur(76px);
+    -webkit-filter: blur(76px);
   }
 }
 
-/* Orb 1: Upper Left Hero specular sheen (Silver / Chrome) */
+/* Orb 1: Upper Hero Specular Platinum/Chrome Sheen - Floating */
 .ambient-orb-1 {
-  width: min(650px, 85vw);
-  height: min(650px, 85vw);
-  top: -12%;
-  left: -10%;
-  background: var(--ambient-orb-1, radial-gradient(circle, rgba(245, 245, 247, 0.075) 0%, rgba(180, 185, 195, 0.025) 45%, transparent 70%));
+  width: min(680px, 85vw);
+  height: min(680px, 85vw);
+  top: -4%;
+  left: 2%;
+  background: var(--ambient-orb-1, radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(215, 225, 240, 0.12) 36%, rgba(130, 140, 160, 0.03) 58%, transparent 72%));
   transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
-  animation: ambient-drift-1 26s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
+  animation: ambient-float-1 15s ease-in-out infinite;
 }
 
-/* Orb 2: Middle-Right subtle graphite / chrome smoke */
+/* Orb 2: Middle-Right Liquid Silver Sheen - Floating */
 .ambient-orb-2 {
-  width: min(720px, 90vw);
-  height: min(720px, 90vw);
-  top: 32%;
-  right: -14%;
-  background: var(--ambient-orb-2, radial-gradient(circle, rgba(160, 165, 180, 0.058) 0%, rgba(110, 115, 125, 0.02) 48%, transparent 72%));
+  width: min(760px, 92vw);
+  height: min(760px, 92vw);
+  top: 22%;
+  right: -4%;
+  background: var(--ambient-orb-2, radial-gradient(circle, rgba(230, 238, 252, 0.22) 0%, rgba(185, 195, 212, 0.09) 40%, rgba(100, 110, 130, 0.02) 62%, transparent 75%));
   transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
-  animation: ambient-drift-2 32s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
+  animation: ambient-float-2 19s ease-in-out infinite;
 }
 
-/* Orb 3: Bottom Left studio electric steel / cold cyan resonance */
+/* Orb 3: Lower-Left Gunmetal Titanium / Cold Metallic - Floating */
 .ambient-orb-3 {
-  width: min(600px, 80vw);
-  height: min(600px, 80vw);
-  bottom: -10%;
+  width: min(660px, 82vw);
+  height: min(660px, 82vw);
+  bottom: 6%;
   left: 8%;
-  background: var(--ambient-orb-3, radial-gradient(circle, rgba(41, 151, 255, 0.052) 0%, rgba(20, 60, 120, 0.015) 45%, transparent 70%));
+  background: var(--ambient-orb-3, radial-gradient(circle, rgba(200, 210, 228, 0.18) 0%, rgba(150, 160, 180, 0.07) 42%, rgba(80, 90, 105, 0.02) 65%, transparent 75%));
   transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
-  animation: ambient-drift-3 29s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
+  animation: ambient-float-3 17s ease-in-out infinite;
 }
 
-/* Default CSS fallback variables for themes */
+/* Orb 4: Center-Right Subtle Ambient Mercury Pool - Floating */
+.ambient-orb-4 {
+  width: min(580px, 75vw);
+  height: min(580px, 75vw);
+  top: 55%;
+  right: 12%;
+  background: var(--ambient-orb-4, radial-gradient(circle, rgba(240, 245, 255, 0.18) 0%, rgba(180, 190, 210, 0.08) 38%, rgba(90, 100, 120, 0.02) 60%, transparent 72%));
+  transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+  animation: ambient-float-4 22s ease-in-out infinite;
+}
+
+/* Default CSS fallback variables for themes: Black, Silver & Metallic (مشکی نقره‌ای متالیک) */
 html[data-theme="dark"] {
-  --ambient-orb-1: radial-gradient(circle, rgba(245, 245, 247, 0.075) 0%, rgba(180, 185, 195, 0.025) 45%, transparent 70%);
-  --ambient-orb-2: radial-gradient(circle, rgba(160, 165, 180, 0.058) 0%, rgba(110, 115, 125, 0.02) 48%, transparent 72%);
-  --ambient-orb-3: radial-gradient(circle, rgba(41, 151, 255, 0.052) 0%, rgba(20, 60, 120, 0.015) 45%, transparent 70%);
+  --ambient-spotlight: radial-gradient(ellipse 85% 65% at 50% -5%, rgba(255, 255, 255, 0.20) 0%, rgba(210, 220, 235, 0.10) 32%, rgba(140, 150, 175, 0.03) 58%, transparent 80%);
+  --ambient-orb-1: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(215, 225, 240, 0.12) 36%, rgba(130, 140, 160, 0.03) 58%, transparent 72%);
+  --ambient-orb-2: radial-gradient(circle, rgba(230, 238, 252, 0.22) 0%, rgba(185, 195, 212, 0.09) 40%, rgba(100, 110, 130, 0.02) 62%, transparent 75%);
+  --ambient-orb-3: radial-gradient(circle, rgba(200, 210, 228, 0.18) 0%, rgba(150, 160, 180, 0.07) 42%, rgba(80, 90, 105, 0.02) 65%, transparent 75%);
+  --ambient-orb-4: radial-gradient(circle, rgba(240, 245, 255, 0.18) 0%, rgba(180, 190, 210, 0.08) 38%, rgba(90, 100, 120, 0.02) 60%, transparent 72%);
 }
 
 html[data-theme="light"] {
-  --ambient-orb-1: radial-gradient(circle, rgba(0, 0, 0, 0.035) 0%, rgba(120, 125, 140, 0.012) 45%, transparent 70%);
-  --ambient-orb-2: radial-gradient(circle, rgba(185, 195, 210, 0.45) 0%, rgba(220, 225, 235, 0.15) 50%, transparent 72%);
-  --ambient-orb-3: radial-gradient(circle, rgba(0, 113, 227, 0.038) 0%, rgba(41, 151, 255, 0.01) 45%, transparent 70%);
+  --ambient-spotlight: radial-gradient(ellipse 85% 60% at 50% 0%, rgba(190, 205, 225, 0.38) 0%, rgba(220, 230, 242, 0.18) 45%, transparent 78%);
+  --ambient-orb-1: radial-gradient(circle, rgba(180, 195, 215, 0.38) 0%, rgba(215, 225, 238, 0.18) 42%, transparent 72%);
+  --ambient-orb-2: radial-gradient(circle, rgba(165, 180, 205, 0.32) 0%, rgba(210, 220, 235, 0.14) 45%, transparent 72%);
+  --ambient-orb-3: radial-gradient(circle, rgba(175, 190, 210, 0.30) 0%, rgba(215, 225, 240, 0.12) 48%, transparent 75%);
+  --ambient-orb-4: radial-gradient(circle, rgba(170, 185, 210, 0.28) 0%, rgba(210, 225, 240, 0.12) 44%, transparent 72%);
+}
+
+/* Cinematic Vignette for Depth Framing */
+.ambient-vignette {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(ellipse 85% 75% at 50% 45%, transparent 45%, rgba(0, 0, 0, 0.52) 100%);
+}
+
+html[data-theme="light"] .ambient-vignette {
+  background: radial-gradient(ellipse 85% 75% at 50% 45%, transparent 55%, rgba(215, 222, 235, 0.32) 100%);
 }
 
 /* Analog Micro-Texture (Cinematic Grain) - pure SVG data URI, 0KB network payload */
@@ -2506,49 +2606,89 @@ html[data-theme="light"] {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.045;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
 }
 
 html[data-theme="light"] .ambient-grain {
-  opacity: 0.018;
+  opacity: 0.028;
 }
 
-/* Hardware-accelerated 3D Transform Keyframes (Zero CPU, GPU-only compositor) */
-@keyframes ambient-drift-1 {
+/* Organic Fluid Floating Keyframes (Continuous graceful drifting & breathing) */
+@keyframes ambient-float-1 {
   0% {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    border-radius: 50% 50% 50% 50%;
   }
-  50% {
-    transform: translate3d(6vw, 5vh, 0) scale(1.08);
+  33% {
+    transform: translate3d(6vw, 7vh, 0) scale(1.10) rotate(12deg);
+    border-radius: 46% 54% 62% 38% / 50% 48% 52% 50%;
+  }
+  66% {
+    transform: translate3d(-4vw, 12vh, 0) scale(0.95) rotate(-8deg);
+    border-radius: 54% 46% 40% 60% / 52% 48% 52% 48%;
   }
   100% {
-    transform: translate3d(3vw, 10vh, 0) scale(0.96);
-  }
-}
-
-@keyframes ambient-drift-2 {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(-5vw, -6vh, 0) scale(1.09);
-  }
-  100% {
-    transform: translate3d(-8vw, 4vh, 0) scale(0.95);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    border-radius: 50% 50% 50% 50%;
   }
 }
 
-@keyframes ambient-drift-3 {
+@keyframes ambient-float-2 {
   0% {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    border-radius: 50% 50% 50% 50%;
   }
-  50% {
-    transform: translate3d(5vw, -5vh, 0) scale(1.05);
+  33% {
+    transform: translate3d(-7vw, -8vh, 0) scale(1.12) rotate(-14deg);
+    border-radius: 52% 48% 42% 58% / 46% 54% 46% 54%;
+  }
+  66% {
+    transform: translate3d(-10vw, 6vh, 0) scale(0.94) rotate(10deg);
+    border-radius: 44% 56% 60% 40% / 54% 46% 54% 46%;
   }
   100% {
-    transform: translate3d(-3vw, -8vh, 0) scale(0.98);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    border-radius: 50% 50% 50% 50%;
+  }
+}
+
+@keyframes ambient-float-3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    border-radius: 50% 50% 50% 50%;
+  }
+  33% {
+    transform: translate3d(7vw, -6vh, 0) scale(1.08) rotate(10deg);
+    border-radius: 48% 52% 56% 44% / 52% 48% 52% 48%;
+  }
+  66% {
+    transform: translate3d(-5vw, -10vh, 0) scale(0.96) rotate(-12deg);
+    border-radius: 56% 44% 38% 62% / 46% 54% 46% 54%;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    border-radius: 50% 50% 50% 50%;
+  }
+}
+
+@keyframes ambient-float-4 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    border-radius: 50% 50% 50% 50%;
+  }
+  40% {
+    transform: translate3d(-6vw, 8vh, 0) scale(1.14) rotate(-16deg);
+    border-radius: 42% 58% 64% 36% / 48% 52% 48% 52%;
+  }
+  75% {
+    transform: translate3d(5vw, -5vh, 0) scale(0.92) rotate(14deg);
+    border-radius: 58% 42% 44% 56% / 54% 46% 54% 46%;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    border-radius: 50% 50% 50% 50%;
   }
 }
 
@@ -2558,6 +2698,204 @@ html[data-theme="light"] .ambient-grain {
     animation: none !important;
   }
 }
+
+/* ==========================================================================
+   Chrome Meridian — Minimalist Cinematic Atmospheric Rings
+   ========================================================================== */
+.chrome-meridian {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  contain: strict;
+  transform: translateZ(0);
+}
+
+.cm-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(860px, 86vw);
+  height: min(860px, 86vw);
+  max-width: 920px;
+  max-height: 920px;
+  pointer-events: none;
+}
+
+/* Three concentric hairline circles (silver/chrome, very low opacity) */
+.cm-ring {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: 50%;
+  border: 1px solid var(--cm-stroke, rgba(255, 255, 255, 0.12));
+  box-sizing: border-box;
+  will-change: transform;
+}
+
+/* Outer ring: 80s clockwise */
+.cm-ring-outer {
+  width: 100%;
+  height: 100%;
+  animation: cm-spin-cw 80s linear infinite;
+}
+
+/* Middle ring: 110s counter-clockwise */
+.cm-ring-middle {
+  width: 70%;
+  height: 70%;
+  animation: cm-spin-ccw 110s linear infinite;
+}
+
+/* Inner ring: 80s clockwise */
+.cm-ring-inner {
+  width: 42%;
+  height: 42%;
+  animation: cm-spin-cw 80s linear infinite;
+}
+
+/* Two tiny dots orbiting on the middle ring (beat-like, not playful) */
+.cm-dot {
+  position: absolute;
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background-color: var(--cm-dot-color, rgba(255, 255, 255, 0.45));
+  box-shadow: 0 0 6px var(--cm-dot-color, rgba(255, 255, 255, 0.45));
+}
+
+.cm-dot-1 {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cm-dot-2 {
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+/* One faint conical/light sweep rotating even slower (chrome highlight) */
+.cm-sweep-layer {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 280deg,
+    var(--cm-sweep-color, rgba(255, 255, 255, 0.06)) 340deg,
+    transparent 360deg
+  );
+  animation: cm-sweep 24s linear infinite;
+  will-change: transform;
+}
+
+/* Soft radial vignette so edges fade softly into --bg */
+.cm-vignette {
+  position: absolute;
+  inset: -15%;
+  background: radial-gradient(circle at center, transparent 38%, var(--bg) 82%);
+  pointer-events: none;
+}
+
+/* Mobile: fewer rings (2), slower, smaller (max 70vw) */
+@media (max-width: 767px) {
+  .cm-stage {
+    width: min(440px, 70vw);
+    height: min(440px, 70vw);
+  }
+
+  .cm-ring-outer {
+    display: none;
+  }
+
+  .cm-ring-middle {
+    width: 100%;
+    height: 100%;
+    animation-duration: 140s;
+  }
+
+  .cm-ring-inner {
+    width: 55%;
+    height: 55%;
+    animation-duration: 100s;
+  }
+
+  .cm-sweep-layer {
+    animation-duration: 32s;
+  }
+}
+
+/* Page Visibility API: pause when document.hidden to save battery */
+.cm-paused .cm-ring,
+.cm-paused .cm-sweep-layer {
+  animation-play-state: paused !important;
+}
+
+/* Accessibility: Show static rings only when prefers-reduced-motion is active */
+@media (prefers-reduced-motion: reduce) {
+  .cm-ring,
+  .cm-sweep-layer {
+    animation: none !important;
+  }
+}
+
+/* CSS Keyframes (GPU transform only) */
+@keyframes cm-spin-cw {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cm-spin-ccw {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes cm-sweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============ Manual No-Motion Class Override on Document Root ============ */
+html.no-motion .cm-ring,
+html.no-motion .cm-sweep-layer,
+html.no-motion .ambient-orb,
+html.no-motion .ambient-mesh {
+  animation: none !important;
+  transition: none !important;
+}
+
 
 
 

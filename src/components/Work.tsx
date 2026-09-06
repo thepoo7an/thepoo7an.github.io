@@ -20,14 +20,12 @@ const WORK_ITEMS: WorkItem[] = [
     videoFallbacks: [
       './videos/portfolio/sample-1.mp4',
       './videos/portfolio/sample-lyric.mp4',
-      './images/portfolio/sample-1.mp4',
-      './sample-reel.mp4',
     ],
-    primarySrc: './images/portfolio/sample-1.png',
+    primarySrc: './images/portfolio/sample-1.webp',
     fallbacks: [
+      './images/portfolio/sample-1.png',
+      './images/portfolio/Screenshot_20260819-203518.webp',
       './images/portfolio/Screenshot_20260819-203518.png',
-      './Screenshot_20260819-203518.png',
-      './images/portfolio/work-cover.png',
     ],
     labelFa: 'پشیمون میشی و برمیگردی',
     labelEn: 'Lyric Typography Reel',
@@ -36,15 +34,13 @@ const WORK_ITEMS: WorkItem[] = [
     id: 'work-sample-2',
     videoSrc: './videos/portfolio/sample-2.mp4',
     videoFallbacks: [
-      './images/portfolio/sample-2.mp4',
       './videos/portfolio/sample-2.mp4',
-      './sample-2.mp4',
     ],
-    primarySrc: './images/portfolio/sample-2.png',
+    primarySrc: './images/portfolio/sample-2.webp',
     fallbacks: [
+      './images/portfolio/sample-2.png',
+      './images/portfolio/Screenshot_20260819-203436.webp',
       './images/portfolio/Screenshot_20260819-203436.png',
-      './Screenshot_20260819-203436.png',
-      './images/portfolio/work-visuals.png',
     ],
     labelFa: 'دورم کن — میراد',
     labelEn: 'Dooram Kon — Meyraad',
@@ -193,7 +189,7 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
           aria-hidden="true"
         >
           <Play className="w-3 h-3 fill-current" />
-          <span>{isEn ? 'Hover to play' : 'هاور برای پخش'}</span>
+          <span>{isEn ? 'Tap or hover to play' : 'لمس یا هاور برای پخش'}</span>
         </div>
 
         {/* Sound toggle button */}

@@ -53,23 +53,26 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
       {/* 9:16 Sample Reel Frame */}
       <div className="hero-frame-wrap rv d3">
         <div className="hero-reel-frame">
-          <img
-            id="heroImg"
-            ref={heroImgRef}
-            src="./images/portfolio/sample-1.png"
-            alt={isEn ? "Sample 9:16 Reels output" : "نمونه خروجی ریلز ۹:۱۶"}
-            width={360}
-            height={640}
-            fetchPriority="high"
-            decoding="async"
-            className="hero-reel-img"
-            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-              const target = e.currentTarget;
-              if (!target.src.endsWith('Screenshot_20260819-203518.png')) {
-                target.src = './images/portfolio/Screenshot_20260819-203518.png';
-              }
-            }}
-          />
+          <picture>
+            <source type="image/webp" srcSet="./images/portfolio/sample-1.webp" />
+            <img
+              id="heroImg"
+              ref={heroImgRef}
+              src="./images/portfolio/sample-1.png"
+              alt={isEn ? "Sample 9:16 Reels output" : "نمونه خروجی ریلز ۹:۱۶"}
+              width={360}
+              height={640}
+              fetchPriority="high"
+              decoding="async"
+              className="hero-reel-img"
+              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                const target = e.currentTarget;
+                if (!target.src.endsWith('Screenshot_20260819-203518.webp') && !target.src.endsWith('Screenshot_20260819-203518.png')) {
+                  target.src = './images/portfolio/Screenshot_20260819-203518.webp';
+                }
+              }}
+            />
+          </picture>
         </div>
         <p className="hero-frame-caption">
           {isEn ? "Sample 9:16 Reels output" : "نمونه خروجی ریلز ۹:۱۶"}

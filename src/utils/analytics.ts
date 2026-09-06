@@ -22,6 +22,10 @@ export const getMeasurementId = (): string => {
   if (typeof window !== 'undefined' && window.GA_MEASUREMENT_ID) {
     return window.GA_MEASUREMENT_ID.trim();
   }
+  if (typeof document !== 'undefined') {
+    const metaTag = document.querySelector('meta[name="ga-measurement-id"]')?.getAttribute('content')?.trim();
+    if (metaTag) return metaTag;
+  }
   return '';
 };
 

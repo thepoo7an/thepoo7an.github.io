@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ArrowRight, ArrowLeft, Send } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { trackContactClick } from '../utils/analytics';
 
@@ -29,9 +30,11 @@ export const StickyMobileCta: React.FC = () => {
           onClick={() => trackContactClick('sticky_cta')}
         >
           <span>{isEn ? "Start Order" : "ثبت سفارش"}</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
+          {isEn ? (
+            <ArrowRight size={16} aria-hidden="true" />
+          ) : (
+            <ArrowLeft size={16} aria-hidden="true" />
+          )}
         </a>
         <a
           href="https://t.me/thepoo7an"
@@ -41,9 +44,7 @@ export const StickyMobileCta: React.FC = () => {
           aria-label={isEn ? "Telegram message" : "ارسال پیام در تلگرام"}
           onClick={() => trackContactClick('telegram')}
         >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4z" />
-          </svg>
+          <Send size={15} aria-hidden="true" />
           <span>{isEn ? "Telegram" : "تلگرام"}</span>
         </a>
       </div>

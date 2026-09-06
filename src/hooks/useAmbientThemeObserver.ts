@@ -46,9 +46,11 @@ function parseColorToRgb(colorStr: string): RgbColor | null {
 }
 
 export interface OrbGradients {
+  spotlight: string;
   orb1: string;
   orb2: string;
   orb3: string;
+  orb4: string;
 }
 
 export interface UseAmbientThemeObserverResult {
@@ -73,9 +75,11 @@ export function useAmbientThemeObserver(): UseAmbientThemeObserverResult {
   });
   const [accentColor, setAccentColor] = useState<string>('#2997ff');
   const [orbGradients, setOrbGradients] = useState<OrbGradients>({
+    spotlight: '',
     orb1: '',
     orb2: '',
     orb3: '',
+    orb4: '',
   });
 
   const syncThemeAndColors = useCallback(() => {
@@ -97,26 +101,37 @@ export function useAmbientThemeObserver(): UseAmbientThemeObserverResult {
       g: theme === 'light' ? 102 : 151,
       b: theme === 'light' ? 204 : 255,
     };
+    const { r, g, b } = parsedAccent;
 
     const isLight = theme === 'light';
 
-    // Orb 1: Specular metallic chrome / silver sheen
+    // Pure Metallic, Liquid Silver & Platinum Chrome Palette (مشکی نقره‌ای متالیک)
+    // Top Studio Spotlight Aura: focused behind the hero headline and brand navigation
+    const spotlight = isLight
+      ? 'radial-gradient(ellipse 85% 60% at 50% 0%, rgba(190, 205, 225, 0.38) 0%, rgba(220, 230, 242, 0.18) 45%, transparent 78%)'
+      : 'radial-gradient(ellipse 85% 65% at 50% -5%, rgba(255, 255, 255, 0.20) 0%, rgba(210, 220, 235, 0.10) 32%, rgba(140, 150, 175, 0.03) 58%, transparent 80%)';
+
+    // Orb 1: Specular metallic chrome / platinum sheen (Upper Hero)
     const orb1 = isLight
-      ? 'radial-gradient(circle, rgba(0, 0, 0, 0.035) 0%, rgba(120, 125, 140, 0.012) 45%, transparent 70%)'
-      : 'radial-gradient(circle, rgba(245, 245, 247, 0.075) 0%, rgba(180, 185, 195, 0.025) 45%, transparent 70%)';
+      ? 'radial-gradient(circle, rgba(180, 195, 215, 0.38) 0%, rgba(215, 225, 238, 0.18) 42%, transparent 72%)'
+      : 'radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(215, 225, 240, 0.12) 36%, rgba(130, 140, 160, 0.03) 58%, transparent 72%)';
 
-    // Orb 2: Graphite / metallic smoke
+    // Orb 2: Liquid metallic silver sheen (Middle Center)
     const orb2 = isLight
-      ? 'radial-gradient(circle, rgba(185, 195, 210, 0.45) 0%, rgba(220, 225, 235, 0.15) 50%, transparent 72%)'
-      : 'radial-gradient(circle, rgba(160, 165, 180, 0.058) 0%, rgba(110, 115, 125, 0.02) 48%, transparent 72%)';
+      ? 'radial-gradient(circle, rgba(165, 180, 205, 0.32) 0%, rgba(210, 220, 235, 0.14) 45%, transparent 72%)'
+      : 'radial-gradient(circle, rgba(230, 238, 252, 0.22) 0%, rgba(185, 195, 212, 0.09) 40%, rgba(100, 110, 130, 0.02) 62%, transparent 75%)';
 
-    // Orb 3: Dynamic chromatic resonance orb adapting to current or future theme accents
-    const { r, g, b } = parsedAccent;
+    // Orb 3: Gunmetal titanium / cold metallic resonance (Lower Left)
     const orb3 = isLight
-      ? `radial-gradient(circle, rgba(${r}, ${g}, ${b}, 0.042) 0%, rgba(${r}, ${g}, ${b}, 0.012) 45%, transparent 70%)`
-      : `radial-gradient(circle, rgba(${r}, ${g}, ${b}, 0.062) 0%, rgba(${Math.round(r * 0.5)}, ${Math.round(g * 0.5)}, ${Math.round(b * 0.7)}, 0.018) 45%, transparent 70%)`;
+      ? 'radial-gradient(circle, rgba(175, 190, 210, 0.30) 0%, rgba(215, 225, 240, 0.12) 48%, transparent 75%)'
+      : 'radial-gradient(circle, rgba(200, 210, 228, 0.18) 0%, rgba(150, 160, 180, 0.07) 42%, rgba(80, 90, 105, 0.02) 65%, transparent 75%)';
 
-    const nextGradients: OrbGradients = { orb1, orb2, orb3 };
+    // Orb 4: Subtle ambient floating mercury pool (Center Right)
+    const orb4 = isLight
+      ? 'radial-gradient(circle, rgba(170, 185, 210, 0.28) 0%, rgba(210, 225, 240, 0.12) 44%, transparent 72%)'
+      : 'radial-gradient(circle, rgba(240, 245, 255, 0.18) 0%, rgba(180, 190, 210, 0.08) 38%, rgba(90, 100, 120, 0.02) 60%, transparent 72%)';
+
+    const nextGradients: OrbGradients = { spotlight, orb1, orb2, orb3, orb4 };
 
     setCurrentTheme(theme);
     setAccentColor(rawAccent);
@@ -125,9 +140,11 @@ export function useAmbientThemeObserver(): UseAmbientThemeObserverResult {
     // Apply directly to the background container element if mounted
     const target = containerRef.current || rootEl;
     if (target) {
+      target.style.setProperty('--ambient-spotlight', spotlight);
       target.style.setProperty('--ambient-orb-1', orb1);
       target.style.setProperty('--ambient-orb-2', orb2);
       target.style.setProperty('--ambient-orb-3', orb3);
+      target.style.setProperty('--ambient-orb-4', orb4);
       target.style.setProperty('--ambient-accent-rgb', `${r}, ${g}, ${b}`);
     }
   }, []);

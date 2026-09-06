@@ -3,6 +3,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { ThemeToggle } from './components/ThemeToggle';
 import { LanguageToggle } from './components/LanguageToggle';
+import { MotionToggle } from './components/MotionToggle';
 import { Hero } from './components/Hero';
 import { Work } from './components/Work';
 import { Services } from './components/Services';
@@ -13,6 +14,7 @@ import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { StickyMobileCta } from './components/StickyMobileCta';
 import { AmbientBackground } from './components/AmbientBackground';
+import { ChromeMeridian } from './components/ChromeMeridian';
 import { initAnalytics, trackPageView } from './utils/analytics';
 
 export const AppContent: React.FC = () => {
@@ -40,10 +42,13 @@ export const AppContent: React.FC = () => {
       setIsScrolled(window.scrollY > 10);
       const reduce =
         typeof window !== 'undefined' &&
-        window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        (document.documentElement.classList.contains('no-motion') ||
+          (window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches));
       if (!reduce && heroImgRef.current && window.scrollY < window.innerHeight) {
         heroImgRef.current.style.transform = `translateY(${window.scrollY * 0.1}px)`;
+      } else if (heroImgRef.current) {
+        heroImgRef.current.style.transform = 'none';
       }
     };
 
@@ -55,8 +60,9 @@ export const AppContent: React.FC = () => {
   useEffect(() => {
     const reduce =
       typeof window !== 'undefined' &&
-      window.matchMedia &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      (document.documentElement.classList.contains('no-motion') ||
+        (window.matchMedia &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches));
     const rvEls = document.querySelectorAll('.rv');
 
     if (typeof IntersectionObserver !== 'undefined' && !reduce) {
@@ -117,6 +123,7 @@ export const AppContent: React.FC = () => {
           <div className="nav-act">
             <ThemeToggle />
             <LanguageToggle />
+            <MotionToggle />
             <a className="nav-cta" href="./order.html">
               {isEn ? 'Start Order' : 'ثبت سفارش'}
             </a>
@@ -172,6 +179,7 @@ export const App: React.FC = () => {
   return (
     <ThemeProvider>
       <LanguageProvider>
+        <ChromeMeridian />
         <AppContent />
       </LanguageProvider>
     </ThemeProvider>
