@@ -387,6 +387,46 @@ body.menu-open .sheet a:nth-child(5) {
   transition-delay: 0.32s;
 }
 
+.sheet-tools {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 300px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.menu-open .sheet-tools {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.38s;
+}
+
+.sheet-tools-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.sheet-tools #motionBtn {
+  width: 44px;
+  height: 44px;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .nav-act #motionBtn {
+    display: none;
+  }
+}
+
 /* ---------- Hero (Apple product hero) ---------- */
 .hero {
   padding: calc(var(--nav-h) + 64px) 22px 0;

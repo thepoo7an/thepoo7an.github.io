@@ -33,13 +33,11 @@ export const PRICING_PLANS: PricingPlan[] = [
     featuresFa: [
       'ویدیوی حدود ۱۵–۲۰ ثانیه با لیریک طراحی‌شده',
       'خروجی MP4 / 1080p / 30 FPS',
-      '۲ نمونه اجرا برای انتخاب',
       'تحویل در همان روز (ساعت کاری ۱۰ صبح تا ۱۱ شب)',
     ],
     featuresEn: [
       'Video ~15–20s with custom designed lyrics',
       'Output: MP4 / 1080p / 30 FPS',
-      '2 concept options to choose from',
       'Same-day delivery (10 AM to 11 PM working hours)',
     ],
     ctaFa: 'شروع سفارش',

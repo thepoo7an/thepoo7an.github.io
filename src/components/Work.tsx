@@ -16,16 +16,13 @@ interface WorkItem {
 const WORK_ITEMS: WorkItem[] = [
   {
     id: 'work-sample-1',
-    videoSrc: './videos/portfolio/sample-reel.mp4',
+    videoSrc: './videos/portfolio/sample-1.mp4',
     videoFallbacks: [
-      './videos/portfolio/sample-1.mp4',
-      './videos/portfolio/sample-lyric.mp4',
+      './videos/portfolio/sample-reel.webm',
     ],
     primarySrc: './images/portfolio/sample-1.webp',
     fallbacks: [
       './images/portfolio/sample-1.png',
-      './images/portfolio/Screenshot_20260819-203518.webp',
-      './images/portfolio/Screenshot_20260819-203518.png',
     ],
     labelFa: 'پشیمون میشی و برمیگردی',
     labelEn: 'Lyric Typography Reel',
@@ -33,14 +30,10 @@ const WORK_ITEMS: WorkItem[] = [
   {
     id: 'work-sample-2',
     videoSrc: './videos/portfolio/sample-2.mp4',
-    videoFallbacks: [
-      './videos/portfolio/sample-2.mp4',
-    ],
+    videoFallbacks: [],
     primarySrc: './images/portfolio/sample-2.webp',
     fallbacks: [
       './images/portfolio/sample-2.png',
-      './images/portfolio/Screenshot_20260819-203436.webp',
-      './images/portfolio/Screenshot_20260819-203436.png',
     ],
     labelFa: 'دورم کن — میراد',
     labelEn: 'Dooram Kon — Meyraad',
@@ -253,11 +246,12 @@ export const Work: React.FC = () => {
   const { isEn } = useLanguage();
   const [activeItem, setActiveItem] = useState<WorkItem | null>(null);
   const lightboxVideoRef = useRef<HTMLVideoElement>(null);
-  const [lightboxPlaying, setLightboxPlaying] = useState(true);
-  const [lightboxMuted, setLightboxMuted] = useState(false);
+  const [lightboxPlaying, setLightboxPlaying] = useState(false);
+  const [lightboxMuted, setLightboxMuted] = useState(true);
 
   const closeModal = useCallback(() => {
     setActiveItem(null);
+    setLightboxPlaying(false);
   }, []);
 
   useEffect(() => {
@@ -279,6 +273,26 @@ export const Work: React.FC = () => {
     };
   }, [activeItem, closeModal]);
 
+  // Attempt reliable muted autoplay when lightbox opens
+  useEffect(() => {
+    if (!activeItem || !activeItem.videoSrc) return;
+    const video = lightboxVideoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    setLightboxMuted(true);
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          setLightboxPlaying(true);
+        })
+        .catch(() => {
+          setLightboxPlaying(false);
+        });
+    }
+  }, [activeItem]);
+
   const toggleLightboxPlay = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!lightboxVideoRef.current) return;
@@ -286,8 +300,10 @@ export const Work: React.FC = () => {
       lightboxVideoRef.current.pause();
       setLightboxPlaying(false);
     } else {
-      lightboxVideoRef.current.play();
-      setLightboxPlaying(true);
+      lightboxVideoRef.current
+        .play()
+        .then(() => setLightboxPlaying(true))
+        .catch(() => setLightboxPlaying(false));
     }
   };
 
@@ -295,8 +311,8 @@ export const Work: React.FC = () => {
     e.stopPropagation();
     if (!lightboxVideoRef.current) return;
     const next = !lightboxMuted;
-    setLightboxMuted(next);
     lightboxVideoRef.current.muted = next;
+    setLightboxMuted(next);
   };
 
   return (
@@ -317,7 +333,7 @@ export const Work: React.FC = () => {
             onOpenLightbox={(selected) => {
               setActiveItem(selected);
               setLightboxPlaying(true);
-              setLightboxMuted(false);
+              setLightboxMuted(true);
               trackWorkPreview(selected.id, 'lightbox');
             }}
           />
@@ -356,6 +372,8 @@ export const Work: React.FC = () => {
                   autoPlay
                   loop
                   muted={lightboxMuted}
+                  onPlay={() => setLightboxPlaying(true)}
+                  onPause={() => setLightboxPlaying(false)}
                   className="work-lightbox-video"
                   onClick={toggleLightboxPlay}
                 />

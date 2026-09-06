@@ -13,7 +13,6 @@ import { FAQ } from './components/FAQ';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { StickyMobileCta } from './components/StickyMobileCta';
-import { AmbientBackground } from './components/AmbientBackground';
 import { ChromeMeridian } from './components/ChromeMeridian';
 import { initAnalytics, trackPageView } from './utils/analytics';
 
@@ -100,8 +99,6 @@ export const AppContent: React.FC = () => {
 
   return (
     <>
-      <AmbientBackground />
-
       {/* ===== Global Navigation ===== */}
       <nav
         className={`nav ${isScrolled ? 'scrolled' : ''}`}
@@ -157,6 +154,12 @@ export const AppContent: React.FC = () => {
         <a href="#contact" onClick={closeMenu}>
           {isEn ? 'Contact Me' : 'ارتباط با من'}
         </a>
+        <div className="sheet-tools">
+          <span className="sheet-tools-label">
+            {isEn ? 'Animations & Motion:' : 'انیمیشن و افکت‌های موشن:'}
+          </span>
+          <MotionToggle />
+        </div>
       </div>
 
       <main>

@@ -65,12 +65,6 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
               fetchPriority="high"
               decoding="async"
               className="hero-reel-img"
-              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                const target = e.currentTarget;
-                if (!target.src.endsWith('Screenshot_20260819-203518.webp') && !target.src.endsWith('Screenshot_20260819-203518.png')) {
-                  target.src = './images/portfolio/Screenshot_20260819-203518.webp';
-                }
-              }}
             />
           </picture>
         </div>
