@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Copy, Check } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { trackContactClick } from '../utils/analytics';
 
@@ -45,14 +46,14 @@ export const Contact: React.FC = () => {
           onClick={() => trackContactClick('instagram')}
         >
           {isEn ? "Direct on Instagram" : "دایرکت اینستاگرام"}
-          <svg viewBox="0 0 24 24" style={{ transform: isEn ? 'none' : 'scaleX(-1)' }}>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M5 12h14M13 6l6 6-6 6" />
           </svg>
         </a>
       </div>
 
       <div className="socials rv d3">
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+        <div className="soc-unit">
           <a
             className="soc"
             href="https://instagram.com/thepoo7an"
@@ -60,7 +61,7 @@ export const Contact: React.FC = () => {
             rel="noopener noreferrer"
             onClick={() => trackContactClick('instagram')}
           >
-            <svg viewBox="0 0 24 24">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
               <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
               <circle cx="12" cy="12" r="4" />
             </svg>
@@ -70,29 +71,23 @@ export const Contact: React.FC = () => {
             type="button"
             onClick={() => handleCopy('@thepoo7an', 'ig')}
             aria-label={isEn ? "Copy Instagram handle" : "کپی آیدی اینستاگرام"}
-            className="copy-btn"
-            style={{
-              background: 'var(--panel)',
-              border: '1px solid var(--line)',
-              borderRadius: '999px',
-              padding: '6px 12px',
-              fontSize: '12px',
-              color: copiedText === 'ig' ? '#10b981' : 'var(--muted)',
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px'
-            }}
+            className={`copy-btn ${copiedText === 'ig' ? 'copied' : ''}`}
           >
             {copiedText === 'ig' ? (
-              <span>✓ {isEn ? "Copied" : "کپی شد"}</span>
+              <>
+                <Check size={13} aria-hidden="true" />
+                <span>{isEn ? "Copied" : "کپی شد"}</span>
+              </>
             ) : (
-              <span>📋 {isEn ? "Copy" : "کپی آیدی"}</span>
+              <>
+                <Copy size={13} aria-hidden="true" />
+                <span>{isEn ? "Copy" : "کپی آیدی"}</span>
+              </>
             )}
           </button>
         </div>
 
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+        <div className="soc-unit">
           <a
             className="soc"
             href="https://t.me/thepoo7an"
@@ -100,7 +95,7 @@ export const Contact: React.FC = () => {
             rel="noopener noreferrer"
             onClick={() => trackContactClick('telegram')}
           >
-            <svg viewBox="0 0 24 24">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M21 4L3 11.5l5.5 2L10 19l3-3.5 5 3.5z" />
             </svg>
             {isEn ? "Telegram" : "تلگرام"} <span className="ltr">@thepoo7an</span>
@@ -109,24 +104,18 @@ export const Contact: React.FC = () => {
             type="button"
             onClick={() => handleCopy('@thepoo7an', 'tg')}
             aria-label={isEn ? "Copy Telegram handle" : "کپی آیدی تلگرام"}
-            className="copy-btn"
-            style={{
-              background: 'var(--panel)',
-              border: '1px solid var(--line)',
-              borderRadius: '999px',
-              padding: '6px 12px',
-              fontSize: '12px',
-              color: copiedText === 'tg' ? '#10b981' : 'var(--muted)',
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px'
-            }}
+            className={`copy-btn ${copiedText === 'tg' ? 'copied' : ''}`}
           >
             {copiedText === 'tg' ? (
-              <span>✓ {isEn ? "Copied" : "کپی شد"}</span>
+              <>
+                <Check size={13} aria-hidden="true" />
+                <span>{isEn ? "Copied" : "کپی شد"}</span>
+              </>
             ) : (
-              <span>📋 {isEn ? "Copy" : "کپی آیدی"}</span>
+              <>
+                <Copy size={13} aria-hidden="true" />
+                <span>{isEn ? "Copy" : "کپی آیدی"}</span>
+              </>
             )}
           </button>
         </div>

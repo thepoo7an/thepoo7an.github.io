@@ -13,18 +13,26 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
       <p className="eyebrow rv">
         <b>{isEn ? "✦ THEPOO7AN — Pooyan Karimi" : "✦ THEPOO7AN — پویان کریمی"}</b>
       </p>
-      <h1 className="rv d1">
-        {isEn ? (
-          <>
-            Lyric Typography & Video Editing for Music.<br />
-            <span className="chrome">Crafted for Reels & Social Releases.</span>
-          </>
-        ) : (
-          <>
-            تایپوگرافی لیریک و ادیت ویدیویی موزیک.<br />
-            <span className="chrome">ویژه انتشار در ریلز و شبکه‌های اجتماعی.</span>
-          </>
-        )}
+      <h1 className="title hero-title rv d1" id="heroAuroraTitle">
+        <span className="title-text">
+          {isEn ? (
+            <>
+              Lyric Typography & Video Editing for Music.<br />
+              <span className="chrome">Crafted for Reels & Social Releases.</span>
+            </>
+          ) : (
+            <>
+              تایپوگرافی لیریک و ادیت ویدیویی موزیک.<br />
+              <span className="chrome">ویژه انتشار در ریلز و شبکه‌های اجتماعی.</span>
+            </>
+          )}
+        </span>
+        <div className="aurora" id="heroAurora" aria-hidden="true">
+          <div className="clr" id="auroraBlob1"></div>
+          <div className="clr" id="auroraBlob2"></div>
+          <div className="clr" id="auroraBlob3"></div>
+          <div className="clr" id="auroraBlob4"></div>
+        </div>
       </h1>
       <p className="sub rv d2">
         {isEn
@@ -44,7 +52,7 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
         </a>
         <a className="pill-secondary" href="#work" id="heroSeeWorkBtn">
           {isEn ? "See work" : "دیدن نمونه"}
-          <svg viewBox="0 0 24 24" style={{ transform: isEn ? 'none' : 'scaleX(-1)' }} aria-hidden="true">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M5 12h14M13 6l6 6-6 6" />
           </svg>
         </a>

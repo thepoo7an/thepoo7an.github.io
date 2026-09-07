@@ -108,8 +108,11 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--link);outline-offse
 .brand{font-family:var(--en);font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
 .brand i{width:8px;height:8px;border-radius:50%;background:var(--chrome-text)}
 .nav-act{display:flex;align-items:center;gap:14px}
-.back-link{font-size:12.5px;font-weight:500;color:var(--link);display:inline-flex;align-items:center;gap:6px}
-.back-link svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.back-link{font-size:12.5px;font-weight:500;color:var(--link);display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:4px 0}
+.back-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+html[dir="rtl"] .back-link svg{transform:scaleX(-1)}
+.back-link:hover svg{transform:translateX(-3px)}
+html[dir="rtl"] .back-link:hover svg{transform:scaleX(-1) translateX(3px)}
 #themeBtn{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s}
 #themeBtn:hover{background:rgba(128,128,140,.2)}
 #themeBtn svg{width:16px;height:16px;stroke:var(--txt);fill:none;stroke-width:1.8;stroke-linecap:round}
@@ -179,6 +182,35 @@ html[data-theme="light"] .pill-ig:hover{border-color:rgba(0,0,0,.3)}
   .submit-actions{grid-template-columns:1fr}
 }
 
+/* ---------- Order FAQ ---------- */
+.order-faq-wrap{margin-top:36px}
+.order-faq-card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:clamp(24px,4.5vw,40px);position:relative;overflow:hidden;border:1px solid var(--line)}
+.order-faq-card::before{content:'';position:absolute;inset:0 0 auto 0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent)}
+.order-faq-head{margin-bottom:24px;text-align:start}
+.order-faq-eyebrow{font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.order-faq-eyebrow b{color:var(--link)}
+.order-faq-title{font-size:clamp(20px,3.2vw,26px);font-weight:800;letter-spacing:-.01em;margin-bottom:6px;color:var(--txt)}
+.order-faq-desc{font-size:13.5px;color:var(--muted);line-height:1.7}
+.order-faq-list{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.order-faq-item{background:var(--input-bg);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .25s ease,background .25s ease,box-shadow .25s ease}
+.order-faq-item:hover{border-color:rgba(255,255,255,.22)}
+html[data-theme="light"] .order-faq-item:hover{border-color:rgba(0,0,0,.2)}
+.order-faq-item.open{border-color:var(--link);background:linear-gradient(180deg,rgba(41,151,255,.04) 0%,var(--input-bg) 100%)}
+html[data-theme="light"] .order-faq-item.open{background:linear-gradient(180deg,rgba(0,102,204,.04) 0%,#ffffff 100%)}
+.order-faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 20px;background:none;border:none;font-family:inherit;font-size:15px;font-weight:700;color:var(--txt);text-align:start;cursor:pointer;min-height:50px;transition:color .2s ease;user-select:none}
+.order-faq-q:hover{color:var(--link)}
+.order-faq-q:focus-visible{outline:2px solid var(--link);outline-offset:-2px;border-radius:12px}
+.order-faq-icon{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--card);border:1px solid var(--line);flex-shrink:0;transition:transform .35s cubic-bezier(.16,1,.3,1),background .25s ease,border-color .25s ease}
+.order-faq-icon svg{width:13px;height:13px;stroke:var(--txt);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s ease}
+.order-faq-item.open .order-faq-icon{transform:rotate(180deg);background:var(--link);border-color:var(--link)}
+.order-faq-item.open .order-faq-icon svg{stroke:#ffffff}
+.order-faq-a-wrapper{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s cubic-bezier(.16,1,.3,1)}
+.order-faq-item.open .order-faq-a-wrapper{grid-template-rows:1fr}
+.order-faq-a-inner{overflow:hidden}
+.order-faq-a{padding:0 20px 20px 20px;color:var(--muted);font-size:14px;line-height:1.8;text-align:start;opacity:0;transform:translateY(-4px);transition:opacity .3s cubic-bezier(.16,1,.3,1) .05s,transform .3s cubic-bezier(.16,1,.3,1) .05s}
+.order-faq-item.open .order-faq-a{opacity:1;transform:translateY(0)}
+.order-faq-a p{margin:0}
+
 /* ---------- Toast ---------- */
 #toast{position:fixed;bottom:26px;right:50%;transform:translate(50%,20px);z-index:200;
   background:var(--card);color:var(--txt);border:1px solid var(--line);border-radius:999px;
@@ -231,8 +263,9 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
   <div class="nav-in">
     <a class="brand" href="./"><i aria-hidden="true"></i><span class="ltr">thepoo7an</span></a>
     <div class="nav-act">
-      <a class="back-link" href="./">بازگشت به صفحه اصلی
-        <svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      <a class="back-link" href="./" aria-label="بازگشت به صفحه اصلی">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        <span>بازگشت به سایت</span>
       </a>
       <button id="themeBtn" aria-label="تغییر حالت روشن/تاریک">
         <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4l1.4-1.4"/></svg>
@@ -340,6 +373,83 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
         </p>
       </div>
     </form>
+
+    <!-- Order FAQ Component -->
+    <section class="order-faq-wrap rv d2" id="orderFaq" aria-label="سؤالات متداول ثبت سفارش">
+      <div class="order-faq-card">
+        <div class="order-faq-head">
+          <p class="order-faq-eyebrow"><b>✦ راهنمای سریع</b> <span>— رفع ابهام پیش از سفارش</span></p>
+          <h2 class="order-faq-title">سؤالات متداول ثبت سفارش</h2>
+          <p class="order-faq-desc">پاسخ به سوالات کلیدی برای هماهنگی سریع‌تر، کیفیت بهتر و شروع بی‌دغدغه پروژه.</p>
+        </div>
+
+        <div class="order-faq-list" role="region" aria-label="فهرست سؤالات متداول">
+          <div class="order-faq-item open" id="faq-item-audio">
+            <button type="button" class="order-faq-q" id="faq-btn-audio" aria-expanded="true" aria-controls="faq-ans-audio">
+              <span>کیفیت فایل صوتی موردنیاز چقدر است؟</span>
+              <span class="order-faq-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div id="faq-ans-audio" role="region" aria-labelledby="faq-btn-audio" class="order-faq-a-wrapper">
+              <div class="order-faq-a-inner">
+                <div class="order-faq-a">
+                  <p>برای دستیابی به بالاترین وضوح و هماهنگی دقیق تصویر با بیت، ترجیحاً فایل نهایی یا مستر با فرمت WAV (۲۴ بیت یا ۱۶ بیت) یا فایل باکیفیت MP3 (320kbps) ارسال شود تا وکال، درامز و ترنزیشن‌ها با بالاترین دقت سینک شوند.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="order-faq-item" id="faq-item-delivery">
+            <button type="button" class="order-faq-q" id="faq-btn-delivery" aria-expanded="false" aria-controls="faq-ans-delivery">
+              <span>زمان تحویل پروژه چطور محاسبه می‌شود؟</span>
+              <span class="order-faq-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div id="faq-ans-delivery" role="region" aria-labelledby="faq-btn-delivery" class="order-faq-a-wrapper">
+              <div class="order-faq-a-inner">
+                <div class="order-faq-a">
+                  <p>محاسبه زمان تحویل از لحظه دریافت فایل صوتی، تأیید متن لیریک و مشخص شدن کانسپت بصری آغاز می‌شود. پروژه‌های تایپوگرافی معمولاً ۱ روز کاری (ساعات ۱۰ صبح تا ۱۱ شب) و پروژه‌های ادیت ویدیویی و تلفیقی بین ۲ تا ۳ روز کاری زمان می‌برند.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="order-faq-item" id="faq-item-concept">
+            <button type="button" class="order-faq-q" id="faq-btn-concept" aria-expanded="false" aria-controls="faq-ans-concept">
+              <span>اگر کانسپت یا سبک خاصی مد نظرم نباشد چطور؟</span>
+              <span class="order-faq-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div id="faq-ans-concept" role="region" aria-labelledby="faq-btn-concept" class="order-faq-a-wrapper">
+              <div class="order-faq-a-inner">
+                <div class="order-faq-a">
+                  <p>هیچ مشکلی وجود ندارد؛ بر اساس حس و حال موزیک، ریتم و ژانر اثر، استایل‌های بصری و پالت‌های رنگی مناسب به شما پیشنهاد داده می‌شود و پس از تأیید سلیقه شما، فرآیند تولید نهایی آغاز خواهد شد.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="order-faq-item" id="faq-item-revisions">
+            <button type="button" class="order-faq-q" id="faq-btn-revisions" aria-expanded="false" aria-controls="faq-ans-revisions">
+              <span>آیا امکان ویرایش و اصلاح بعد از تحویل وجود دارد؟</span>
+              <span class="order-faq-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div id="faq-ans-revisions" role="region" aria-labelledby="faq-btn-revisions" class="order-faq-a-wrapper">
+              <div class="order-faq-a-inner">
+                <div class="order-faq-a">
+                  <p>بله؛ پس از آماده‌سازی نسخه پیش‌نمایش اولیه، اصلاحات مربوط به تنظیم تایمینگ، تصحیح رنگ یا تغییرات جزئی مطابق بازخورد شما انجام می‌شود تا نتیجه نهایی کاملاً مطلوب باشد.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </main>
 
@@ -500,6 +610,27 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
   document.querySelectorAll('.field input, .field select, .field textarea').forEach(function(el){
     el.addEventListener('input', function(){ el.closest('.field').classList.remove('invalid'); });
     el.addEventListener('change', function(){ el.closest('.field').classList.remove('invalid'); });
+  });
+
+  /* Order FAQ Accordion */
+  var faqBtns = document.querySelectorAll('.order-faq-q');
+  faqBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var item = btn.closest('.order-faq-item');
+      if (!item) return;
+      var wasOpen = item.classList.contains('open');
+
+      document.querySelectorAll('.order-faq-item').forEach(function(other){
+        other.classList.remove('open');
+        var otherBtn = other.querySelector('.order-faq-q');
+        if (otherBtn) { otherBtn.setAttribute('aria-expanded', 'false'); }
+      });
+
+      if (!wasOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
   });
 
   /* GA4 Integration */

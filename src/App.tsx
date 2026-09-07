@@ -14,6 +14,7 @@ import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { StickyMobileCta } from './components/StickyMobileCta';
 import { ChromeMeridian } from './components/ChromeMeridian';
+import { TwoFacesNav } from './components/TwoFacesNav';
 import { initAnalytics, trackPageView } from './utils/analytics';
 
 export const AppContent: React.FC = () => {
@@ -110,13 +111,7 @@ export const AppContent: React.FC = () => {
             <i aria-hidden="true"></i>
             <span className="ltr">thepoo7an</span>
           </a>
-          <div className="nav-links">
-            <a href="#work">{isEn ? 'Work' : 'نمونه'}</a>
-            <a href="#services">{isEn ? 'Services' : 'خدمات'}</a>
-            <a href="#process">{isEn ? 'Process' : 'مراحل'}</a>
-            <a href="#pricing">{isEn ? 'Pricing' : 'تعرفه‌ها'}</a>
-            <a href="#contact">{isEn ? 'Contact' : 'ارتباط'}</a>
-          </div>
+          <TwoFacesNav />
           <div className="nav-act">
             <ThemeToggle />
             <LanguageToggle />

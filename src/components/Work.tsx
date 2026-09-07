@@ -18,6 +18,7 @@ const WORK_ITEMS: WorkItem[] = [
     id: 'work-sample-1',
     videoSrc: './videos/portfolio/sample-1.mp4',
     videoFallbacks: [
+      './videos/portfolio/sample-1.webm',
       './videos/portfolio/sample-reel.webm',
     ],
     primarySrc: './images/portfolio/sample-1.webp',
@@ -30,13 +31,28 @@ const WORK_ITEMS: WorkItem[] = [
   {
     id: 'work-sample-2',
     videoSrc: './videos/portfolio/sample-2.mp4',
-    videoFallbacks: [],
+    videoFallbacks: [
+      './videos/portfolio/sample-2.webm',
+    ],
     primarySrc: './images/portfolio/sample-2.webp',
     fallbacks: [
       './images/portfolio/sample-2.png',
     ],
     labelFa: 'دورم کن — میراد',
     labelEn: 'Dooram Kon — Meyraad',
+  },
+  {
+    id: 'work-sample-3',
+    videoSrc: './videos/portfolio/sample-3.mp4',
+    videoFallbacks: [
+      './videos/portfolio/sample-3.webm',
+    ],
+    primarySrc: './images/portfolio/sample-3.webp',
+    fallbacks: [
+      './images/portfolio/sample-3.png',
+    ],
+    labelFa: 'تایپوگرافی سه‌بعدی و موشن کروم',
+    labelEn: '3D Chrome & Kinetic Typography',
   },
 ];
 
@@ -112,6 +128,18 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
     }
   };
 
+  const handleMouseEnter = () => {
+    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      handlePlay();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      handlePause();
+    }
+  };
+
   return (
     <div className={`work-card rv ${idx === 0 ? '' : `d${idx}`}`}>
       <div
@@ -123,8 +151,8 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
             ? `${item.labelEn} - ${isPlaying ? 'Pause video' : 'Hover or tap to play'}`
             : `${item.labelFa} - ${isPlaying ? 'توقف پخش' : 'هاور یا لمس برای پخش ویدیو'}`
         }
-        onMouseEnter={handlePlay}
-        onMouseLeave={handlePause}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         onClick={() => {
           if (isPlaying) {
             handlePause();
