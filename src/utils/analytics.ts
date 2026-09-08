@@ -50,20 +50,20 @@ export const initAnalytics = (): void => {
     return;
   }
 
-  // Prevent duplicate script tags
+  // Prevent duplicate script tags and redundant initial config
   const existingScript = document.querySelector(`script[src*="googletagmanager.com/gtag/js"]`);
   if (!existingScript) {
     const script = document.createElement('script');
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`;
     document.head.appendChild(script);
-  }
 
-  window.gtag('js', new Date());
-  window.gtag('config', measurementId, {
-    send_page_view: true,
-    anonymize_ip: true,
-  });
+    window.gtag('js', new Date());
+    window.gtag('config', measurementId, {
+      send_page_view: true,
+      anonymize_ip: true,
+    });
+  }
 
   isInitialized = true;
 };
