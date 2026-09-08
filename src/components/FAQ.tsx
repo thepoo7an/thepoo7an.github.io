@@ -21,8 +21,8 @@ export const FAQS: FAQItem[] = [
     id: 'faq-2',
     qFa: 'تحویل چند روز طول می‌کشد؟',
     qEn: 'How many days does delivery take?',
-    aFa: 'پروژه‌های تایپوگرافی لیریک معمولاً در همان روز و در ساعت کاری ۱۰ صبح تا ۱۱ شب تحویل می‌شوند. پروژه‌های سنگین‌تر بین ۲ تا ۳ روز.',
-    aEn: 'Lyric typography projects are usually delivered the same day during working hours (10 AM to 11 PM). Heavier projects take between 2 to 3 days.',
+    aFa: 'پروژه‌های تایپوگرافی لیریک معمولاً همان روز (یا حداکثر ۱ روز کاری) در ساعت کاری ۱۰ صبح تا ۱۱ شب تحویل می‌شوند. پروژه‌های سنگین‌تر و ادیت ویدیو بین ۲ تا ۳ روز کاری.',
+    aEn: 'Lyric typography projects are usually delivered the same day (or up to 1 business day) during working hours (10 AM to 11 PM). Heavier video editing projects take between 2 to 3 business days.',
   },
   {
     id: 'faq-3',

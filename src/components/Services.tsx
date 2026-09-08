@@ -21,8 +21,8 @@ export const SERVICES: ServiceItem[] = [
   {
     id: 'lyric-typography',
     planParam: 'base',
-    badgeFa: 'خدمت اصلی • تحویل ۱ روزه',
-    badgeEn: 'Core Service • 1-Day Delivery',
+    badgeFa: 'خدمت اصلی • تحویل معمولاً همان روز',
+    badgeEn: 'Core Service • Same-Day / 1-Day Turnaround',
     titleFa: 'تایپوگرافی لیریک موزیک',
     titleEn: 'Music Lyric Typography',
     descFa: 'طراحی و انیمیشن متن آهنگ روی ویدیو، هماهنگ با ریتم و ضرب‌های موزیک؛ مناسب برای ریلز و استوری اینستاگرام.',
@@ -31,13 +31,13 @@ export const SERVICES: ServiceItem[] = [
       'مدت‌زمان معمول: ۱۵ الی ۲۰ ثانیه',
       'خروجی: فرمت MP4 با کیفیت 1080p و ۳۰ فریم',
       'امکان ارسال متن توسط شما یا استخراج لیریک',
-      'زمان تحویل: ۱ روز کاری',
+      'زمان تحویل: معمولاً همان روز / حداکثر ۱ روز کاری',
     ],
     featuresEn: [
       'Typical duration: 15–20 seconds',
       'Output: MP4, 1080p, 30 FPS',
       'Client lyrics preferred (extraction also available)',
-      'Turnaround: 1 business day',
+      'Turnaround: Usually same day / up to 1 business day',
     ],
     ctaFa: 'سفارش تایپوگرافی',
     ctaEn: 'Order Typography',
@@ -46,8 +46,8 @@ export const SERVICES: ServiceItem[] = [
   {
     id: 'video-editing-typography',
     planParam: 'pro',
-    badgeFa: 'تدوین + لیریک • ۲ تا ۳ روز',
-    badgeEn: 'Edit + Lyrics • 2–3 Days',
+    badgeFa: 'تدوین + لیریک • ۲ تا ۳ روز کاری',
+    badgeEn: 'Edit + Lyrics • 2–3 Business Days',
     titleFa: 'ادیت ویدیو + تایپوگرافی لیریک',
     titleEn: 'Video Editing + Lyric Typography',
     descFa: 'ترکیب تدوین ویدیویی متناسب با استایل موزیک به همراه تایپوگرافی متن آهنگ بر روی تصویر.',
@@ -71,8 +71,8 @@ export const SERVICES: ServiceItem[] = [
   {
     id: 'cover-design',
     planParam: 'cover',
-    badgeFa: 'کاور آرت',
-    badgeEn: 'Cover Artwork',
+    badgeFa: 'کاور آرت • بررسی کانسپت',
+    badgeEn: 'Cover Artwork • Custom Quote',
     titleFa: 'طراحی کاور موزیک',
     titleEn: 'Music Cover Design',
     descFa: 'طراحی کاور آرت اختصاصی برای انتشار سینگل‌ترک و آلبوم در پلتفرم‌های پخش موزیک و شبکه‌های اجتماعی.',
@@ -81,13 +81,13 @@ export const SERVICES: ServiceItem[] = [
       'طراحی کاور متناسب با کانسپت و سبک آهنگ',
       'کیفیت بالا و آماده انتشار در پلتفرم‌ها',
       'هماهنگی دقیق سلیقه بصری پیش از اجرا',
-      'تحویل فایل نهایی با رزولوشن استاندارد',
+      'قیمت: پس از بررسی کانسپت و سبک پروژه',
     ],
     featuresEn: [
       'Artwork tailored to track mood and concept',
       'High-resolution output for streaming platforms',
       'Visual direction finalized before production',
-      'Standard high-res release files',
+      'Pricing: Custom quote upon reviewing concept',
     ],
     ctaFa: 'سفارش طراحی کاور',
     ctaEn: 'Order Cover Art',
@@ -117,8 +117,38 @@ export const Services: React.FC = () => {
       <div className="svc-grid">
         {SERVICES.map((s) => (
           <article key={s.id} className={`svc-card rv ${s.delayClass}`.trim()}>
+            {/* Technical HUD Corners */}
+            <div className="hud-corners" aria-hidden="true">
+              <span className="corner top-left">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M1 8V1h7" />
+                </svg>
+              </span>
+              <span className="corner top-right">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M1 8V1h7" />
+                </svg>
+              </span>
+              <span className="corner bottom-left">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M1 8V1h7" />
+                </svg>
+              </span>
+              <span className="corner bottom-right">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M1 8V1h7" />
+                </svg>
+              </span>
+            </div>
+
             <div className="svc-card-top">
-              <span className="svc-badge">{isEn ? s.badgeEn : s.badgeFa}</span>
+              <span className="svc-badge">
+                <span className="badge-orbit-mini" aria-hidden="true">
+                  <span className="radar-circle"></span>
+                  <span className="radar-dot"></span>
+                </span>
+                {isEn ? s.badgeEn : s.badgeFa}
+              </span>
               <h3>{isEn ? s.titleEn : s.titleFa}</h3>
               <p>{isEn ? s.descEn : s.descFa}</p>
             </div>

@@ -1,11 +1,32 @@
 {
   "name": "thepoo7an-site",
-  "private": true,
   "version": "1.0.0",
+  "private": false,
+  "description": "Official website & portfolio for THEPOO7AN (Pooyan Karimi) — Music Lyric Typography, Video Editing & Creative Direction",
+  "homepage": "https://thepoo7an.github.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thepoo7an/thepoo7an.github.io.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thepoo7an/thepoo7an.github.io/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "lyric-typography",
+    "music-video",
+    "fa",
+    "persian",
+    "motion-graphics",
+    "video-editing",
+    "react",
+    "vite",
+    "tailwindcss"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.js",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit",

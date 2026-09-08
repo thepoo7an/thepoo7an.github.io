@@ -3,6 +3,16 @@ import { useLanguage } from '../context/LanguageContext';
 import { Play, Pause, Volume2, VolumeX, Maximize2, X } from 'lucide-react';
 import { trackWorkPreview } from '../utils/analytics';
 
+const MEDIA_BASE_URL = (import.meta.env.VITE_MEDIA_BASE_URL || '').replace(/\/$/, '');
+
+function resolveMediaUrl(path?: string): string | undefined {
+  if (!path) return undefined;
+  if (!MEDIA_BASE_URL || path.startsWith('http://') || path.startsWith('https://')) {
+    return path;
+  }
+  return path.replace(/^\.\//, `${MEDIA_BASE_URL}/`);
+}
+
 interface WorkItem {
   id: string;
   videoSrc?: string;
@@ -13,7 +23,7 @@ interface WorkItem {
   labelEn: string;
 }
 
-const WORK_ITEMS: WorkItem[] = [
+const RAW_WORK_ITEMS = [
   {
     id: 'work-sample-1',
     videoSrc: './videos/portfolio/sample-1.mp4',
@@ -56,16 +66,25 @@ const WORK_ITEMS: WorkItem[] = [
   },
 ];
 
+const WORK_ITEMS: WorkItem[] = RAW_WORK_ITEMS.map((item) => ({
+  ...item,
+  videoSrc: resolveMediaUrl(item.videoSrc),
+  videoFallbacks: item.videoFallbacks.map((src) => resolveMediaUrl(src)!),
+}));
+
 interface WorkCardProps {
   key?: React.Key;
   item: WorkItem;
   idx: number;
   isEn: boolean;
-  onOpenLightbox: (item: WorkItem) => void;
+  onOpenLightbox: (item: WorkItem, triggerEl: HTMLButtonElement | null) => void;
 }
 
 function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -73,7 +92,33 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
   const [videoAttempt, setVideoAttempt] = useState(0);
   const [videoFailed, setVideoFailed] = useState(false);
 
+  const [isNearViewport, setIsNearViewport] = useState(false);
+  const [hasInteractionIntent, setHasInteractionIntent] = useState(false);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') {
+      setIsNearViewport(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setIsNearViewport(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+    return () => observer.disconnect();
+  }, []);
+
+  const shouldLoadVideo = !videoFailed && Boolean(videoSource) && (isPlaying || hasInteractionIntent || isNearViewport);
+
   const handlePlay = useCallback(() => {
+    setHasInteractionIntent(true);
     if (!videoRef.current || videoFailed) return;
     videoRef.current.muted = isMuted;
     const promise = videoRef.current.play();
@@ -129,6 +174,7 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
   };
 
   const handleMouseEnter = () => {
+    setHasInteractionIntent(true);
     if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
       handlePlay();
     }
@@ -141,37 +187,10 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
   };
 
   return (
-    <div className={`work-card rv ${idx === 0 ? '' : `d${idx}`}`}>
-      <div
-        className="work-frame"
-        role="button"
-        tabIndex={0}
-        aria-label={
-          isEn
-            ? `${item.labelEn} - ${isPlaying ? 'Pause video' : 'Hover or tap to play'}`
-            : `${item.labelFa} - ${isPlaying ? 'توقف پخش' : 'هاور یا لمس برای پخش ویدیو'}`
-        }
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={() => {
-          if (isPlaying) {
-            handlePause();
-          } else {
-            handlePlay();
-          }
-        }}
-        onKeyDown={(e: React.KeyboardEvent) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            if (isPlaying) {
-              handlePause();
-            } else {
-              handlePlay();
-            }
-          }
-        }}
-      >
-        {!videoFailed && videoSource ? (
+    <div ref={cardRef} className={`work-card rv ${idx === 0 ? '' : `d${idx}`}`}>
+      <div className="work-frame">
+        {/* Media: Video or Static Poster */}
+        {shouldLoadVideo ? (
           <video
             ref={videoRef}
             src={videoSource}
@@ -179,7 +198,7 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
             playsInline
             loop
             muted={isMuted}
-            preload="metadata"
+            preload="none"
             className="work-video"
             onTimeUpdate={handleTimeUpdate}
             onError={handleVideoError}
@@ -204,16 +223,89 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
           />
         )}
 
+        {/* Semantic Non-Nested Primary Action Trigger */}
+        <button
+          ref={triggerRef}
+          type="button"
+          className="work-play-trigger"
+          aria-pressed={isPlaying}
+          aria-label={
+            isEn
+              ? `${item.labelEn} - ${isPlaying ? 'Pause video' : 'Hover or tap to play'}`
+              : `${item.labelFa} - ${isPlaying ? 'توقف پخش' : 'هاور یا لمس برای پخش ویدیو'}`
+          }
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={() => {
+            if (isPlaying) {
+              handlePause();
+            } else {
+              handlePlay();
+            }
+          }}
+          onKeyDown={(e: React.KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              if (isPlaying) {
+                handlePause();
+              } else {
+                handlePlay();
+              }
+            }
+          }}
+        />
+
+        {/* Technical HUD Corners */}
+        <div className="hud-corners" aria-hidden="true">
+          <span className="corner top-left">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M1 8V1h7" />
+            </svg>
+          </span>
+          <span className="corner top-right">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M1 8V1h7" />
+            </svg>
+          </span>
+          <span className="corner bottom-left">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M1 8V1h7" />
+            </svg>
+          </span>
+          <span className="corner bottom-right">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M1 8V1h7" />
+            </svg>
+          </span>
+        </div>
+
         {/* Hover / Tap to Play Badge */}
         <div
           className={`work-play-badge ${isPlaying ? 'playing' : ''}`}
           aria-hidden="true"
         >
+          <div className="badge-orbit" aria-hidden="true">
+            <span className="radar-circle"></span>
+            <span className="radar-orbit"></span>
+            <span className="radar-dot"></span>
+          </div>
           <Play className="w-3 h-3 fill-current" />
           <span>{isEn ? 'Tap or hover to play' : 'لمس یا هاور برای پخش'}</span>
         </div>
 
-        {/* Sound toggle button */}
+        {/* Live Playback Technical HUD Indicator */}
+        {isPlaying && (
+          <div className="work-live-hud" aria-hidden="true">
+            <div className="hud-radar">
+              <span className="hud-dot"></span>
+              <span className="hud-pulse"></span>
+              <span className="hud-orbit"></span>
+            </div>
+            <span className="hud-label">LIVE • 30FPS</span>
+          </div>
+        )}
+
+        {/* Sound toggle button (Sibling button, no nesting violation) */}
         {isPlaying && (
           <button
             type="button"
@@ -247,14 +339,14 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
           </div>
         )}
 
-        {/* Expand / Lightbox Button */}
+        {/* Expand / Lightbox Button (Sibling button, no nesting violation) */}
         <button
           type="button"
           className="work-zoom-btn"
           aria-label={isEn ? `Expand ${item.labelEn}` : `بزرگ‌نمایی ${item.labelFa}`}
           onClick={(e: React.MouseEvent) => {
             e.stopPropagation();
-            onOpenLightbox(item);
+            onOpenLightbox(item, triggerRef.current);
           }}
         >
           <Maximize2 className="w-4 h-4" />
@@ -268,11 +360,12 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
       </div>
     </div>
   );
-};
+}
 
 export const Work: React.FC = () => {
   const { isEn } = useLanguage();
   const [activeItem, setActiveItem] = useState<WorkItem | null>(null);
+  const lastActiveTriggerRef = useRef<HTMLButtonElement | null>(null);
   const lightboxVideoRef = useRef<HTMLVideoElement>(null);
   const [lightboxPlaying, setLightboxPlaying] = useState(false);
   const [lightboxMuted, setLightboxMuted] = useState(true);
@@ -280,6 +373,10 @@ export const Work: React.FC = () => {
   const closeModal = useCallback(() => {
     setActiveItem(null);
     setLightboxPlaying(false);
+    // Return focus to the originating card trigger button
+    if (lastActiveTriggerRef.current) {
+      lastActiveTriggerRef.current.focus();
+    }
   }, []);
 
   useEffect(() => {
@@ -358,7 +455,8 @@ export const Work: React.FC = () => {
             item={item}
             idx={idx}
             isEn={isEn}
-            onOpenLightbox={(selected) => {
+            onOpenLightbox={(selected, triggerEl) => {
+              lastActiveTriggerRef.current = triggerEl;
               setActiveItem(selected);
               setLightboxPlaying(true);
               setLightboxMuted(true);

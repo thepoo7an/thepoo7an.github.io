@@ -118,6 +118,11 @@ declare module 'react-dom/client' {
   }
 
   export function createRoot(container: Element | DocumentFragment): Root;
+  export function hydrateRoot(container: Element | Document, initialChildren: React.ReactNode): Root;
+}
+
+declare module 'react-dom/server' {
+  export function renderToString(element: React.ReactNode): string;
 }
 
 declare module 'react/jsx-runtime' {

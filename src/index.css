@@ -15,6 +15,7 @@
   --blur: 1rem;
   --fs: clamp(2.2rem, 7vw, 5.2rem);
   --ls: clamp(-1.75px, -0.25vw, -3.5px);
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
 }
 
 html[data-theme="dark"] {
@@ -1051,9 +1052,27 @@ html[data-theme="light"] .hero-reel-frame {
   box-shadow: var(--shadow);
   transition: transform 0.3s ease, border-color 0.3s ease;
   position: relative;
-  cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
+}
+
+.work-play-trigger {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  z-index: 2;
+  border-radius: 20px;
+}
+
+.work-play-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 
 .work-card:hover .work-frame {
@@ -1063,11 +1082,6 @@ html[data-theme="light"] .hero-reel-frame {
 
 html[data-theme="light"] .work-card:hover .work-frame {
   border-color: rgba(0, 0, 0, 0.22);
-}
-
-.work-frame:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
 }
 
 .work-video {
@@ -1214,6 +1228,302 @@ html[dir="rtl"] .work-zoom-btn {
 .work-zoom-btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* ---------- Technical Monochrome HUD & Orbital Micro-Animations ---------- */
+.hud-corners {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  color: rgba(255, 255, 255, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.3s ease;
+}
+
+.corner svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+html[data-theme="light"] .corner {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.top-left {
+  top: 8px;
+  left: 8px;
+  transition-delay: 0s;
+}
+
+.top-right {
+  top: 8px;
+  right: 8px;
+  transform: rotate(90deg);
+  transition-delay: 0.08s;
+}
+
+.bottom-left {
+  bottom: 8px;
+  left: 8px;
+  transform: rotate(-90deg);
+  transition-delay: 0.16s;
+}
+
+.bottom-right {
+  bottom: 8px;
+  right: 8px;
+  transform: rotate(180deg);
+  transition-delay: 0.24s;
+}
+
+/* Hover & Active triggers */
+.work-card:hover .corner,
+.work-frame:focus-visible .corner,
+.svc-card:hover .corner {
+  opacity: 1;
+  color: #ffffff;
+}
+
+html[data-theme="light"] .work-card:hover .corner,
+html[data-theme="light"] .work-frame:focus-visible .corner,
+html[data-theme="light"] .svc-card:hover .corner {
+  color: #000000;
+}
+
+/* HUD corners placement inside svc-card */
+.svc-card {
+  position: relative;
+}
+
+.svc-card .top-left {
+  top: 10px;
+  left: 10px;
+}
+
+.svc-card .top-right {
+  top: 10px;
+  right: 10px;
+}
+
+.svc-card .bottom-left {
+  bottom: 10px;
+  left: 10px;
+}
+
+.svc-card .bottom-right {
+  bottom: 10px;
+  right: 10px;
+}
+
+/* Radial micro-animations (Orbit, Pulse, Ripple) */
+.badge-orbit {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.badge-orbit .radar-circle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  animation: ripple 2.4s ease-out infinite;
+}
+
+.badge-orbit .radar-orbit {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border-top: 1.5px solid #ffffff;
+  border-right: 1.5px solid transparent;
+  border-bottom: 1.5px solid transparent;
+  border-left: 1.5px solid transparent;
+  animation: orbit 3s linear infinite;
+}
+
+.badge-orbit .radar-dot {
+  position: absolute;
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+.badge-orbit-mini {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-inline-end: 6px;
+}
+
+.badge-orbit-mini .radar-circle {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  animation: ripple 2s ease-out infinite;
+}
+
+.badge-orbit-mini .radar-dot {
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+/* Live Playing HUD Overlay */
+.work-live-hud {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(12, 12, 12, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  z-index: 4;
+  pointer-events: none;
+  animation: fadeInModal 0.2s ease;
+}
+
+html[dir="rtl"] .work-live-hud {
+  left: auto;
+  right: 12px;
+}
+
+.hud-radar {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hud-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #00c2ff;
+  box-shadow: 0 0 6px rgba(0, 194, 255, 0.8);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.hud-pulse {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 194, 255, 0.6);
+  animation: ripple 1.6s ease-out infinite;
+}
+
+.hud-orbit {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border-top: 1px solid rgba(255, 255, 255, 0.8);
+  animation: orbit 2s linear infinite;
+}
+
+.hud-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f0f0f0;
+}
+
+/* Keyframes */
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes reverseOrbit {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.4;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .radar-circle,
+  .radar-orbit,
+  .radar-dot,
+  .hud-dot,
+  .hud-pulse,
+  .hud-orbit {
+    animation: none !important;
+  }
+}
+
+html.no-motion .radar-circle,
+html.no-motion .radar-orbit,
+html.no-motion .radar-dot,
+html.no-motion .hud-dot,
+html.no-motion .hud-pulse,
+html.no-motion .hud-orbit {
+  animation: none !important;
 }
 
 /* Lightbox Modal */
@@ -3550,6 +3860,161 @@ html.no-motion .ambient-mesh {
   animation: none !important;
   transition: none !important;
 }
+
+/* ============ Testimonials & Trust Section ============ */
+.testimonials-sec {
+  padding: 80px 24px;
+  max-width: 1040px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.testimonials-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+html[data-theme="light"] .stat-icon {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-num {
+  font-family: var(--en);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--txt);
+  letter-spacing: -0.01em;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.testimonial-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+  position: relative;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+html[data-theme="light"] .testimonial-card:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.testimonial-quote-icon {
+  color: var(--muted);
+  opacity: 0.5;
+  margin-bottom: 12px;
+}
+
+.testimonial-text {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--txt);
+  margin-bottom: 24px;
+  flex: 1;
+}
+
+.testimonial-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  gap: 12px;
+}
+
+.testimonial-author {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.author-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--txt);
+}
+
+.author-role {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.testimonial-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #10b981;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .testimonials-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .testimonials-sec {
+    padding: 60px 18px;
+  }
+}
+
 
 
 

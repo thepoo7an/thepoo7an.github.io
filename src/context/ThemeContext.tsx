@@ -18,27 +18,31 @@ const ThemeContext = React.createContext<ThemeContextType>({
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = React.useState<Theme>(() => {
-    try {
-      const saved = localStorage.getItem('tp7-theme') || localStorage.getItem('app_theme');
-      if (saved === 'light' || saved === 'dark') {
-        return saved;
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('tp7-theme') || localStorage.getItem('app_theme');
+        if (saved === 'light' || saved === 'dark') {
+          return saved;
+        }
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+          return 'light';
+        }
+      } catch {
+        return 'dark';
       }
-      if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        return 'light';
-      }
-      return 'dark';
-    } catch {
-      return 'dark';
     }
+    return 'dark';
   });
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    try {
-      localStorage.setItem('tp7-theme', newTheme);
-      localStorage.setItem('app_theme', newTheme);
-    } catch {
-      // ignore
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('tp7-theme', newTheme);
+        localStorage.setItem('app_theme', newTheme);
+      } catch {
+        // ignore
+      }
     }
   };
 

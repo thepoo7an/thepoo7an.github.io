@@ -41,9 +41,10 @@ export const initAnalytics = (): void => {
   };
 
   if (!measurementId) {
+    isInitialized = true;
     if (import.meta.env.DEV) {
       console.info(
-        '[Analytics] Google Analytics is ready. Set VITE_GA_MEASUREMENT_ID in .env to activate live reporting.'
+        '[Analytics] Google Analytics is ready. Set VITE_GA_MEASUREMENT_ID in .env or via GitHub Actions secret to activate live reporting.'
       );
     }
     return;

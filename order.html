@@ -13,16 +13,24 @@
 <meta property="og:title" content="ثبت سفارش | thepoo7an">
 <meta property="og:description" content="فرم ثبت سفارش تایپوگرافی موزیک، لیریک ویدیو و ادیت سینمایی — پویان کریمی (@thepoo7an)">
 <meta property="og:image" content="https://thepoo7an.github.io/images/hero/logo.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ثبت سفارش | thepoo7an">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ثبت سفارش | thepoo7an">
 <meta name="twitter:description" content="فرم ثبت سفارش تایپوگرافی موزیک، لیریک ویدیو و ادیت سینمایی — پویان کریمی (@thepoo7an)">
 <meta name="twitter:image" content="https://thepoo7an.github.io/images/hero/logo.png">
+<meta name="twitter:image:alt" content="ثبت سفارش | thepoo7an">
 <!-- Google Analytics 4 (GA4): Set your measurement ID below -->
 <meta name="ga-measurement-id" content="">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-32.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23000'/%3E%3Cpath d='M32 12l4.6 15.4L52 32l-15.4 4.6L32 52l-4.6-15.4L12 32l15.4-4.6z' fill='%23f5f5f7'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png">
+<link rel="manifest" href="./manifest.webmanifest">
 
-<link rel="preload" href="./fonts/Vazirmatn-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="./fonts/Vazirmatn-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="style" href="./fonts/fonts.css">
+<link rel="stylesheet" href="./fonts/fonts.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="./fonts/fonts.css"></noscript>
 
 <script>
 (function(){
@@ -327,16 +335,17 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
       <div class="field" id="f-lyrics">
         <div class="hint-row">
           <label for="lyrics">متن ترانه (لیریک) <span class="opt">(اختیاری)</span></label>
+          <span class="count" id="lyricsCount">0 / 1500</span>
         </div>
-        <textarea id="lyrics" placeholder="متن بخش مورد نظر آهنگ را اینجا وارد کنید (ارسال متن توسط شما اولویت دارد، اما در صورت نیاز استخراج لیریک توسط ما نیز امکان‌پذیر است)…" style="min-height: 90px;"></textarea>
+        <textarea id="lyrics" maxlength="1500" placeholder="متن بخش مورد نظر آهنگ را اینجا وارد کنید (ارسال متن توسط شما اولویت دارد، اما در صورت نیاز استخراج لیریک توسط ما نیز امکان‌پذیر است)…" style="min-height: 90px;"></textarea>
       </div>
 
       <div class="field" id="f-desc">
         <div class="hint-row">
           <label for="desc">توضیحات و کانسپت مدنظر</label>
-          <span class="count" id="descCount">0 کاراکتر</span>
+          <span class="count" id="descCount">0 / 2000</span>
         </div>
-        <textarea id="desc" placeholder="سبک و حس بصری مدنظرتان، رنگ‌ها، و توضیحات اولیه (کانسپت و استایل قبل از شروع تولید به طور کامل هماهنگ و نهایی می‌شود)…"></textarea>
+        <textarea id="desc" maxlength="2000" placeholder="سبک و حس بصری مدنظرتان، رنگ‌ها، و توضیحات اولیه (کانسپت و استایل قبل از شروع تولید به طور کامل هماهنگ و نهایی می‌شود)…"></textarea>
         <span class="err">لطفاً توضیحات یا ایده اولیه‌تان را بنویسید.</span>
       </div>
 
@@ -508,14 +517,33 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
     rvEls.forEach(function(el){ io.observe(el); });
   } else { rvEls.forEach(function(el){ el.classList.add('in'); }); }
 
-  /* Char counter */
+  /* Live Char counters */
   var descEl = document.getElementById('desc');
-  var countEl = document.getElementById('descCount');
-  descEl.addEventListener('input', function(){
-    var n = descEl.value.trim().length;
-    countEl.textContent = n + ' کاراکتر';
-    countEl.style.color = n > 0 ? 'var(--link)' : '';
-  });
+  var descCountEl = document.getElementById('descCount');
+  var lyricsEl = document.getElementById('lyrics');
+  var lyricsCountEl = document.getElementById('lyricsCount');
+
+  function updateCharCount(el, counterEl, max) {
+    if (!el || !counterEl) return;
+    var len = el.value.length;
+    counterEl.textContent = len + ' / ' + max;
+    if (len >= max) {
+      counterEl.style.color = 'var(--err)';
+    } else if (len > 0) {
+      counterEl.style.color = 'var(--link)';
+    } else {
+      counterEl.style.color = '';
+    }
+  }
+
+  if (descEl && descCountEl) {
+    descEl.addEventListener('input', function(){ updateCharCount(descEl, descCountEl, 2000); });
+    updateCharCount(descEl, descCountEl, 2000);
+  }
+  if (lyricsEl && lyricsCountEl) {
+    lyricsEl.addEventListener('input', function(){ updateCharCount(lyricsEl, lyricsCountEl, 1500); });
+    updateCharCount(lyricsEl, lyricsCountEl, 1500);
+  }
 
   /* Toast */
   var toast = document.getElementById('toast'), toastTimer;
@@ -523,7 +551,17 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
     toast.innerHTML = '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>' + msg;
     toast.classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 3400);
+    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 3800);
+  }
+
+  /* Text Normalization */
+  function normalizeText(str) {
+    if (!str) return '';
+    return str
+      .replace(/\r\n/g, '\n')
+      .replace(/[ \t]+/g, ' ')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
   }
 
   /* Validation helpers */
@@ -531,18 +569,59 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
     document.getElementById(fieldId).classList.toggle('invalid', invalid);
     return invalid;
   }
-  function validUrl(v){ return !v || /^(https?:\/\/)?([\w-]+\.)+[a-z]{2,}(\/\S*)?$/i.test(v); }
+
+  function validUrl(v){
+    if (!v) return true;
+    var trimmed = v.trim();
+    if (trimmed.length > 2048) return false;
+    try {
+      var u = new URL(trimmed);
+      return u.protocol === 'https:';
+    } catch(e) {
+      return false;
+    }
+  }
+
+  /* Robust Clipboard Copy with fallback */
+  async function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch(err) {}
+    }
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      ta.style.pointerEvents = 'none';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      var ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch(err) {
+      return false;
+    }
+  }
 
   /* Submit handler helper */
-  function handleOrderSubmit(targetPlatform) {
-    var name = document.getElementById('name').value.trim();
-    var contact = document.getElementById('contact').value.trim();
+  var isSubmitting = false;
+  async function handleOrderSubmit(targetPlatform) {
+    if (isSubmitting) return;
+
+    var name = normalizeText(document.getElementById('name').value);
+    var contact = normalizeText(document.getElementById('contact').value);
     var type = document.getElementById('type').value;
-    var track = document.getElementById('track').value.trim();
-    var lyrics = document.getElementById('lyrics').value.trim();
-    var desc = descEl.value.trim();
+    var track = normalizeText(document.getElementById('track').value);
+    var lyrics = normalizeText(document.getElementById('lyrics').value);
+    var desc = normalizeText(descEl.value);
     var time = document.getElementById('time').value;
-    var ref = document.getElementById('ref').value.trim();
+    var ref = (document.getElementById('ref').value || '').trim();
 
     var bad = false;
     bad = setInvalid('f-name', !name) || bad;
@@ -554,7 +633,7 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
     if(bad){
       var firstInvalid = document.querySelector('.field.invalid input, .field.invalid select, .field.invalid textarea');
       if(firstInvalid){ firstInvalid.focus({preventScroll:false}); }
-      showToast('لطفاً موارد مشخص‌شده را تکمیل کنید.');
+      showToast('لطفاً موارد مشخص‌شده را به درستی تکمیل کنید.');
       return;
     }
 
@@ -569,24 +648,41 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
       + (ref ? '🔗 لینک رفرنس:\n' + ref + '\n' : '')
       + '\n— ارسال‌شده از سایت thepoo7an';
 
-    if (window.gtag) {
-      window.gtag('event', 'generate_lead', {
-        platform: targetPlatform,
-        service_type: type,
-        timeline: time
-      });
+    if (msg.length > 3800) {
+      showToast('متن طولانی است، خلاصه کنید.');
+      return;
     }
 
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(msg).catch(function(){});
-    }
+    isSubmitting = true;
+    var submitTgBtn = document.getElementById('submitTgBtn');
+    var submitIgBtn = document.getElementById('submitIgBtn');
+    if (submitTgBtn) submitTgBtn.disabled = true;
+    if (submitIgBtn) submitIgBtn.disabled = true;
 
-    if (targetPlatform === 'tg') {
-      showToast('متن سفارش کپی شد؛ در حال باز کردن تلگرام…');
-      window.open('https://t.me/thepoo7an?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
-    } else {
-      showToast('متن سفارش کپی شد؛ در حال باز کردن دایرکت اینستاگرام…');
-      window.open('https://ig.me/m/thepoo7an?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
+    try {
+      if (window.gtag) {
+        window.gtag('event', 'generate_lead', {
+          platform: targetPlatform,
+          service_type: type,
+          timeline: time
+        });
+      }
+
+      var copied = await copyToClipboard(msg);
+
+      if (targetPlatform === 'tg') {
+        showToast(copied ? 'متن سفارش کپی شد؛ در حال باز کردن تلگرام…' : 'در حال باز کردن تلگرام…');
+        window.open('https://t.me/thepoo7an?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
+      } else {
+        showToast(copied ? 'متن سفارش کپی شد؛ در حال باز کردن دایرکت اینستاگرام…' : 'در حال باز کردن دایرکت اینستاگرام…');
+        window.open('https://ig.me/m/thepoo7an?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
+      }
+    } finally {
+      setTimeout(function() {
+        isSubmitting = false;
+        if (submitTgBtn) submitTgBtn.disabled = false;
+        if (submitIgBtn) submitIgBtn.disabled = false;
+      }, 1500);
     }
   }
 

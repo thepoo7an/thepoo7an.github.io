@@ -33,12 +33,12 @@ export const PRICING_PLANS: PricingPlan[] = [
     featuresFa: [
       'ویدیوی حدود ۱۵–۲۰ ثانیه با لیریک طراحی‌شده',
       'خروجی MP4 / 1080p / 30 FPS',
-      'تحویل در همان روز (ساعت کاری ۱۰ صبح تا ۱۱ شب)',
+      'تحویل معمولاً همان روز / حداکثر ۱ روز کاری (ساعت ۱۰ تا ۲۳)',
     ],
     featuresEn: [
       'Video ~15–20s with custom designed lyrics',
       'Output: MP4 / 1080p / 30 FPS',
-      'Same-day delivery (10 AM to 11 PM working hours)',
+      'Delivery usually same day / up to 1 business day (10 AM–11 PM)',
     ],
     ctaFa: 'شروع سفارش',
     ctaEn: 'Start order',
@@ -83,12 +83,12 @@ export const PRICING_PLANS: PricingPlan[] = [
     whoEn: 'Full releases / light music video / custom project',
     featuresFa: [
       'دامنه کار هماهنگ می‌شود قبل از شروع',
-      'خروجی استاندارد انتشار',
+      'خروجی استاندارد با کیفیت بالا آماده انتشار',
       'زمان تحویل بسته به حجم کار (معمولاً ۲ تا ۳ روز)',
     ],
     featuresEn: [
       'Project scope agreed before start',
-      'Industry standard release output',
+      'High-resolution final export ready for release',
       'Delivery based on scope (typically 2–3 days)',
     ],
     ctaFa: 'شروع سفارش',
@@ -159,13 +159,15 @@ export const Pricing: React.FC = () => {
             <>
               • Online collaboration for clients across Iran.<br />
               • Order directly via website form, Instagram, or Telegram.<br />
-              • Final price starts from these rates and may vary slightly depending on track length and scope.
+              • Final price starts from these rates and may vary slightly depending on track length and scope.<br />
+              • Cover artwork: Pricing is customized based on concept upon direct review.
             </>
           ) : (
             <>
               • همکاری به‌صورت آنلاین است؛ ویژه مشتریان داخل ایران.<br />
               • ثبت سفارش از طریق فرم سایت، دایرکت اینستاگرام یا تلگرام.<br />
-              • قیمت نهایی بعد از بررسی فایل/مدت آهنگ ممکن است کمی تغییر کند — تعرفه‌ها از این مبالغ شروع می‌شود.
+              • قیمت نهایی بعد از بررسی فایل/مدت آهنگ ممکن است کمی تغییر کند — تعرفه‌ها از این مبالغ شروع می‌شود.<br />
+              • طراحی کاور موزیک: قیمت بر اساس سبک و کانسپت بصری پس از بررسی اعلام می‌شود.
             </>
           )}
         </p>
