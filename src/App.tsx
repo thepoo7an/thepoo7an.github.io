@@ -16,7 +16,7 @@ import { Footer } from './components/Footer';
 import { StickyMobileCta } from './components/StickyMobileCta';
 import { ChromeMeridian } from './components/ChromeMeridian';
 import { TwoFacesNav } from './components/TwoFacesNav';
-import { initAnalytics, trackPageView } from './utils/analytics';
+import { initAnalytics, trackSectionView } from './utils/analytics';
 
 export const AppContent: React.FC = () => {
   const { isEn } = useLanguage();
@@ -24,13 +24,13 @@ export const AppContent: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const heroImgRef = useRef<HTMLImageElement>(null);
 
-  // Initialize Analytics and monitor hash navigation
+  // Initialize Analytics and monitor in-page section navigation
   useEffect(() => {
     initAnalytics();
 
     const handleHashChange = () => {
       const section = window.location.hash || '#home';
-      trackPageView(section, `THEPOO7AN - ${section.replace('#', '')}`);
+      trackSectionView(section);
     };
 
     window.addEventListener('hashchange', handleHashChange);
@@ -101,6 +101,11 @@ export const AppContent: React.FC = () => {
 
   return (
     <>
+      {/* Skip to Main Content Link (WCAG AA & UI/UX Pro Max Priority 1) */}
+      <a href="#main" className="skip-link">
+        {isEn ? 'Skip to main content' : 'پرش به محتوای اصلی'}
+      </a>
+
       {/* ===== Global Navigation ===== */}
       <nav
         className={`nav ${isScrolled ? 'scrolled' : ''}`}
@@ -158,7 +163,7 @@ export const AppContent: React.FC = () => {
         </div>
       </div>
 
-      <main>
+      <main id="main">
         <Hero heroImgRef={heroImgRef} />
         <Work />
         <Services />

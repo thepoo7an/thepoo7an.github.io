@@ -10,7 +10,18 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
 
   return (
     <section className="hero" id="home">
-      <p className="eyebrow rv">
+      {/* Live Studio Availability Badge (Dark.design inspired) */}
+      <div className="studio-availability-badge rv" aria-label={isEn ? "Studio Availability" : "وضعیت پذیرش سفارشات"}>
+        <span className="status-indicator" aria-hidden="true">
+          <span className="status-dot"></span>
+          <span className="status-pulse"></span>
+        </span>
+        <span className="status-text">
+          {isEn ? "Available for new releases · Turnaround 1–3 days" : "پذیرش پروژه‌های جدید فعال است · تحویل ۱ تا ۳ روز کاری"}
+        </span>
+      </div>
+
+      <p className="eyebrow rv d1">
         <b>{isEn ? "✦ THEPOO7AN — Pooyan Karimi" : "✦ THEPOO7AN — پویان کریمی"}</b>
       </p>
       <h1 className="title hero-title rv d1" id="heroAuroraTitle">

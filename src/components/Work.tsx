@@ -188,175 +188,201 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
 
   return (
     <div ref={cardRef} className={`work-card rv ${idx === 0 ? '' : `d${idx}`}`}>
-      <div className="work-frame">
-        {/* Media: Video or Static Poster */}
-        {shouldLoadVideo ? (
-          <video
-            ref={videoRef}
-            src={videoSource}
-            poster={item.primarySrc}
-            playsInline
-            loop
-            muted={isMuted}
-            preload="none"
-            className="work-video"
-            onTimeUpdate={handleTimeUpdate}
-            onError={handleVideoError}
-          />
-        ) : (
-          <img
-            src={item.primarySrc}
-            alt={isEn ? item.labelEn : item.labelFa}
-            width={360}
-            height={640}
-            loading="lazy"
-            decoding="async"
-            className="work-img"
-            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-              const target = e.currentTarget;
-              const currentAttempt = parseInt(target.dataset.attempt || '0', 10);
-              if (currentAttempt < item.fallbacks.length) {
-                target.dataset.attempt = String(currentAttempt + 1);
-                target.src = item.fallbacks[currentAttempt];
-              }
-            }}
-          />
-        )}
+      {/* Shot.so-inspired Realistic Smartphone Showcase Chassis */}
+      <div className="shot-phone-chassis">
+        {/* Dynamic Island Notch (Shot.so inspired) */}
+        <div className="phone-dynamic-island" aria-hidden="true">
+          <span className="island-lens"></span>
+          <span className="island-sensor"></span>
+        </div>
 
-        {/* Semantic Non-Nested Primary Action Trigger */}
-        <button
-          ref={triggerRef}
-          type="button"
-          className="work-play-trigger"
-          aria-pressed={isPlaying}
-          aria-label={
-            isEn
-              ? `${item.labelEn} - ${isPlaying ? 'Pause video' : 'Hover or tap to play'}`
-              : `${item.labelFa} - ${isPlaying ? 'توقف پخش' : 'هاور یا لمس برای پخش ویدیو'}`
-          }
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onClick={() => {
-            if (isPlaying) {
-              handlePause();
-            } else {
-              handlePlay();
+        <div className="work-frame">
+          {/* Media: Video or Static Poster */}
+          {shouldLoadVideo ? (
+            <video
+              ref={videoRef}
+              src={videoSource}
+              poster={item.primarySrc}
+              playsInline
+              loop
+              muted={isMuted}
+              preload="none"
+              className="work-video"
+              onTimeUpdate={handleTimeUpdate}
+              onError={handleVideoError}
+            />
+          ) : (
+            <img
+              src={item.primarySrc}
+              alt={isEn ? item.labelEn : item.labelFa}
+              width={360}
+              height={640}
+              loading="lazy"
+              decoding="async"
+              className="work-img"
+              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                const target = e.currentTarget;
+                const currentAttempt = parseInt(target.dataset.attempt || '0', 10);
+                if (currentAttempt < item.fallbacks.length) {
+                  target.dataset.attempt = String(currentAttempt + 1);
+                  target.src = item.fallbacks[currentAttempt];
+                }
+              }}
+            />
+          )}
+
+          {/* Physical Glass Glare Reflection (Shot.so inspired) */}
+          <div className="phone-glass-glare" aria-hidden="true"></div>
+
+          {/* Semantic Non-Nested Primary Action Trigger */}
+          <button
+            ref={triggerRef}
+            type="button"
+            className="work-play-trigger"
+            aria-pressed={isPlaying}
+            aria-label={
+              isEn
+                ? `${item.labelEn} - ${isPlaying ? 'Pause video' : 'Hover or tap to play'}`
+                : `${item.labelFa} - ${isPlaying ? 'توقف پخش' : 'هاور یا لمس برای پخش ویدیو'}`
             }
-          }}
-          onKeyDown={(e: React.KeyboardEvent) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => {
               if (isPlaying) {
                 handlePause();
               } else {
                 handlePlay();
               }
-            }
-          }}
-        />
+            }}
+            onKeyDown={(e: React.KeyboardEvent) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                if (isPlaying) {
+                  handlePause();
+                } else {
+                  handlePlay();
+                }
+              }
+            }}
+          />
 
-        {/* Technical HUD Corners */}
-        <div className="hud-corners" aria-hidden="true">
-          <span className="corner top-left">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M1 8V1h7" />
-            </svg>
-          </span>
-          <span className="corner top-right">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M1 8V1h7" />
-            </svg>
-          </span>
-          <span className="corner bottom-left">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M1 8V1h7" />
-            </svg>
-          </span>
-          <span className="corner bottom-right">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M1 8V1h7" />
-            </svg>
-          </span>
-        </div>
-
-        {/* Hover / Tap to Play Badge */}
-        <div
-          className={`work-play-badge ${isPlaying ? 'playing' : ''}`}
-          aria-hidden="true"
-        >
-          <div className="badge-orbit" aria-hidden="true">
-            <span className="radar-circle"></span>
-            <span className="radar-orbit"></span>
-            <span className="radar-dot"></span>
+          {/* Technical HUD Corners */}
+          <div className="hud-corners" aria-hidden="true">
+            <span className="corner top-left">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M1 8V1h7" />
+              </svg>
+            </span>
+            <span className="corner top-right">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M1 8V1h7" />
+              </svg>
+            </span>
+            <span className="corner bottom-left">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M1 8V1h7" />
+              </svg>
+            </span>
+            <span className="corner bottom-right">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M1 8V1h7" />
+              </svg>
+            </span>
           </div>
-          <Play className="w-3 h-3 fill-current" />
-          <span>{isEn ? 'Tap or hover to play' : 'لمس یا هاور برای پخش'}</span>
-        </div>
 
-        {/* Live Playback Technical HUD Indicator */}
-        {isPlaying && (
-          <div className="work-live-hud" aria-hidden="true">
-            <div className="hud-radar">
-              <span className="hud-dot"></span>
-              <span className="hud-pulse"></span>
-              <span className="hud-orbit"></span>
+          {/* Hover / Tap to Play Badge */}
+          <div
+            className={`work-play-badge ${isPlaying ? 'playing' : ''}`}
+            aria-hidden="true"
+          >
+            <div className="badge-orbit" aria-hidden="true">
+              <span className="radar-circle"></span>
+              <span className="radar-orbit"></span>
+              <span className="radar-dot"></span>
             </div>
-            <span className="hud-label">LIVE • 30FPS</span>
+            <Play className="w-3 h-3 fill-current" />
+            <span>{isEn ? 'Tap or hover to play' : 'لمس یا هاور برای پخش'}</span>
           </div>
-        )}
 
-        {/* Sound toggle button (Sibling button, no nesting violation) */}
-        {isPlaying && (
+          {/* Live Playback Technical HUD Indicator & Sound Equalizer (Dark.design inspired) */}
+          {isPlaying && (
+            <div className="work-live-hud" aria-hidden="true">
+              <div className="hud-radar">
+                <span className="hud-dot"></span>
+                <span className="hud-pulse"></span>
+                <span className="hud-orbit"></span>
+              </div>
+              <span className="hud-label">LIVE • 30FPS</span>
+              <div className="work-eq-visualizer">
+                <span className="eq-bar bar-1"></span>
+                <span className="eq-bar bar-2"></span>
+                <span className="eq-bar bar-3"></span>
+                <span className="eq-bar bar-4"></span>
+              </div>
+            </div>
+          )}
+
+          {/* Sound toggle button (Sibling button, no nesting violation) */}
+          {isPlaying && (
+            <button
+              type="button"
+              className="work-audio-btn"
+              onClick={toggleMute}
+              aria-label={
+                isEn
+                  ? isMuted
+                    ? 'Unmute sound'
+                    : 'Mute sound'
+                  : isMuted
+                    ? 'وصل کردن صدا'
+                    : 'قطع کردن صدا'
+              }
+            >
+              {isMuted ? (
+                <VolumeX className="w-4 h-4" />
+              ) : (
+                <Volume2 className="w-4 h-4" />
+              )}
+            </button>
+          )}
+
+          {/* Progress bar */}
+          {isPlaying && (
+            <div className="work-progress-track" aria-hidden="true">
+              <div
+                className="work-progress-fill"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          )}
+
+          {/* Expand / Lightbox Button (Sibling button, no nesting violation) */}
           <button
             type="button"
-            className="work-audio-btn"
-            onClick={toggleMute}
-            aria-label={
-              isEn
-                ? isMuted
-                  ? 'Unmute sound'
-                  : 'Mute sound'
-                : isMuted
-                  ? 'وصل کردن صدا'
-                  : 'قطع کردن صدا'
-            }
+            className="work-zoom-btn"
+            aria-label={isEn ? `Expand ${item.labelEn}` : `بزرگ‌نمایی ${item.labelFa}`}
+            onClick={(e: React.MouseEvent) => {
+              e.stopPropagation();
+              onOpenLightbox(item, triggerRef.current);
+            }}
           >
-            {isMuted ? (
-              <VolumeX className="w-4 h-4" />
-            ) : (
-              <Volume2 className="w-4 h-4" />
-            )}
+            <Maximize2 className="w-4 h-4" />
           </button>
-        )}
+        </div>
 
-        {/* Progress bar */}
-        {isPlaying && (
-          <div className="work-progress-track" aria-hidden="true">
-            <div
-              className="work-progress-fill"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        )}
-
-        {/* Expand / Lightbox Button (Sibling button, no nesting violation) */}
-        <button
-          type="button"
-          className="work-zoom-btn"
-          aria-label={isEn ? `Expand ${item.labelEn}` : `بزرگ‌نمایی ${item.labelFa}`}
-          onClick={(e: React.MouseEvent) => {
-            e.stopPropagation();
-            onOpenLightbox(item, triggerRef.current);
-          }}
-        >
-          <Maximize2 className="w-4 h-4" />
-        </button>
+        {/* Phone Home Indicator Bar (Shot.so inspired) */}
+        <div className="phone-home-indicator" aria-hidden="true">
+          <span className="home-bar"></span>
+        </div>
       </div>
 
       <div className="work-meta">
-        <span className="work-label">
-          {isEn ? item.labelEn : item.labelFa}
-        </span>
+        <div className="work-meta-row">
+          <span className="work-label">
+            {isEn ? item.labelEn : item.labelFa}
+          </span>
+          <span className="work-spec-pill">9:16 REELS</span>
+        </div>
       </div>
     </div>
   );
@@ -367,6 +393,8 @@ export const Work: React.FC = () => {
   const [activeItem, setActiveItem] = useState<WorkItem | null>(null);
   const lastActiveTriggerRef = useRef<HTMLButtonElement | null>(null);
   const lightboxVideoRef = useRef<HTMLVideoElement>(null);
+  const lightboxModalRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
   const [lightboxPlaying, setLightboxPlaying] = useState(false);
   const [lightboxMuted, setLightboxMuted] = useState(true);
 
@@ -382,9 +410,36 @@ export const Work: React.FC = () => {
   useEffect(() => {
     if (!activeItem) return;
 
+    // Focus close button on modal open
+    const initialFocusTimer = setTimeout(() => {
+      if (closeBtnRef.current) {
+        closeBtnRef.current.focus();
+      }
+    }, 50);
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         closeModal();
+        return;
+      }
+
+      // Trap Tab focus inside modal
+      if (e.key === 'Tab' && lightboxModalRef.current) {
+        const focusable = lightboxModalRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length > 0) {
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     };
 
@@ -393,6 +448,7 @@ export const Work: React.FC = () => {
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
+      clearTimeout(initialFocusTimer);
       document.body.style.overflow = prevOverflow;
       window.removeEventListener('keydown', handleKeyDown);
     };
@@ -469,6 +525,7 @@ export const Work: React.FC = () => {
       {/* Lightbox Modal */}
       {activeItem && (
         <div
+          ref={lightboxModalRef}
           className="work-lightbox"
           role="dialog"
           aria-modal="true"
@@ -476,6 +533,7 @@ export const Work: React.FC = () => {
           onClick={closeModal}
         >
           <button
+            ref={closeBtnRef}
             type="button"
             className="work-lightbox-close"
             onClick={closeModal}

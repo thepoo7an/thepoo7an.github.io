@@ -24,7 +24,8 @@ html[data-theme="dark"] {
   --tile: #161617;
   --card: #1d1d1f;
   --txt: #f5f5f7;
-  --muted: #86868b;
+  /* UI/UX Pro Max: high-contrast WCAG AA muted secondary text (>5.6:1 on black) */
+  --muted: #9e9ea6;
   --line: rgba(255, 255, 255, 0.14);
   --nav-bg: rgba(22, 22, 23, 0.72);
   --link: #2997ff;
@@ -37,6 +38,12 @@ html[data-theme="dark"] {
   --cm-stroke: rgba(255, 255, 255, 0.12);
   --cm-sweep-color: rgba(255, 255, 255, 0.06);
   --cm-dot-color: rgba(255, 255, 255, 0.45);
+  /* UI/UX Pro Max Surface Elevation System */
+  --surface-0: #000000;
+  --surface-1: #0b0b0c;
+  --surface-2: #161617;
+  --surface-3: #1d1d1f;
+  --surface-4: #252528;
   color-scheme: dark;
 }
 
@@ -46,7 +53,8 @@ html[data-theme="light"] {
   --tile: #f5f5f7;
   --card: #ffffff;
   --txt: #1d1d1f;
-  --muted: #6e6e73;
+  /* UI/UX Pro Max: high-contrast WCAG AA muted text (>5.8:1 on light canvas) */
+  --muted: #59595f;
   --line: rgba(0, 0, 0, 0.12);
   --nav-bg: rgba(251, 251, 253, 0.72);
   --link: #0066cc;
@@ -59,6 +67,11 @@ html[data-theme="light"] {
   --cm-stroke: rgba(0, 0, 0, 0.07);
   --cm-sweep-color: rgba(0, 0, 0, 0.035);
   --cm-dot-color: rgba(0, 0, 0, 0.25);
+  --surface-0: #fbfbfd;
+  --surface-1: #f5f5f7;
+  --surface-2: #ffffff;
+  --surface-3: #ffffff;
+  --surface-4: #eaebee;
   color-scheme: light;
 }
 
@@ -113,9 +126,39 @@ button {
   font-family: var(--en);
 }
 
-/* Focus ring — works on light/dark and on blue CTAs */
+/* Skip link (UI/UX Pro Max Priority 1 & WCAG AA) */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  inset-inline-start: 18px;
+  z-index: 9999;
+  padding: 10px 20px;
+  background: var(--btn);
+  color: var(--btn-txt) !important;
+  font-family: var(--fa);
+  font-weight: 700;
+  font-size: 13.5px;
+  border-radius: 999px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  text-decoration: none;
+  transition: top 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 14px;
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* Focus ring — works on light/dark and on blue CTAs (UI/UX Pro Max Priority 1) */
 a:focus-visible,
 button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
 .pill:focus-visible,
 .pill-primary:focus-visible,
 .pill-secondary:focus-visible,
@@ -130,6 +173,53 @@ button:focus-visible,
   outline-offset: 3px;
   box-shadow: 0 0 0 4px var(--focus-ring-halo);
   border-radius: 10px;
+}
+
+/* Touch Hit Areas (UI/UX Pro Max Priority 2: Touch & Interaction >= 44x44px) */
+@media (pointer: coarse), (max-width: 768px) {
+  #themeBtn,
+  #motionBtn,
+  #menuBtn {
+    position: relative;
+  }
+  #themeBtn::before,
+  #motionBtn::before,
+  #menuBtn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  #langBtn,
+  .lang-toggle-btn {
+    min-height: 40px;
+    padding: 6px 14px;
+  }
+  .f-links li a {
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+/* Tactile Active Feedback (UI/UX Pro Max Priority 2) */
+button:active:not(:disabled),
+.pill:active:not(:disabled),
+.nav-cta:active,
+.sticky-cta-btn:active,
+.sticky-cta-tg:active,
+.f-social-pill:active {
+  transform: scale(0.975);
+}
+
+/* Typography Balance (UI/UX Pro Max Priority 4 & 5) */
+h1, h2, h3, .hero-title, .form-title {
+  text-wrap: balance;
 }
 
 /* ---------- Global nav (frosted) ---------- */
@@ -2889,148 +2979,565 @@ html[data-theme="light"] .order-faq-item.open {
   background: rgba(16, 185, 129, 0.08);
 }
 
-/* ---------- Footer (Apple legal style) ---------- */
-footer {
-  padding: 34px 22px 44px;
-  max-width: 1024px;
-  margin: 0 auto;
+/* ---------- Shot.so Smartphone Chassis & Presentation ---------- */
+.shot-phone-chassis {
+  width: 100%;
+  position: relative;
+  background: #0d0e12;
+  padding: 10px 10px 14px 10px;
+  border-radius: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 
+    0 24px 48px -12px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.8);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+  overflow: hidden;
 }
 
-.f-note {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.9;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 20px;
+.work-card:hover .shot-phone-chassis {
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.32);
+  box-shadow: 
+    0 32px 64px -16px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.15),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.35);
 }
 
-.f-main-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  padding: 22px 0;
-  border-bottom: 1px solid var(--line);
+html[data-theme="light"] .shot-phone-chassis {
+  background: #18191c;
+  border-color: rgba(0, 0, 0, 0.18);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
-.f-cols {
-  display: flex;
-  gap: 22px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.f-cols a {
-  font-size: 12.5px;
-  color: var(--muted);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.f-cols a:hover {
-  color: var(--txt);
-  text-decoration: underline;
-}
-
-.f-socials {
+/* Phone Dynamic Island (Shot.so inspired) */
+.phone-dynamic-island {
+  width: 78px;
+  height: 18px;
+  background: #000000;
+  border-radius: 999px;
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  justify-content: flex-end;
+  padding: 0 8px;
+  gap: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
 }
 
-.f-social-link {
+.island-lens {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #1e293b, #030712 80%);
+  box-shadow: inset 0 0 1px 0.5px rgba(56, 189, 248, 0.35);
+}
+
+.island-sensor {
+  width: 4.5px;
+  height: 4.5px;
+  border-radius: 50%;
+  background: #0b0f19;
+}
+
+/* Physical Glass Glare Overlay */
+.phone-glass-glare {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 60%);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.work-card:hover .phone-glass-glare {
+  opacity: 0.85;
+}
+
+/* Phone Home Indicator Bar */
+.phone-home-indicator {
+  width: 100%;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.phone-home-indicator .home-bar {
+  width: 85px;
+  height: 3.5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Audio Equalizer Visualizer (Dark.design inspired) */
+.work-eq-visualizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 12px;
+  margin-inline-start: 6px;
+}
+
+.work-eq-visualizer .eq-bar {
+  width: 2.5px;
+  background: #38bdf8;
+  border-radius: 1px;
+  animation: eqBounce 0.8s ease-in-out infinite alternate;
+}
+
+.work-eq-visualizer .bar-1 { height: 4px; animation-delay: 0.1s; }
+.work-eq-visualizer .bar-2 { height: 11px; animation-delay: 0.3s; }
+.work-eq-visualizer .bar-3 { height: 7px; animation-delay: 0.2s; }
+.work-eq-visualizer .bar-4 { height: 9px; animation-delay: 0.4s; }
+
+@keyframes eqBounce {
+  0% { transform: scaleY(0.3); }
+  100% { transform: scaleY(1); }
+}
+
+/* Dark.design Hero Studio Availability Badge */
+.studio-availability-badge {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  min-height: 36px;
-  padding: 6px 13px;
+  gap: 8px;
+  padding: 6px 14px;
   border-radius: 999px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  margin-bottom: 16px;
+}
+
+.status-indicator {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.status-pulse {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.4);
+  animation: statusPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes statusPulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  70% { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.status-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #10b981;
+  letter-spacing: 0.02em;
+}
+
+/* Work Meta Row & Spec Pill */
+.work-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+  padding: 2px 6px;
+}
+
+.work-spec-pill {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 6px;
   background: var(--tile);
   border: 1px solid var(--line);
   color: var(--muted);
-  font-size: 12px;
-  font-weight: 500;
-  text-decoration: none !important;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  text-transform: uppercase;
 }
 
-.f-social-link svg {
-  width: 14.5px;
-  height: 14.5px;
-  stroke: currentColor;
+/* ---------- Footer.design Architectural Masterpiece ---------- */
+.site-footer {
+  width: 100%;
+  max-width: 1120px;
+  margin: 60px auto 0;
+  padding: 40px 24px 60px;
+  border-top: 1px solid var(--line);
+  position: relative;
+}
+
+/* Call-to-Action Banner */
+.f-cta-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 36px 32px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%), #0c0d10;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  margin-bottom: 56px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+}
+
+html[data-theme="light"] .f-cta-banner {
+  background: linear-gradient(180deg, #ffffff 0%, #f7f7f9 100%);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 16px 32px -10px rgba(0, 0, 0, 0.06);
+}
+
+.f-cta-glow {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.f-cta-content {
+  flex: 1;
+  max-width: 600px;
+}
+
+.f-cta-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.f-cta-heading {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.4;
+  color: var(--txt);
+  margin-bottom: 10px;
+}
+
+.f-cta-sub {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.75;
+  margin: 0;
+}
+
+.f-cta-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.f-btn-order {
+  min-height: 46px;
+  padding: 0 24px;
+}
+
+.f-btn-telegram {
+  min-height: 46px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(36, 161, 222, 0.15);
+  border: 1px solid rgba(36, 161, 222, 0.35);
+  color: #38bdf8;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 13.5px;
+  text-decoration: none !important;
+  transition: all 0.25s ease;
+}
+
+.f-btn-telegram:hover {
+  background: rgba(36, 161, 222, 0.25);
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+}
+
+/* 4-Column Architectural Grid */
+.f-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.3fr 1.3fr;
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+.f-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.f-brand-title {
+  font-family: var(--font-display, inherit);
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: var(--txt);
+  margin-bottom: 12px;
+}
+
+.f-brand-desc {
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin-bottom: 20px;
+  max-width: 320px;
+}
+
+.f-status-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.f-status-pill,
+.f-timezone-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--txt);
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: var(--tile);
+  border: 1px solid var(--line);
+  width: fit-content;
+}
+
+.f-col-heading {
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--txt);
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+
+.f-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.f-links li a,
+.f-links li span {
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.f-links li a:hover {
+  color: var(--txt);
+  transform: translateX(-3px);
+}
+
+html[dir="ltr"] .f-links li a:hover {
+  transform: translateX(3px);
+}
+
+.f-social-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.f-social-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--tile);
+  border: 1px solid var(--line);
+  color: var(--txt);
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+}
+
+.f-social-pill:hover {
+  background: var(--card);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.f-social-pill svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--link);
   fill: none;
   stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
   flex-shrink: 0;
-  transition: transform 0.2s ease;
 }
 
-.f-social-link:hover {
+.f-social-name {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.f-social-handle {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Monumental Brand Typography (Footer.design hallmark) */
+.f-monumental-wrap {
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+  padding: 24px 0 16px;
+  border-top: 1px solid var(--line);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.f-monumental-text {
+  display: block;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(2.8rem, 11vw, 8rem);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.12);
+  transition: -webkit-text-stroke-color 0.4s ease;
+}
+
+html[data-theme="light"] .f-monumental-text {
+  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.1);
+}
+
+.site-footer:hover .f-monumental-text {
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.24);
+}
+
+/* Bottom Legal & Back to Top */
+.f-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.f-legal-text {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.f-back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--tile);
+  border: 1px solid var(--line);
+  color: var(--txt);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.f-back-to-top:hover {
   background: var(--card);
   border-color: var(--link);
-  color: var(--txt);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
-.f-social-link:hover svg {
-  stroke: var(--link);
-}
-
-.f-social-link:active {
-  transform: scale(0.97);
-}
-
-.f-social-link:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
-@media (max-width: 640px) {
-  .f-main-row {
+/* Mobile Responsiveness */
+@media (max-width: 960px) {
+  .f-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .f-col-brand {
+    grid-column: span 2;
+  }
+  .f-cta-banner {
     flex-direction: column;
     align-items: flex-start;
-    gap: 18px;
-    padding: 18px 0;
+    padding: 28px 24px;
   }
-
-  .f-cols {
-    gap: 16px 20px;
+  .f-cta-actions {
     width: 100%;
+    flex-direction: column;
   }
-
-  .f-cols a {
-    font-size: 13px;
-    padding: 4px 0;
-  }
-
-  .f-socials {
+  .f-btn-order,
+  .f-btn-telegram {
     width: 100%;
-    gap: 8px;
-  }
-
-  .f-social-link {
-    min-height: 44px;
-    padding: 8px 16px;
-    font-size: 12.5px;
+    justify-content: center;
   }
 }
 
-.f-legal {
-  font-size: 12px;
-  color: var(--muted);
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  align-items: center;
-  padding-top: 20px;
-}
-
-.f-legal .ltr {
-  font-size: 11px;
-  letter-spacing: 0.08em;
+@media (max-width: 580px) {
+  .f-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .f-col-brand {
+    grid-column: span 1;
+  }
+  .f-bottom-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .shot-phone-chassis {
+    padding: 8px 8px 12px 8px;
+    border-radius: 28px;
+  }
+  .phone-dynamic-island {
+    width: 70px;
+    height: 18px;
+  }
 }
 
 /* ---------- Reveal Animations ---------- */

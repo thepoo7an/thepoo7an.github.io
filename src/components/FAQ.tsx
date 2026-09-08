@@ -38,6 +38,20 @@ export const FAQS: FAQItem[] = [
     aFa: 'از فرم ثبت سفارش سایت، دایرکت اینستاگرام یا تلگرام @thepoo7an. همکاری آنلاین است.',
     aEn: 'Via the website order form, Instagram DM, or Telegram @thepoo7an. Collaboration is online.',
   },
+  {
+    id: 'faq-5',
+    qFa: 'آیا امکان ویرایش و اصلاح بعد از تحویل وجود دارد؟',
+    qEn: 'Is there a revision policy after delivery?',
+    aFa: 'بله؛ پس از آماده‌سازی نسخه پیش‌نمایش اولیه (Preview)، تا ۱ مرحله اصلاح جزئی (شامل تنظیم تایمینگ و بیت‌سینک، جابجایی سایز یا فونت، و تصحیح املای کلمات لیریک) انجام می‌شود. تغییر کلی سناریو، سبک بصری یا تعویض قطعه موزیک پس از تایید اولیه، شامل بازبینی و توافق جداگانه خواهد بود.',
+    aEn: 'Yes; once the initial preview draft is prepared, up to 1 round of fine-tuning revisions (such as adjusting rhythm sync, sizing/positioning, or correcting lyric spelling) is included. A complete overhaul of visual direction or replacing the track after initial approval requires a separate agreement.',
+  },
+  {
+    id: 'faq-6',
+    qFa: 'نحوه پرداخت و تسویه هزینه به چه صورت است؟',
+    qEn: 'How does payment and project settlement work?',
+    aFa: 'پس از بررسی فایل پروژه و توافق بر سر هزینه و زمان‌بندی، ۵۰٪ به عنوان پیش‌پرداخت (جهت ثبت نوبت و شروع کار) و مابقی ۵۰٪ پس از آماده‌سازی و تایید نسخه پیش‌نمایش نهایی (Preview) و پیش از ارسال فایل اصلی بدون واترمارک تسویه می‌شود.',
+    aEn: 'After reviewing project requirements and agreeing on scope and timeline, a 50% deposit is required to secure the production slot. The remaining 50% is settled upon reviewing and approving the final preview draft before uncompressed master delivery.',
+  },
 ];
 
 export const FAQ: React.FC = () => {

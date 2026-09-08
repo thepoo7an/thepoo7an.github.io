@@ -68,6 +68,15 @@ export const initAnalytics = (): void => {
   isInitialized = true;
 };
 
+export const trackSectionView = (sectionName: string): void => {
+  if (typeof window === 'undefined') return;
+  const cleanName = sectionName.replace(/^#/, '') || 'home';
+  trackEvent('section_view', {
+    section_name: cleanName,
+    page_location: window.location.href,
+  });
+};
+
 export const trackPageView = (path: string, title?: string): void => {
   if (typeof window === 'undefined') return;
 
