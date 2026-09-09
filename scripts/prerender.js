@@ -72,6 +72,25 @@ async function prerender() {
   } catch {
     // Ignore cleanup error
   }
+
+  // Auto-sync sitemap.xml lastmod with build date
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    const sitemapPaths = [
+      path.join(rootDir, 'public', 'sitemap.xml'),
+      path.join(rootDir, 'dist', 'sitemap.xml'),
+    ];
+    for (const p of sitemapPaths) {
+      if (fs.existsSync(p)) {
+        let content = fs.readFileSync(p, 'utf8');
+        content = content.replace(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g, `<lastmod>${today}</lastmod>`);
+        fs.writeFileSync(p, content, 'utf8');
+      }
+    }
+    console.log(`✓ Sitemap lastmod auto-updated to ${today}`);
+  } catch (err) {
+    console.warn('Warning: Could not auto-sync sitemap.xml lastmod:', err.message);
+  }
 }
 
 prerender().catch((err) => {

@@ -9,7 +9,7 @@ import { Work } from './components/Work';
 import { Services } from './components/Services';
 import { Process } from './components/Process';
 import { Pricing } from './components/Pricing';
-import { Testimonials } from './components/Testimonials';
+import { WorkflowStandards } from './components/WorkflowStandards';
 import { FAQ } from './components/FAQ';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
@@ -169,7 +169,7 @@ export const AppContent: React.FC = () => {
         <Services />
         <Process />
         <Pricing />
-        <Testimonials />
+        <WorkflowStandards />
         <FAQ />
         <Contact />
       </main>

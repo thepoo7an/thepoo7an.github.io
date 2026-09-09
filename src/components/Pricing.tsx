@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { trackOrderStarted } from '../utils/analytics';
 
 export interface PricingPlan {
   id: string;
@@ -145,6 +146,9 @@ export const Pricing: React.FC = () => {
             <a
               className={`pill ${plan.isPopular ? '' : 'ghost'}`.trim()}
               href={`./order.html?plan=${plan.planParam}`}
+              onClick={() => {
+                trackOrderStarted(plan.id, isEn ? plan.titleEn : plan.titleFa);
+              }}
             >
               {isEn ? plan.ctaEn : plan.ctaFa}
             </a>

@@ -4368,7 +4368,8 @@ html.no-motion .ambient-mesh {
   transition: none !important;
 }
 
-/* ============ Testimonials & Trust Section ============ */
+/* ============ Workflow Standards & Quality Section ============ */
+.standards-sec,
 .testimonials-sec {
   padding: 80px 24px;
   max-width: 1040px;
@@ -4377,6 +4378,7 @@ html.no-motion .ambient-mesh {
   z-index: 1;
 }
 
+.standards-stats,
 .testimonials-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -4430,12 +4432,14 @@ html[data-theme="light"] .stat-icon {
   line-height: 1.4;
 }
 
+.standards-grid,
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
+.standard-card,
 .testimonial-card {
   display: flex;
   flex-direction: column;
@@ -4449,29 +4453,43 @@ html[data-theme="light"] .stat-icon {
   position: relative;
 }
 
+.standard-card:hover,
 .testimonial-card:hover {
   transform: translateY(-3px);
   border-color: rgba(255, 255, 255, 0.22);
 }
 
+html[data-theme="light"] .standard-card:hover,
 html[data-theme="light"] .testimonial-card:hover {
   border-color: rgba(0, 0, 0, 0.2);
 }
 
+.standard-icon,
 .testimonial-quote-icon {
   color: var(--muted);
-  opacity: 0.5;
+  opacity: 0.8;
   margin-bottom: 12px;
 }
 
+.standard-title,
+.author-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--txt);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.standard-desc,
 .testimonial-text {
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.75;
   color: var(--txt);
-  margin-bottom: 24px;
+  margin-bottom: 22px;
   flex: 1;
 }
 
+.standard-footer,
 .testimonial-footer {
   display: flex;
   align-items: flex-end;
@@ -4481,42 +4499,29 @@ html[data-theme="light"] .testimonial-card:hover {
   gap: 12px;
 }
 
-.testimonial-author {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.author-name {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--txt);
-}
-
-.author-role {
-  font-size: 12px;
-  color: var(--muted);
-}
-
+.standard-tag,
 .testimonial-verified {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 11px;
+  gap: 6px;
+  font-size: 11.5px;
   font-weight: 600;
   color: #10b981;
   white-space: nowrap;
 }
 
 @media (max-width: 860px) {
+  .standards-stats,
   .testimonials-stats {
     grid-template-columns: 1fr;
     gap: 12px;
   }
+  .standards-grid,
   .testimonials-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
+  .standards-sec,
   .testimonials-sec {
     padding: 60px 18px;
   }

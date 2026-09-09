@@ -519,17 +519,39 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
     var urlParams = new URLSearchParams(window.location.search);
     var plan = urlParams.get('plan') || urlParams.get('type');
     var typeSelect = document.getElementById('type');
+    var detectedPlanName = '';
     if (plan && typeSelect) {
       var p = plan.toLowerCase();
       if (p === 'base' || p === 'lyric' || p === 'typography') {
         typeSelect.value = 'تایپوگرافی لیریک موزیک (۱۵ الی ۲۰ ثانیه)';
+        detectedPlanName = 'Lyric Typography';
       } else if (p === 'pro' || p === 'edit' || p === 'video') {
         typeSelect.value = 'ادیت ویدیو + تایپوگرافی لیریک';
+        detectedPlanName = 'Video Edit + Lyric Typography';
       } else if (p === 'special' || p === 'vip' || p === 'custom') {
         typeSelect.value = 'پروژه ویژه / سفارشی';
+        detectedPlanName = 'Special Project';
       } else if (p === 'cover' || p === 'artwork') {
         typeSelect.value = 'طراحی کاور موزیک';
+        detectedPlanName = 'Music Cover Design';
       }
+      if (detectedPlanName && window.gtag) {
+        window.gtag('event', 'order_started', {
+          plan_id: p,
+          plan_name: detectedPlanName,
+          source: 'url_parameter'
+        });
+      }
+    }
+    if (typeSelect) {
+      typeSelect.addEventListener('change', function() {
+        if (typeSelect.value && window.gtag) {
+          window.gtag('event', 'order_started', {
+            plan_name: typeSelect.value,
+            source: 'form_dropdown_selection'
+          });
+        }
+      });
     }
   } catch(e) {}
 

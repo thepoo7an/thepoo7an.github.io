@@ -118,3 +118,12 @@ export const trackWorkPreview = (workId: string, action: 'play' | 'pause' | 'lig
     action_type: action,
   });
 };
+
+export const trackOrderStarted = (planId: string, planName: string, price?: number): void => {
+  trackEvent('order_started', {
+    plan_id: planId,
+    plan_name: planName,
+    value: price,
+    currency: 'IRR',
+  });
+};

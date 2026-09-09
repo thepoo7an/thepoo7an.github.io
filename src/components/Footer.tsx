@@ -107,7 +107,7 @@ export const Footer: React.FC = () => {
             <li><a href="#work">{isEn ? 'Portfolio' : 'نمونه‌کارها'}</a></li>
             <li><a href="#services">{isEn ? 'Services' : 'خدمات تخصصی'}</a></li>
             <li><a href="#pricing">{isEn ? 'Pricing Plans' : 'تعرفه‌ها و پکیج‌ها'}</a></li>
-            <li><a href="#testimonials">{isEn ? 'Quality Standards' : 'تضمین کیفیت'}</a></li>
+            <li><a href="#standards">{isEn ? 'Workflow Standards' : 'استانداردهای همکاری'}</a></li>
             <li><a href="#faq">{isEn ? 'FAQ' : 'سؤالات متداول'}</a></li>
             <li><a href="./order.html">{isEn ? 'Order Form' : 'فرم ثبت سفارش'}</a></li>
           </ul>
