@@ -15,17 +15,21 @@ function resolveMediaUrl(path?: string): string | undefined {
 
 interface WorkItem {
   id: string;
+  category: 'reels' | 'cover';
   videoSrc?: string;
   videoFallbacks?: string[];
   primarySrc: string;
   fallbacks: string[];
   labelFa: string;
   labelEn: string;
+  specFa?: string;
+  specEn?: string;
 }
 
-const RAW_WORK_ITEMS = [
+const RAW_WORK_ITEMS: WorkItem[] = [
   {
     id: 'work-sample-1',
+    category: 'reels',
     videoSrc: './videos/portfolio/sample-1.mp4',
     videoFallbacks: [
       './videos/portfolio/sample-1.webm',
@@ -37,22 +41,34 @@ const RAW_WORK_ITEMS = [
     ],
     labelFa: 'پشیمون میشی و برمیگردی',
     labelEn: 'Lyric Typography Reel',
+    specFa: '۹:۱۶ ریلز موزیک',
+    specEn: '9:16 Reels',
   },
   {
     id: 'work-sample-2',
+    category: 'reels',
     videoSrc: './videos/portfolio/sample-2.mp4',
     videoFallbacks: [
       './videos/portfolio/sample-2.webm',
     ],
-    primarySrc: './images/portfolio/sample-2.webp',
+    primarySrc: './images/portfolio/sample-4.jpg',
     fallbacks: [
+      './images/portfolio/sample-4.jpeg',
+      './images/portfolio/sample-4.png',
+      './images/portfolio/sample-4.webp',
+      './images/portfolio/sample-2.jpg',
+      './images/portfolio/sample-2.jpeg',
       './images/portfolio/sample-2.png',
+      './images/portfolio/sample-2.webp',
     ],
     labelFa: 'دورم کن — میراد',
     labelEn: 'Dooram Kon — Meyraad',
+    specFa: '۹:۱۶ ریلز موزیک',
+    specEn: '9:16 Reels',
   },
   {
     id: 'work-sample-3',
+    category: 'reels',
     videoSrc: './videos/portfolio/sample-3.mp4',
     videoFallbacks: [
       './videos/portfolio/sample-3.webm',
@@ -63,13 +79,55 @@ const RAW_WORK_ITEMS = [
     ],
     labelFa: 'تایپوگرافی سه‌بعدی و موشن کروم',
     labelEn: '3D Chrome & Kinetic Typography',
+    specFa: '۹:۱۶ ریلز موزیک',
+    specEn: '9:16 Reels',
+  },
+  {
+    id: 'work-cover-1',
+    category: 'cover',
+    primarySrc: './images/portfolio/cover-1.webp',
+    fallbacks: [
+      './images/portfolio/cover-1.jpg',
+    ],
+    labelFa: 'طراحی کاور موزیک — کروم ویژوالایزر',
+    labelEn: 'Cover Art — 3D Chrome Visualizer',
+    specFa: '۱:۱ کاور موزیک',
+    specEn: '1:1 Cover Art',
+  },
+  {
+    id: 'work-cover-2',
+    category: 'cover',
+    primarySrc: './images/portfolio/sample-4.jpg',
+    fallbacks: [
+      './images/portfolio/sample-4.jpeg',
+      './images/portfolio/sample-4.png',
+      './images/portfolio/sample-4.webp',
+      './images/portfolio/sample-2.webp',
+      './images/portfolio/sample-2.png',
+    ],
+    labelFa: 'کاور آرت ریلیز — دورم کن (میراد)',
+    labelEn: 'Release Cover Art — Dooram Kon (Meyraad)',
+    specFa: '۱:۱ کاور موزیک',
+    specEn: '1:1 Cover Art',
+  },
+  {
+    id: 'work-cover-3',
+    category: 'cover',
+    primarySrc: './images/portfolio/sample-3.webp',
+    fallbacks: [
+      './images/portfolio/sample-3.png',
+    ],
+    labelFa: 'کاور آرت مفهومی — تایپوگرافی اکستریم کروم',
+    labelEn: 'Concept Cover Art — Extreme Chrome Typography',
+    specFa: '۱:۱ کاور موزیک',
+    specEn: '1:1 Cover Art',
   },
 ];
 
 const WORK_ITEMS: WorkItem[] = RAW_WORK_ITEMS.map((item) => ({
   ...item,
   videoSrc: resolveMediaUrl(item.videoSrc),
-  videoFallbacks: item.videoFallbacks.map((src) => resolveMediaUrl(src)!),
+  videoFallbacks: (item.videoFallbacks || []).map((src) => resolveMediaUrl(src)!),
 }));
 
 interface WorkCardProps {
@@ -91,6 +149,8 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
   const [videoSource, setVideoSource] = useState(item.videoSrc);
   const [videoAttempt, setVideoAttempt] = useState(0);
   const [videoFailed, setVideoFailed] = useState(false);
+
+  const isCover = item.category === 'cover' || !item.videoSrc;
 
   const [isNearViewport, setIsNearViewport] = useState(false);
   const [hasInteractionIntent, setHasInteractionIntent] = useState(false);
@@ -196,7 +256,12 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
           <span className="island-sensor"></span>
         </div>
 
-        <div className="work-frame">
+        <div className={`work-frame ${isCover ? 'square-frame' : ''}`}>
+          {/* Cover Art / Video Category Tag Badge */}
+          <span className="work-cat-badge">
+            {isEn ? (isCover ? 'Cover Art' : 'Lyric Video') : (isCover ? 'کاور آرت' : 'لیریک ویدیو')}
+          </span>
+
           {/* Media: Video or Static Poster */}
           {shouldLoadVideo ? (
             <video
@@ -215,8 +280,8 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
             <img
               src={item.primarySrc}
               alt={isEn ? item.labelEn : item.labelFa}
-              width={360}
-              height={640}
+              width={isCover ? 600 : 360}
+              height={isCover ? 600 : 640}
               loading="lazy"
               decoding="async"
               className="work-img"
@@ -242,13 +307,15 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
             aria-pressed={isPlaying}
             aria-label={
               isEn
-                ? `${item.labelEn} - ${isPlaying ? 'Pause video' : 'Hover or tap to play'}`
-                : `${item.labelFa} - ${isPlaying ? 'توقف پخش' : 'هاور یا لمس برای پخش ویدیو'}`
+                ? `${item.labelEn} - ${isCover ? 'Tap to view cover artwork' : (isPlaying ? 'Pause video' : 'Hover or tap to play')}`
+                : `${item.labelFa} - ${isCover ? 'مشاهده تصویر کاور' : (isPlaying ? 'توقف پخش' : 'هاور یا لمس برای پخش ویدیو')}`
             }
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={() => {
-              if (isPlaying) {
+              if (isCover) {
+                onOpenLightbox(item, triggerRef.current);
+              } else if (isPlaying) {
                 handlePause();
               } else {
                 handlePlay();
@@ -257,7 +324,9 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
             onKeyDown={(e: React.KeyboardEvent) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                if (isPlaying) {
+                if (isCover) {
+                  onOpenLightbox(item, triggerRef.current);
+                } else if (isPlaying) {
                   handlePause();
                 } else {
                   handlePlay();
@@ -295,13 +364,22 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
             className={`work-play-badge ${isPlaying ? 'playing' : ''}`}
             aria-hidden="true"
           >
-            <div className="badge-orbit" aria-hidden="true">
-              <span className="radar-circle"></span>
-              <span className="radar-orbit"></span>
-              <span className="radar-dot"></span>
-            </div>
-            <Play className="w-3 h-3 fill-current" />
-            <span>{isEn ? 'Tap or hover to play' : 'لمس یا هاور برای پخش'}</span>
+            {isCover ? (
+              <>
+                <Maximize2 className="w-3 h-3" />
+                <span>{isEn ? 'View Cover Artwork' : 'مشاهده کاور آرت'}</span>
+              </>
+            ) : (
+              <>
+                <div className="badge-orbit" aria-hidden="true">
+                  <span className="radar-circle"></span>
+                  <span className="radar-orbit"></span>
+                  <span className="radar-dot"></span>
+                </div>
+                <Play className="w-3 h-3 fill-current" />
+                <span>{isEn ? 'Tap or hover to play' : 'لمس یا هاور برای پخش'}</span>
+              </>
+            )}
           </div>
 
           {/* Live Playback Technical HUD Indicator & Sound Equalizer (Dark.design inspired) */}
@@ -381,7 +459,9 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
           <span className="work-label">
             {isEn ? item.labelEn : item.labelFa}
           </span>
-          <span className="work-spec-pill">9:16 REELS</span>
+          <span className="work-spec-pill">
+            {item.specFa && item.specEn ? (isEn ? item.specEn : item.specFa) : (isCover ? '1:1 COVER' : '9:16 REELS')}
+          </span>
         </div>
       </div>
     </div>
@@ -390,6 +470,7 @@ function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
 
 export const Work: React.FC = () => {
   const { isEn } = useLanguage();
+  const [activeCategory, setActiveCategory] = useState<'all' | 'reels' | 'cover'>('all');
   const [activeItem, setActiveItem] = useState<WorkItem | null>(null);
   const lastActiveTriggerRef = useRef<HTMLButtonElement | null>(null);
   const lightboxVideoRef = useRef<HTMLVideoElement>(null);
@@ -397,6 +478,10 @@ export const Work: React.FC = () => {
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const [lightboxPlaying, setLightboxPlaying] = useState(false);
   const [lightboxMuted, setLightboxMuted] = useState(true);
+
+  const displayedItems = activeCategory === 'all'
+    ? WORK_ITEMS
+    : WORK_ITEMS.filter((it) => it.category === activeCategory);
 
   const closeModal = useCallback(() => {
     setActiveItem(null);
@@ -502,10 +587,39 @@ export const Work: React.FC = () => {
         <h2 className="rv">
           {isEn ? 'Selected output' : 'نمونه خروجی'}
         </h2>
+        <div className="work-cat-tabs rv d1" role="tablist" aria-label={isEn ? "Filter work samples" : "فیلتر دسته‌بندی نمونه‌کارها"}>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeCategory === 'all'}
+            className={`work-cat-btn ${activeCategory === 'all' ? 'active' : ''}`}
+            onClick={() => setActiveCategory('all')}
+          >
+            {isEn ? 'All Works (6)' : 'همه نمونه‌ها (۶)'}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeCategory === 'reels'}
+            className={`work-cat-btn ${activeCategory === 'reels' ? 'active' : ''}`}
+            onClick={() => setActiveCategory('reels')}
+          >
+            {isEn ? 'Reels & Kinetic (3)' : 'تایپوگرافی و ریلز (۳)'}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeCategory === 'cover'}
+            className={`work-cat-btn ${activeCategory === 'cover' ? 'active' : ''}`}
+            onClick={() => setActiveCategory('cover')}
+          >
+            {isEn ? 'Cover Art (3)' : 'کاور موزیک (۳)'}
+          </button>
+        </div>
       </div>
 
       <div className="work-grid">
-        {WORK_ITEMS.map((item, idx) => (
+        {displayedItems.map((item, idx) => (
           <WorkCard
             key={item.id}
             item={item}
@@ -546,7 +660,7 @@ export const Work: React.FC = () => {
             className="work-lightbox-content"
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
-            <div className="work-lightbox-frame">
+            <div className={`work-lightbox-frame ${activeItem.category === 'cover' ? 'square-frame' : ''}`}>
               {activeItem.videoSrc ? (
                 <video
                   ref={lightboxVideoRef}
@@ -565,8 +679,8 @@ export const Work: React.FC = () => {
                 <img
                   src={activeItem.primarySrc}
                   alt={isEn ? activeItem.labelEn : activeItem.labelFa}
-                  width={360}
-                  height={640}
+                  width={activeItem.category === 'cover' ? 800 : 360}
+                  height={activeItem.category === 'cover' ? 800 : 640}
                   className="work-lightbox-img"
                 />
               )}

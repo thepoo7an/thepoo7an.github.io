@@ -1,4 +1,5 @@
 import React from 'react';
+import { Zap, CheckCircle2, Clock } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { trackOrderStarted } from '../utils/analytics';
 
@@ -74,10 +75,35 @@ export const PRICING_PLANS: PricingPlan[] = [
     delayClass: 'd1',
   },
   {
+    id: 'plan-monthly',
+    planParam: 'monthly',
+    titleFa: 'پکیج ماهانه (۴ ریلز / ماه)',
+    titleEn: 'Monthly Retainer (4 Reels/mo)',
+    priceFa: 'از ۱٬۰۰۰٬۰۰۰ تومان',
+    priceEn: 'From 1,000,000 Tomans',
+    whoFa: 'آرتیست‌ها و آهنگسازان فعال در اینستاگرام',
+    whoEn: 'Active music creators building ongoing reach',
+    featuresFa: [
+      '۴ ویدیوی ریلز کامل در طول یک ماه',
+      'تایپوگرافی سینک شده + تمپلیت استایل اختصاصی',
+      'اولویت رندر و تحویل سریع پروژه‌ها',
+      'صرفه‌جویی اقتصادی نسبت به سفارش تک‌پست',
+    ],
+    featuresEn: [
+      '4 full Reels videos delivered across the month',
+      'Beat-synced lyrics + unique visual style guide',
+      'Priority rendering & delivery turnaround',
+      'Discounted bulk rate vs. single-video orders',
+    ],
+    ctaFa: 'رزرو پکیج ماهانه',
+    ctaEn: 'Book monthly pack',
+    delayClass: 'd2',
+  },
+  {
     id: 'plan-special',
     planParam: 'special',
-    titleFa: 'پروژه ویژه',
-    titleEn: 'Special Project',
+    titleFa: 'پروژه ویژه و کاور آرت',
+    titleEn: 'Special Project & Cover Art',
     priceFa: 'از ۴۹۰٬۰۰۰ تومان',
     priceEn: 'From 490,000 Tomans',
     whoFa: 'کار کامل‌تر / موزیک‌ویدیو سبک / پروژه سفارشی',
@@ -85,16 +111,18 @@ export const PRICING_PLANS: PricingPlan[] = [
     featuresFa: [
       'دامنه کار هماهنگ می‌شود قبل از شروع',
       'خروجی استاندارد با کیفیت بالا آماده انتشار',
+      'طراحی کاور آرت ۳۰۰۰×۳۰۰۰ پیکسل متناسب کانسپت',
       'زمان تحویل بسته به حجم کار (معمولاً ۲ تا ۳ روز)',
     ],
     featuresEn: [
       'Project scope agreed before start',
       'High-resolution final export ready for release',
+      'High-res 3000x3000px Cover Art matched to concept',
       'Delivery based on scope (typically 2–3 days)',
     ],
     ctaFa: 'شروع سفارش',
     ctaEn: 'Start order',
-    delayClass: 'd2',
+    delayClass: 'd3',
   },
 ];
 
@@ -103,17 +131,30 @@ export const Pricing: React.FC = () => {
 
   return (
     <section className="price-sec" id="pricing" aria-label={isEn ? "Pricing" : "تعرفه‌ها"}>
-      <div className="svc-header" style={{ marginBottom: '40px' }}>
+      <div className="svc-header" style={{ marginBottom: '32px' }}>
         <p className="eyebrow rv">
-          <b>{isEn ? "✦ Pricing" : "✦ تعرفه‌ها"}</b>
+          <b>{isEn ? "✦ Pricing & Plans" : "✦ تعرفه‌ها و پکیج‌ها"}</b>
         </p>
         <h2 className="rv d1">
-          {isEn ? "Clear pricing" : "قیمت‌ها شفاف است"}
+          {isEn ? "Clear, predictable pricing" : "قیمت‌ها شفاف و مشخص است"}
         </h2>
         <p className="lead rv d2">
           {isEn
-            ? "Transparent pricing and straightforward deliverables for music artists and creators."
-            : "تعرفه‌های شفاف و مشخص برای هنرمندان و تولیدکنندگان محتوای موسیقی."}
+            ? "Straightforward deliverables for music artists, producers, and creators with no hidden surprises."
+            : "تعرفه‌های شفاف و خروجی استاندارد برای هنرمندان و تولیدکنندگان محتوای موسیقی."}
+        </p>
+      </div>
+
+      {/* Express Delivery Callout Strip */}
+      <div className="pricing-upsell-strip rv d1" style={{ maxWidth: '840px', margin: '0 auto 32px' }}>
+        <div className="pricing-upsell-badge">
+          <Zap className="w-4 h-4 text-amber-400" />
+          <span>{isEn ? 'Express Rush Option (+50%)' : 'تحویل فوری اکسپرس (+۵۰٪)'}</span>
+        </div>
+        <p className="pricing-upsell-text">
+          {isEn
+            ? 'Need an urgent release under 24–48 hours? Rush delivery is available with +50% fee upon schedule availability.'
+            : 'برای ریلیزهای فوری و زمان‌بندی‌های فشرده: تحویل فوری ۲۴ تا ۴۸ ساعته با هماهنگی و ۵۰٪ هزینه مازاد امکان‌پذیر است.'}
         </p>
       </div>
 
@@ -156,22 +197,38 @@ export const Pricing: React.FC = () => {
         ))}
       </div>
 
+      {/* Trust & Guarantee Highlights */}
+      <div className="pricing-guarantee-strip rv d2" style={{ maxWidth: '840px', margin: '32px auto 0' }}>
+        <div className="guarantee-item">
+          <Clock className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>{isEn ? 'Max 2h response during working hours' : 'پاسخگویی حداکثر ۲ ساعته در ساعات کاری (۱۰ تا ۲۳)'}</span>
+        </div>
+        <div className="guarantee-item">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>{isEn ? '1 revision round included' : '۱ دور اصلاحات و ادیت رایگان'}</span>
+        </div>
+        <div className="guarantee-item">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>{isEn ? 'Master 1080p high bitrate export' : 'فایل مستر کیفیت بالا بدون افت رزولوشن'}</span>
+        </div>
+      </div>
+
       {/* Honest Notes */}
       <div className="price-notes rv d3">
         <p>
           {isEn ? (
             <>
-              • Online collaboration for clients across Iran.<br />
-              • Order directly via website form, Instagram, or Telegram.<br />
-              • Final price starts from these rates and may vary slightly depending on track length and scope.<br />
-              • Cover artwork: Pricing is customized based on concept upon direct review.
+              • Online collaboration for clients across Iran and global creators.<br />
+              • Direct order via website form, Instagram (@thepoo7an), or Telegram.<br />
+              • Final rate starts from these figures and is confirmed upfront before project kick-off.<br />
+              • Cover artwork & identity: available standalone or bundled with reels.
             </>
           ) : (
             <>
-              • همکاری به‌صورت آنلاین است؛ ویژه مشتریان داخل ایران.<br />
-              • ثبت سفارش از طریق فرم سایت، دایرکت اینستاگرام یا تلگرام.<br />
-              • قیمت نهایی بعد از بررسی فایل/مدت آهنگ ممکن است کمی تغییر کند — تعرفه‌ها از این مبالغ شروع می‌شود.<br />
-              • طراحی کاور موزیک: قیمت بر اساس سبک و کانسپت بصری پس از بررسی اعلام می‌شود.
+              • همکاری به‌صورت آنلاین است؛ ویژه هنرمندان سراسر کشور و پروژه‌های بین‌المللی.<br />
+              • ثبت سفارش مستقیم از طریق فرم سایت، دایرکت اینستاگرام یا تلگرام.<br />
+              • قیمت نهایی قبل از شروع پروژه شفاف مشخص می‌شود و تغییری نخواهد داشت.<br />
+              • طراحی کاور موزیک و پکیج‌های ماهانه با تخفیف ویژه همکاری تکرارشونده محاسبه می‌شوند.
             </>
           )}
         </p>

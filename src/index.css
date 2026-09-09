@@ -4510,6 +4510,384 @@ html[data-theme="light"] .testimonial-card:hover {
   white-space: nowrap;
 }
 
+/* ==========================================================================
+   Trust & Social Proof Section Styling (Obsidian & Chrome Design System)
+   ========================================================================== */
+.trust-sec {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 24px 70px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.metric-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  position: relative;
+  box-shadow: var(--shadow);
+}
+
+.metric-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+html[data-theme="light"] .metric-card:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.metric-icon-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--link);
+  margin-bottom: 14px;
+}
+
+html[data-theme="light"] .metric-icon-wrap {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.metric-num {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--txt);
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+  margin-bottom: 8px;
+  background: var(--chrome-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.metric-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--txt);
+  margin-bottom: 4px;
+}
+
+.metric-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Testimonials */
+.testimonials-wrap {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 32px 28px;
+}
+
+html[data-theme="light"] .testimonials-wrap {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.01) 100%);
+}
+
+.testimonials-header {
+  margin-bottom: 24px;
+  text-align: right;
+}
+
+html[dir="ltr"] .testimonials-header {
+  text-align: left;
+}
+
+.testimonials-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--link);
+  background: rgba(41, 151, 255, 0.1);
+  border: 1px solid rgba(41, 151, 255, 0.25);
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 8px;
+}
+
+.testimonials-sub {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.testimonial-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.t-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.t-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+html[data-theme="light"] .t-tag {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.t-quote-icon {
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+.t-quote-text {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--txt);
+  flex: 1;
+  margin-bottom: 18px;
+}
+
+.t-author-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.t-author-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2c2c2e 0%, #1c1c1e 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #f5f5f7;
+}
+
+.t-author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.t-author-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--txt);
+}
+
+.t-author-role {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+/* ==========================================================================
+   Work Category Tabs
+   ========================================================================== */
+.work-cat-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.work-cat-btn {
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.work-cat-btn:hover {
+  color: var(--txt);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.work-cat-btn.active {
+  background: var(--txt);
+  color: var(--bg);
+  border-color: var(--txt);
+  font-weight: 700;
+}
+
+/* 1:1 Cover Art Frame in Work Section */
+.work-frame.square-frame {
+  aspect-ratio: 1 / 1;
+}
+
+.work-frame.square-frame .work-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.work-cat-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(12, 12, 12, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  z-index: 4;
+}
+
+html[dir="rtl"] .work-cat-badge {
+  right: auto;
+  left: 12px;
+}
+
+/* ==========================================================================
+   Pricing Upsells & Response Guarantee
+   ========================================================================== */
+.pricing-upsell-banner {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(41, 151, 255, 0.3);
+  border-radius: 16px;
+  padding: 18px 24px;
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pricing-upsell-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pricing-upsell-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(41, 151, 255, 0.15);
+  color: var(--link);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pricing-upsell-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--txt);
+  margin-bottom: 2px;
+}
+
+.pricing-upsell-desc {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.response-guarantee-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #10b981;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 100px;
+  margin-top: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 520px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  .metric-card {
+    padding: 18px;
+  }
+  .trust-sec {
+    padding: 30px 16px 50px;
+  }
+  .testimonials-wrap {
+    padding: 22px 16px;
+  }
+  .pricing-upsell-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 @media (max-width: 860px) {
   .standards-stats,
   .testimonials-stats {
