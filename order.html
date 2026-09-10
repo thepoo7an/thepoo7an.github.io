@@ -311,6 +311,8 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
 
   <div class="form-wrap">
     <form class="form-card rv d2" id="orderForm" novalidate>
+      <!-- Anti-Spam Bot Honeypot -->
+      <input type="text" name="hp_field" id="hp_field" style="display:none !important; opacity:0; position:absolute; left:-9999px;" tabindex="-1" autocomplete="off" aria-hidden="true">
       <h2 class="form-title">مشخصات سفارش</h2>
       <p class="form-lead">اطلاعات اولیه اثر را بنویسید تا بررسی و هماهنگی دقیق‌تر انجام شود.</p>
 
@@ -662,8 +664,21 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
 
   /* Submit handler helper */
   var isSubmitting = false;
+  var lastSubmitTime = 0;
   async function handleOrderSubmit(targetPlatform) {
     if (isSubmitting) return;
+
+    // Anti-spam bot honeypot validation
+    var hp = document.getElementById('hp_field');
+    if (hp && hp.value) {
+      return; // Silent discard for automated bot submissions
+    }
+
+    var now = Date.now();
+    if (now - lastSubmitTime < 2500) {
+      return; // Prevent accidental rapid double-clicking
+    }
+    lastSubmitTime = now;
 
     var name = normalizeText(document.getElementById('name').value);
     var contact = normalizeText(document.getElementById('contact').value);

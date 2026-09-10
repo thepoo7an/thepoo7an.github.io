@@ -26,7 +26,7 @@ export const getMeasurementId = (): string => {
     const metaTag = document.querySelector('meta[name="ga-measurement-id"]')?.getAttribute('content')?.trim();
     if (metaTag) return metaTag;
   }
-  return '';
+  return 'G-DR4R3304S3';
 };
 
 export const initAnalytics = (): void => {

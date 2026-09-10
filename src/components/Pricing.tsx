@@ -153,8 +153,8 @@ export const Pricing: React.FC = () => {
         </div>
         <p className="pricing-upsell-text">
           {isEn
-            ? 'Need an urgent release under 24–48 hours? Rush delivery is available with +50% fee upon schedule availability.'
-            : 'برای ریلیزهای فوری و زمان‌بندی‌های فشرده: تحویل فوری ۲۴ تا ۴۸ ساعته با هماهنگی و ۵۰٪ هزینه مازاد امکان‌پذیر است.'}
+            ? 'Urgent releases and full video edits — priority rendering and delivery under 12 hours or same-day (including off-hours), +50%.'
+            : 'تحویل فوری برای پروژه‌های سنگین و ادیت کامل — رندر و تحویل زیر ۱۲ ساعت یا همان روز (حتی در ساعت‌های غیرکاری)، +۵۰٪'}
         </p>
       </div>
 
