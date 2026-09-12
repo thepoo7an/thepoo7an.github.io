@@ -105,7 +105,9 @@ export const trackEvent = (
   }
 };
 
-export const trackContactClick = (channel: 'instagram' | 'telegram' | 'order_page' | 'sticky_cta'): void => {
+export const trackContactClick = (
+  channel: 'instagram' | 'telegram' | 'order_page' | 'sticky_cta' | 'youtube' | 'tiktok'
+): void => {
   trackEvent('contact_channel_click', {
     channel,
     page_location: typeof window !== 'undefined' ? window.location.hash || '#home' : '',
@@ -116,6 +118,34 @@ export const trackWorkPreview = (workId: string, action: 'play' | 'pause' | 'lig
   trackEvent('portfolio_interaction', {
     work_id: workId,
     action_type: action,
+  });
+};
+
+export const trackStyleGalleryView = (): void => {
+  trackEvent('style_gallery_view', {
+    page_location: typeof window !== 'undefined' ? window.location.href : '',
+  });
+};
+
+export const trackStyleSelected = (styleId: string, styleName: string): void => {
+  trackEvent('style_selected', {
+    style_id: styleId,
+    style_name: styleName,
+  });
+};
+
+export const trackSafeZoneToggled = (enabled: boolean, workId?: string): void => {
+  trackEvent('safe_zone_toggled', {
+    enabled,
+    work_id: workId || '',
+  });
+};
+
+export const trackPackageEstimated = (planId: string, durationChoice: string, assetsChoice: string): void => {
+  trackEvent('package_estimated', {
+    plan_id: planId,
+    duration_choice: durationChoice,
+    assets_choice: assetsChoice,
   });
 };
 

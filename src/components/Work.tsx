@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Play, Pause, Volume2, VolumeX, Maximize2, X } from 'lucide-react';
-import { trackWorkPreview } from '../utils/analytics';
+import { Play, Pause, Volume2, VolumeX, Maximize2, X, Smartphone, ShieldCheck } from 'lucide-react';
+import { trackWorkPreview, trackSafeZoneToggled } from '../utils/analytics';
 import { WorkItem, WORK_ITEMS } from '../data/works';
+import { InstagramSafeZoneOverlay } from './InstagramSafeZoneOverlay';
+import { YouTubeWorkCard } from './YouTubeWorkCard';
+import { YouTubeVideoData } from '../data/youtube';
+import { TikTokWorkCard } from './TikTokWorkCard';
+import { TikTokVideo } from '../data/tiktok';
 
 interface WorkCardProps {
   key?: React.Key;
@@ -352,6 +357,46 @@ export const Work: React.FC = () => {
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const [lightboxPlaying, setLightboxPlaying] = useState(false);
   const [lightboxMuted, setLightboxMuted] = useState(true);
+  const [showSafeZone, setShowSafeZone] = useState(false);
+
+  const handleOpenYouTubeLightbox = (ytData: YouTubeVideoData, triggerEl: HTMLButtonElement | null) => {
+    lastActiveTriggerRef.current = triggerEl;
+    setActiveItem({
+      id: `youtube-${ytData.videoId}`,
+      category: 'reels',
+      primarySrc: ytData.maxresThumbnailUrl || ytData.thumbnailUrl,
+      fallbacks: [ytData.thumbnailUrl],
+      labelFa: ytData.title,
+      labelEn: ytData.title,
+      specFa: 'یوتیوب شورتز • @thepoo7an',
+      specEn: 'YouTube Shorts • @thepoo7an',
+      isYouTube: true,
+      youtubeId: ytData.videoId,
+      youtubeUrl: ytData.url,
+      youtubeEmbedUrl: ytData.embedUrl,
+    });
+    setLightboxPlaying(true);
+    setShowSafeZone(false);
+  };
+
+  const handleOpenTikTokLightbox = (ttData: TikTokVideo, triggerEl: HTMLButtonElement | null) => {
+    lastActiveTriggerRef.current = triggerEl;
+    setActiveItem({
+      id: `tiktok-${ttData.id}`,
+      category: 'reels',
+      primarySrc: ttData.thumbnailUrl || '',
+      fallbacks: [],
+      labelFa: ttData.title || 'ویدیوی تیک‌تاک',
+      labelEn: ttData.title || 'TikTok Video',
+      specFa: 'تیک‌تاک • @thepoo7an',
+      specEn: 'TikTok • @thepoo7an',
+      isTikTok: true,
+      tiktokId: ttData.id,
+      tiktokUrl: ttData.url,
+    });
+    setLightboxPlaying(true);
+    setShowSafeZone(false);
+  };
 
   const displayedItems = activeCategory === 'all'
     ? WORK_ITEMS
@@ -360,6 +405,7 @@ export const Work: React.FC = () => {
   const closeModal = useCallback(() => {
     setActiveItem(null);
     setLightboxPlaying(false);
+    setShowSafeZone(false);
     // Return focus to the originating card trigger button
     if (lastActiveTriggerRef.current) {
       lastActiveTriggerRef.current.focus();
@@ -455,49 +501,115 @@ export const Work: React.FC = () => {
     setLightboxMuted(next);
   };
 
+  const toggleSafeZone = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const next = !showSafeZone;
+    setShowSafeZone(next);
+    trackSafeZoneToggled(next, activeItem?.id);
+  };
+
+  const totalCount = WORK_ITEMS.length + 2; // includes YouTube and TikTok
+  const reelsCount = WORK_ITEMS.filter((it) => it.category === 'reels').length + 2;
+  const coverCount = WORK_ITEMS.filter((it) => it.category === 'cover').length;
+
   return (
     <section className="work-sec" id="work" aria-label={isEn ? 'Selected output' : 'نمونه خروجی'}>
       <div className="work-header">
         <h2 className="rv">
           {isEn ? 'Selected output' : 'نمونه خروجی'}
         </h2>
-        <div className="work-cat-tabs rv d1" role="tablist" aria-label={isEn ? "Filter work samples" : "فیلتر دسته‌بندی نمونه‌کارها"}>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeCategory === 'all'}
-            className={`work-cat-btn ${activeCategory === 'all' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('all')}
-          >
-            {isEn ? 'All Works (4)' : 'همه نمونه‌ها (۴)'}
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeCategory === 'reels'}
-            className={`work-cat-btn ${activeCategory === 'reels' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('reels')}
-          >
-            {isEn ? 'Reels & Kinetic (3)' : 'تایپوگرافی و ریلز (۳)'}
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeCategory === 'cover'}
-            className={`work-cat-btn ${activeCategory === 'cover' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('cover')}
-          >
-            {isEn ? 'Cover Art (1)' : 'کاور موزیک (۱)'}
-          </button>
-        </div>
+        {coverCount > 0 && (
+          <div className="work-cat-tabs rv d1" role="tablist" aria-label={isEn ? "Filter work samples" : "فیلتر دسته‌بندی نمونه‌کارها"}>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeCategory === 'all'}
+              className={`work-cat-btn ${activeCategory === 'all' ? 'active' : ''}`}
+              onClick={() => setActiveCategory('all')}
+            >
+              {isEn ? `All Works (${totalCount})` : `همه نمونه‌ها (${totalCount})`}
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeCategory === 'reels'}
+              className={`work-cat-btn ${activeCategory === 'reels' ? 'active' : ''}`}
+              onClick={() => setActiveCategory('reels')}
+            >
+              {isEn ? `Reels & Kinetic (${reelsCount})` : `تایپوگرافی و ریلز (${reelsCount})`}
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeCategory === 'cover'}
+              className={`work-cat-btn ${activeCategory === 'cover' ? 'active' : ''}`}
+              onClick={() => setActiveCategory('cover')}
+            >
+              {isEn ? `Cover Art (${coverCount})` : `کاور موزیک (${coverCount})`}
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="work-grid">
-        {displayedItems.map((item, idx) => (
+        {/* First Work Sample */}
+        {displayedItems.length > 0 && (
+          <WorkCard
+            key={displayedItems[0].id}
+            item={displayedItems[0]}
+            idx={0}
+            isEn={isEn}
+            onOpenLightbox={(selected, triggerEl) => {
+              lastActiveTriggerRef.current = triggerEl;
+              setActiveItem(selected);
+              setLightboxPlaying(true);
+              setLightboxMuted(true);
+              trackWorkPreview(selected.id, 'lightbox');
+            }}
+          />
+        )}
+
+        {/* Latest YouTube Release (Positioned directly alongside first sample) */}
+        {(activeCategory === 'all' || activeCategory === 'reels') && (
+          <YouTubeWorkCard
+            key="youtube-latest-card"
+            isEn={isEn}
+            onOpenLightbox={handleOpenYouTubeLightbox}
+          />
+        )}
+
+        {/* Second Work Sample */}
+        {displayedItems.length > 1 && (
+          <WorkCard
+            key={displayedItems[1].id}
+            item={displayedItems[1]}
+            idx={2}
+            isEn={isEn}
+            onOpenLightbox={(selected, triggerEl) => {
+              lastActiveTriggerRef.current = triggerEl;
+              setActiveItem(selected);
+              setLightboxPlaying(true);
+              setLightboxMuted(true);
+              trackWorkPreview(selected.id, 'lightbox');
+            }}
+          />
+        )}
+
+        {/* TikTok Channel Showcase (Positioned alongside second sample) */}
+        {(activeCategory === 'all' || activeCategory === 'reels') && (
+          <TikTokWorkCard
+            key="tiktok-showcase-card"
+            isEn={isEn}
+            onOpenLightbox={handleOpenTikTokLightbox}
+          />
+        )}
+
+        {/* Remaining Work Samples */}
+        {displayedItems.slice(2).map((item, idx) => (
           <WorkCard
             key={item.id}
             item={item}
-            idx={idx}
+            idx={idx + 4}
             isEn={isEn}
             onOpenLightbox={(selected, triggerEl) => {
               lastActiveTriggerRef.current = triggerEl;
@@ -535,7 +647,25 @@ export const Work: React.FC = () => {
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
             <div className={`work-lightbox-frame ${activeItem.category === 'cover' ? 'square-frame' : ''}`}>
-              {activeItem.videoSrc ? (
+              {activeItem.isTikTok ? (
+                <iframe
+                  src={`https://www.tiktok.com/embed/v2/${activeItem.tiktokId}`}
+                  title={isEn ? activeItem.labelEn : activeItem.labelFa}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="work-lightbox-video"
+                  style={{ border: 0, width: '100%', height: '100%' }}
+                />
+              ) : activeItem.isYouTube ? (
+                <iframe
+                  src={`${activeItem.youtubeEmbedUrl || `https://www.youtube-nocookie.com/embed/${activeItem.youtubeId}`}?autoplay=1&rel=0&modestbranding=1`}
+                  title={isEn ? activeItem.labelEn : activeItem.labelFa}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="work-lightbox-video"
+                  style={{ border: 0, width: '100%', height: '100%' }}
+                />
+              ) : activeItem.videoSrc ? (
                 <video
                   ref={lightboxVideoRef}
                   src={activeItem.videoSrc}
@@ -558,10 +688,51 @@ export const Work: React.FC = () => {
                   className="work-lightbox-img"
                 />
               )}
+
+              {/* Instagram Reels Safe Zone Overlay */}
+              {showSafeZone && activeItem.category !== 'cover' && !activeItem.isYouTube && (
+                <InstagramSafeZoneOverlay />
+              )}
             </div>
 
             {/* Lightbox Control Bar */}
-            {activeItem.videoSrc && (
+            {activeItem.isTikTok ? (
+              <div className="work-lightbox-bar">
+                <a
+                  href={activeItem.tiktokUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="work-lightbox-btn tiktok-direct-lightbox-btn"
+                  title={isEn ? 'Watch on TikTok' : 'مشاهده در تیک‌تاک'}
+                  aria-label={isEn ? 'Watch on TikTok' : 'مشاهده در تیک‌تاک'}
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.49 6.31 6.31 0 0 0 1.86-4.49V8.71a8.29 8.29 0 0 0 4.91 1.6V6.86a4.83 4.83 0 0 1-1-.17z" />
+                  </svg>
+                  <span style={{ fontSize: '13px', fontWeight: 600 }}>
+                    {isEn ? 'Watch on TikTok' : 'مشاهده در تیک‌تاک'}
+                  </span>
+                </a>
+              </div>
+            ) : activeItem.isYouTube ? (
+              <div className="work-lightbox-bar">
+                <a
+                  href={activeItem.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="work-lightbox-btn yt-direct-lightbox-btn"
+                  title={isEn ? 'Watch on YouTube' : 'مشاهده مستقیم در یوتیوب'}
+                  aria-label={isEn ? 'Watch on YouTube' : 'مشاهده مستقیم در یوتیوب'}
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                  <span style={{ fontSize: '13px', fontWeight: 600 }}>
+                    {isEn ? 'Watch on YouTube Shorts' : 'مشاهده در یوتیوب شورتز'}
+                  </span>
+                </a>
+              </div>
+            ) : activeItem.videoSrc ? (
               <div className="work-lightbox-bar">
                 <button
                   type="button"
@@ -579,6 +750,33 @@ export const Work: React.FC = () => {
                 >
                   {lightboxMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
                 </button>
+                {activeItem.category !== 'cover' && (
+                  <button
+                    type="button"
+                    className={`work-lightbox-btn safezone-toggle-btn ${showSafeZone ? 'active' : ''}`}
+                    onClick={toggleSafeZone}
+                    aria-pressed={showSafeZone}
+                    title={isEn ? "Toggle Reels Safe Zone Simulator" : "شبیه‌ساز محدوده امن اینستاگرام ریلز"}
+                    aria-label={isEn ? "Toggle Reels Safe Zone Simulator" : "شبیه‌ساز محدوده امن اینستاگرام ریلز"}
+                  >
+                    <Smartphone className="w-4 h-4" />
+                    <span className="safezone-btn-text">
+                      {isEn ? "Safe Zone" : "Safe Zone"}
+                    </span>
+                  </button>
+                )}
+              </div>
+            ) : null}
+
+            {/* Safe Zone Active Feedback Toast */}
+            {showSafeZone && activeItem.category !== 'cover' && (
+              <div className="safezone-active-hint" role="status">
+                <ShieldCheck className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+                <span>
+                  {isEn
+                    ? "Safe Zone Active: Typography tested outside Like/Comment/Caption areas."
+                    : "شبیه‌ساز فعال است: متن لیریک کاملاً خارج از پوشش دکمه‌ها و کپشن قرار دارد."}
+                </span>
               </div>
             )}
 

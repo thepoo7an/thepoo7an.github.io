@@ -10,6 +10,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { id: 'work', href: '#work', labelFa: 'نمونه', labelEn: 'Work' },
+  { id: 'styles', href: '#styles', labelFa: 'سبک‌ها', labelEn: 'Styles' },
   { id: 'services', href: '#services', labelFa: 'خدمات', labelEn: 'Services' },
   { id: 'process', href: '#process', labelFa: 'مراحل', labelEn: 'Process' },
   { id: 'pricing', href: '#pricing', labelFa: 'تعرفه‌ها', labelEn: 'Pricing' },

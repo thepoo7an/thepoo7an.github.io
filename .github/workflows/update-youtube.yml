@@ -1,0 +1,40 @@
+name: Auto-Sync YouTube & TikTok Channels
+
+on:
+  schedule:
+    # Run every 6 hours automatically
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-socials:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch latest video from YouTube RSS
+        run: node scripts/fetch-latest-youtube.js
+
+      - name: Fetch latest profile & stats from TikTok
+        run: node scripts/fetch-tiktok.js
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/latest-youtube.json public/data/latest-youtube.json src/data/tiktok.json public/data/tiktok.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(media): auto-sync YouTube & TikTok releases"
+            git push
+          else
+            echo "No new media updates detected. Already up to date."
+          fi

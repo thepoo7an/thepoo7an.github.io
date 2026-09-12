@@ -248,6 +248,15 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
 .rv.in{opacity:1;transform:none}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}
 
+/* ---------- Selected Style Badge Banner ---------- */
+.style-badge-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(41,151,255,.08);border:1px solid rgba(41,151,255,.24);border-radius:12px;padding:10px 16px;margin-bottom:20px}
+html[data-theme="light"] .style-badge-banner{background:rgba(0,113,227,.06);border-color:rgba(0,113,227,.20)}
+.style-badge-content{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--txt);flex-wrap:wrap}
+.style-badge-tag{color:var(--muted);font-weight:600}
+.style-badge-name{color:var(--link);font-weight:700}
+.style-badge-clear{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--muted);cursor:pointer;transition:all .2s ease}
+.style-badge-clear:hover{background:var(--err);color:#fff;border-color:var(--err)}
+
 /* ---------- Responsive ---------- */
 @media(max-width:760px){
   .grid-2{grid-template-columns:1fr}
@@ -316,6 +325,17 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
       <h2 class="form-title">مشخصات سفارش</h2>
       <p class="form-lead">اطلاعات اولیه اثر را بنویسید تا بررسی و هماهنگی دقیق‌تر انجام شود.</p>
 
+      <!-- Selected Visual Style Direction Indicator (from ?style=) -->
+      <div id="selectedStyleBadge" class="style-badge-banner" style="display:none;" role="status">
+        <div class="style-badge-content">
+          <span class="style-badge-tag">🎨 سبک بصری انتخاب‌شده:</span>
+          <strong id="selectedStyleName" class="style-badge-name"></strong>
+        </div>
+        <button type="button" id="clearStyleBtn" class="style-badge-clear" aria-label="حذف سبک انتخابی">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
       <div class="grid-2">
         <div class="field" id="f-name">
           <label for="name">نام / نام هنری</label>
@@ -336,6 +356,7 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
             <option value="">انتخاب کنید…</option>
             <option value="تایپوگرافی لیریک موزیک (۱۵ الی ۲۰ ثانیه)">تایپوگرافی لیریک موزیک (۱۵–۲۰ ثانیه / ۱ روزه)</option>
             <option value="ادیت ویدیو + تایپوگرافی لیریک">ادیت ویدیو + تایپوگرافی لیریک (۲–۳ روزه)</option>
+            <option value="پکیج ماهانه (۴ ریلز در ماه)">پکیج ماهانه (۴ ریلز در ماه)</option>
             <option value="پروژه ویژه / سفارشی">پروژه ویژه / سفارشی</option>
             <option value="طراحی کاور موزیک">طراحی کاور موزیک</option>
           </select>
@@ -516,45 +537,72 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
     syncMeta();
   });
 
-  /* Plan query preselection */
+  /* Plan query preselection & Style query parameter */
+  window.selectedStyleDirection = '';
   try {
     var urlParams = new URLSearchParams(window.location.search);
     var plan = urlParams.get('plan') || urlParams.get('type');
     var typeSelect = document.getElementById('type');
-    var detectedPlanName = '';
     if (plan && typeSelect) {
       var p = plan.toLowerCase();
       if (p === 'base' || p === 'lyric' || p === 'typography') {
         typeSelect.value = 'تایپوگرافی لیریک موزیک (۱۵ الی ۲۰ ثانیه)';
-        detectedPlanName = 'Lyric Typography';
       } else if (p === 'pro' || p === 'edit' || p === 'video') {
         typeSelect.value = 'ادیت ویدیو + تایپوگرافی لیریک';
-        detectedPlanName = 'Video Edit + Lyric Typography';
+      } else if (p === 'monthly' || p === 'retainer') {
+        typeSelect.value = 'پکیج ماهانه (۴ ریلز در ماه)';
       } else if (p === 'special' || p === 'vip' || p === 'custom') {
         typeSelect.value = 'پروژه ویژه / سفارشی';
-        detectedPlanName = 'Special Project';
       } else if (p === 'cover' || p === 'artwork') {
         typeSelect.value = 'طراحی کاور موزیک';
-        detectedPlanName = 'Music Cover Design';
       }
-      if (detectedPlanName && window.gtag) {
+    }
+
+    var styleParam = urlParams.get('style');
+    var styleBadgeWrap = document.getElementById('selectedStyleBadge');
+    var styleNameEl = document.getElementById('selectedStyleName');
+    var clearStyleBtn = document.getElementById('clearStyleBtn');
+    if (styleParam) {
+      var s = styleParam.toLowerCase();
+      var styleMap = {
+        'chrome': 'کروم متالیک سه‌بعدی (3D Chrome)',
+        'cinematic': 'سینمایی و نئوکلاسیک (Cinematic)',
+        'minimal': 'مینیمال و مونوکروم (Minimalist)',
+        'neon': 'نئون و سایبر (Cyber Neon)',
+        'glitch': 'گلیچ و اعوجاج دیجیتال (Cyber Glitch)',
+        'dark': 'دارک و اتمسفریک (Dark Atmospheric)'
+      };
+      var styleLabel = styleMap[s] || styleParam;
+      window.selectedStyleDirection = styleLabel;
+      if (styleBadgeWrap && styleNameEl) {
+        styleNameEl.textContent = styleLabel;
+        styleBadgeWrap.style.display = 'flex';
+      }
+    }
+    if (clearStyleBtn && styleBadgeWrap) {
+      clearStyleBtn.addEventListener('click', function() {
+        window.selectedStyleDirection = '';
+        styleBadgeWrap.style.display = 'none';
+      });
+    }
+
+    // Fire order_started strictly when the user actually begins interacting with the form
+    var hasFiredOrderStarted = false;
+    function triggerOrderStartedOnce(source) {
+      if (hasFiredOrderStarted) return;
+      hasFiredOrderStarted = true;
+      if (window.gtag) {
         window.gtag('event', 'order_started', {
-          plan_id: p,
-          plan_name: detectedPlanName,
-          source: 'url_parameter'
+          plan_name: typeSelect ? typeSelect.value : '',
+          style_direction: window.selectedStyleDirection || '',
+          source: source || 'form_interaction'
         });
       }
     }
-    if (typeSelect) {
-      typeSelect.addEventListener('change', function() {
-        if (typeSelect.value && window.gtag) {
-          window.gtag('event', 'order_started', {
-            plan_name: typeSelect.value,
-            source: 'form_dropdown_selection'
-          });
-        }
-      });
-    }
+    document.querySelectorAll('#orderForm input, #orderForm textarea, #orderForm select').forEach(function(el){
+      el.addEventListener('focus', function(){ triggerOrderStartedOnce('field_focus'); }, {once: true});
+      el.addEventListener('input', function(){ triggerOrderStartedOnce('field_input'); }, {once: true});
+    });
   } catch(e) {}
 
   /* Nav scroll */
@@ -707,6 +755,7 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
       + '👤 نام / نام هنری: ' + name + '\n'
       + '📮 راه ارتباطی: ' + contact + '\n'
       + '🎬 نوع خدمت: ' + type + '\n'
+      + (window.selectedStyleDirection ? '🎨 سبک بصری انتخابی: ' + window.selectedStyleDirection + '\n' : '')
       + (track ? '🎵 نام قطعه / پروژه: ' + track + '\n' : '')
       + (lyrics ? '📝 لیریک (متن ترانه):\n' + lyrics + '\n\n' : '')
       + '💡 کانسپت و توضیحات:\n' + desc + '\n'

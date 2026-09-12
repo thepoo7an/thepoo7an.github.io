@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { PreFlightChecklist } from './PreFlightChecklist';
 
 interface ProcessStep {
   id: string;
@@ -108,6 +109,9 @@ export const Process: React.FC = () => {
           </article>
         ))}
       </div>
+
+      {/* Client Pre-Flight Checklist (Items needed before ordering) */}
+      <PreFlightChecklist />
     </section>
   );
 };
