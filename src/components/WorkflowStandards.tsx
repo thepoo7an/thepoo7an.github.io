@@ -51,8 +51,10 @@ export const WorkflowStandards: React.FC = () => {
       id="standards"
       aria-label={isEn ? 'Quality standards & workflow commitments' : 'تضمین کیفیت و استانداردهای همکاری'}
     >
-      {/* Backward-compatibility anchor for legacy #testimonials links */}
+      {/* Backward-compatibility anchors for legacy hash links */}
       <span id="testimonials" className="sr-only" aria-hidden="true" />
+      <span id="differentiation" className="sr-only" aria-hidden="true" />
+      <span id="styles" className="sr-only" aria-hidden="true" />
 
       <div className="svc-header" style={{ marginBottom: '36px' }}>
         <p className="eyebrow rv">

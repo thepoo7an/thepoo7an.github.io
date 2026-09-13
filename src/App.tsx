@@ -6,17 +6,14 @@ import { LanguageToggle } from './components/LanguageToggle';
 import { MotionToggle } from './components/MotionToggle';
 import { Hero } from './components/Hero';
 import { Work } from './components/Work';
-import { StyleGallery } from './components/StyleGallery';
 import { Services } from './components/Services';
 import { Process } from './components/Process';
 import { Pricing } from './components/Pricing';
-import { Differentiation } from './components/Differentiation';
 import { WorkflowStandards } from './components/WorkflowStandards';
 import { FAQ } from './components/FAQ';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { StickyMobileCta } from './components/StickyMobileCta';
-import { ChromeMeridian } from './components/ChromeMeridian';
 import { StudioTransport } from './components/StudioTransport';
 import { TwoFacesNav } from './components/TwoFacesNav';
 import { initAnalytics, trackSectionView } from './utils/analytics';
@@ -127,7 +124,6 @@ export const AppContent: React.FC = () => {
           <div className="nav-act">
             <ThemeToggle />
             <LanguageToggle />
-            <MotionToggle />
             <a className="nav-cta" href="./order.html">
               {isEn ? 'Start Order' : 'ثبت سفارش'}
             </a>
@@ -149,20 +145,11 @@ export const AppContent: React.FC = () => {
         <a href="#work" onClick={closeMenu}>
           {isEn ? 'Work' : 'نمونه'}
         </a>
-        <a href="#styles" onClick={closeMenu}>
-          {isEn ? 'Styles' : 'سبک‌ها'}
-        </a>
         <a href="#services" onClick={closeMenu}>
           {isEn ? 'Services' : 'خدمات'}
         </a>
-        <a href="#process" onClick={closeMenu}>
-          {isEn ? 'Process' : 'مراحل همکاری'}
-        </a>
         <a href="#pricing" onClick={closeMenu}>
           {isEn ? 'Pricing' : 'تعرفه‌ها'}
-        </a>
-        <a href="#differentiation" onClick={closeMenu}>
-          {isEn ? 'Why Choose Us' : 'چرا انتخاب ما؟'}
         </a>
         <a href="#contact" onClick={closeMenu}>
           {isEn ? 'Contact Me' : 'ارتباط با من'}
@@ -178,11 +165,9 @@ export const AppContent: React.FC = () => {
       <main id="main">
         <Hero heroImgRef={heroImgRef} />
         <Work />
-        <StyleGallery />
         <Services />
         <Process />
         <Pricing />
-        <Differentiation />
         <WorkflowStandards />
         <FAQ />
         <Contact />
@@ -198,7 +183,6 @@ export const App: React.FC = () => {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <ChromeMeridian />
         <AppContent />
       </LanguageProvider>
     </ThemeProvider>

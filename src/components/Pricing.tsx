@@ -2,7 +2,6 @@ import React from 'react';
 import { Zap, CheckCircle2, Clock } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { trackOrderStarted } from '../utils/analytics';
-import { PackageMatcher } from './PackageMatcher';
 
 export interface PricingPlan {
   id: string;
@@ -197,9 +196,6 @@ export const Pricing: React.FC = () => {
           </article>
         ))}
       </div>
-
-      {/* Interactive Package Matcher & Scope Estimator */}
-      <PackageMatcher />
 
       {/* Trust & Guarantee Highlights */}
       <div className="pricing-guarantee-strip rv d2" style={{ maxWidth: '840px', margin: '32px auto 0' }}>

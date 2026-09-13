@@ -77,7 +77,7 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
             <img
               id="heroImg"
               ref={heroImgRef}
-              src="./images/portfolio/sample-1.png"
+              src="./images/portfolio/sample-1.webp"
               alt={isEn ? "Sample 9:16 Reels output" : "نمونه خروجی ریلز ۹:۱۶"}
               width={360}
               height={640}
