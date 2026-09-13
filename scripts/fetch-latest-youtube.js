@@ -65,9 +65,22 @@ async function fetchLatestVideo() {
 
   console.log('Successfully extracted video data:', videoData);
 
+  const primaryFilePath = path.resolve(process.cwd(), 'src/data/latest-youtube.json');
+  if (fs.existsSync(primaryFilePath)) {
+    try {
+      const existing = JSON.parse(fs.readFileSync(primaryFilePath, 'utf-8'));
+      if (existing.videoId === videoData.videoId && existing.title === videoData.title) {
+        console.log(`YouTube video ${videoId} is already up to date. Skipping disk write.`);
+        return;
+      }
+    } catch {
+      // If corrupt, proceed to overwrite
+    }
+  }
+
   // Write to src/data/latest-youtube.json and public/data/latest-youtube.json
   const pathsToWrite = [
-    path.resolve(process.cwd(), 'src/data/latest-youtube.json'),
+    primaryFilePath,
     path.resolve(process.cwd(), 'public/data/latest-youtube.json'),
   ];
 

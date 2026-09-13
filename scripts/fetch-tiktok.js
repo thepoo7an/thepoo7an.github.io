@@ -181,8 +181,28 @@ async function fetchTikTokProfile() {
     videoCount: tiktokData.videos.length,
   });
 
+  const primaryFilePath = path.resolve(process.cwd(), 'src/data/tiktok.json');
+  if (fs.existsSync(primaryFilePath)) {
+    try {
+      const existing = JSON.parse(fs.readFileSync(primaryFilePath, 'utf-8'));
+      const sameStats =
+        existing.stats?.followers === tiktokData.stats.followers &&
+        existing.stats?.likes === tiktokData.stats.likes &&
+        existing.stats?.videos === tiktokData.stats.videos;
+      const sameVideoCount = (existing.videos?.length || 0) === tiktokData.videos.length;
+      const sameFirstVideo = existing.videos?.[0]?.id === tiktokData.videos?.[0]?.id;
+
+      if (sameStats && sameVideoCount && sameFirstVideo) {
+        console.log('TikTok profile & videos are already up to date. Skipping disk write.');
+        return;
+      }
+    } catch {
+      // If corrupt, proceed to overwrite
+    }
+  }
+
   const pathsToWrite = [
-    path.resolve(process.cwd(), 'src/data/tiktok.json'),
+    primaryFilePath,
     path.resolve(process.cwd(), 'public/data/tiktok.json'),
   ];
 

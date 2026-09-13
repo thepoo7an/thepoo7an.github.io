@@ -1,7 +1,7 @@
 {
   "name": "thepoo7an-site",
   "version": "1.0.0",
-  "private": false,
+  "private": true,
   "description": "Official website & portfolio for THEPOO7AN (Pooyan Karimi) — Music Lyric Typography, Video Editing & Creative Direction",
   "homepage": "https://thepoo7an.github.io",
   "repository": {

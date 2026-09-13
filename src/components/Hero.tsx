@@ -73,12 +73,12 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
       <div className="hero-frame-wrap rv d3">
         <div className="hero-reel-frame">
           <picture>
-            <source type="image/webp" srcSet="./images/portfolio/sample-1.webp" />
+            <source type="image/webp" srcSet="./images/portfolio/instagram/DbgAe6cNsdr.webp" />
             <img
               id="heroImg"
               ref={heroImgRef}
-              src="./images/portfolio/sample-1.webp"
-              alt={isEn ? "Sample 9:16 Reels output" : "نمونه خروجی ریلز ۹:۱۶"}
+              src="./images/portfolio/instagram/DbgAe6cNsdr.webp"
+              alt={isEn ? "Live 9:16 Reels output" : "نمونه خروجی ریلز ۹:۱۶"}
               width={360}
               height={640}
               fetchPriority="high"

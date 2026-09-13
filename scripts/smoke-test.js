@@ -52,11 +52,11 @@ if (!fs.existsSync(orderHtmlPath)) {
 console.log('✅ PASS: Standalone order form dist/order.html confirmed');
 
 // Test 5: Check critical portfolio asset existence
-const coverAssetPath = path.join(distDir, 'images', 'portfolio', 'cover-1.webp');
-if (!fs.existsSync(coverAssetPath)) {
-  console.warn('⚠️ WARNING: dist/images/portfolio/cover-1.webp not found, checking fallback...');
+const reelAssetPath = path.join(distDir, 'images', 'portfolio', 'instagram', 'DbgAe6cNsdr.webp');
+if (!fs.existsSync(reelAssetPath)) {
+  console.warn('⚠️ WARNING: dist/images/portfolio/instagram/DbgAe6cNsdr.webp not found, checking fallback...');
 } else {
-  console.log('✅ PASS: 1:1 Cover Art asset confirmed');
+  console.log('✅ PASS: Authentic 9:16 Instagram Reel asset confirmed');
 }
 
 console.log('🎉 All Smoke Tests Passed Successfully!');

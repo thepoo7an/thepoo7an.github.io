@@ -17,17 +17,20 @@ const LanguageContext = React.createContext<LanguageContextType>({
 });
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [lang, setLangState] = React.useState<Language>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const saved = localStorage.getItem('app_lang');
-        return saved === 'en' ? 'en' : 'fa';
-      } catch {
-        return 'fa';
+  // Always initialize to 'fa' for deterministic SSR / hydration matching
+  const [lang, setLangState] = React.useState<Language>('fa');
+
+  // Hydrate client-side preference safely after initial render
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem('app_lang');
+      if (saved === 'en') {
+        setLangState('en');
       }
+    } catch {
+      // ignore
     }
-    return 'fa';
-  });
+  }, []);
 
   const setLang = (newLang: Language) => {
     setLangState(newLang);

@@ -1,369 +1,75 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Play, Pause, Volume2, VolumeX, Maximize2, X, Smartphone, ShieldCheck } from 'lucide-react';
-import { trackWorkPreview, trackSafeZoneToggled } from '../utils/analytics';
-import { WorkItem, WORK_ITEMS } from '../data/works';
-import { InstagramSafeZoneOverlay } from './InstagramSafeZoneOverlay';
+import { WorkItem } from '../data/works';
+import { WorkLightbox } from './WorkLightbox';
 import { YouTubeWorkCard } from './YouTubeWorkCard';
 import { YouTubeVideoData } from '../data/youtube';
 import { TikTokWorkCard } from './TikTokWorkCard';
 import { TikTokVideo } from '../data/tiktok';
 import { InstagramWorkCard } from './InstagramWorkCard';
-import { InstagramReel } from '../data/instagram';
-
-interface WorkCardProps {
-  key?: React.Key;
-  item: WorkItem;
-  idx: number;
-  isEn: boolean;
-  onOpenLightbox: (item: WorkItem, triggerEl: HTMLButtonElement | null) => void;
-}
-
-function WorkCard({ item, idx, isEn, onOpenLightbox }: WorkCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
-  const [progress, setProgress] = useState(0);
-  const [videoSource, setVideoSource] = useState(item.videoSrc);
-  const [videoAttempt, setVideoAttempt] = useState(0);
-  const [videoFailed, setVideoFailed] = useState(false);
-
-  const isCover = item.category === 'cover' || !item.videoSrc;
-
-  const [isNearViewport, setIsNearViewport] = useState(false);
-  const [hasInteractionIntent, setHasInteractionIntent] = useState(false);
-
-  useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') {
-      setIsNearViewport(true);
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          setIsNearViewport(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '200px' }
-    );
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-    return () => observer.disconnect();
-  }, []);
-
-  const shouldLoadVideo = !videoFailed && Boolean(videoSource) && (isPlaying || hasInteractionIntent || isNearViewport);
-
-  const handlePlay = useCallback(() => {
-    setHasInteractionIntent(true);
-    if (!videoRef.current || videoFailed) return;
-    videoRef.current.muted = isMuted;
-    const promise = videoRef.current.play();
-    if (promise !== undefined) {
-      promise
-        .then(() => {
-          setIsPlaying(true);
-          trackWorkPreview(item.id, 'play');
-        })
-        .catch(() => {
-          setIsPlaying(false);
-        });
-    }
-  }, [isMuted, videoFailed, item.id]);
-
-  const handlePause = useCallback(() => {
-    if (!videoRef.current) return;
-    videoRef.current.pause();
-    setIsPlaying(false);
-    setProgress(0);
-    try {
-      videoRef.current.currentTime = 0;
-    } catch {
-      // Ignore if element is not loaded
-    }
-  }, []);
-
-  const toggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!videoRef.current) return;
-    const nextMuted = !isMuted;
-    setIsMuted(nextMuted);
-    videoRef.current.muted = nextMuted;
-  };
-
-  const handleTimeUpdate = () => {
-    if (!videoRef.current) return;
-    const { currentTime, duration } = videoRef.current;
-    if (duration > 0) {
-      setProgress((currentTime / duration) * 100);
-    }
-  };
-
-  const handleVideoError = () => {
-    const fallbacks = item.videoFallbacks || [];
-    if (videoAttempt < fallbacks.length) {
-      setVideoSource(fallbacks[videoAttempt]);
-      setVideoAttempt((prev) => prev + 1);
-    } else {
-      setVideoFailed(true);
-      setIsPlaying(false);
-    }
-  };
-
-  const handleMouseEnter = () => {
-    setHasInteractionIntent(true);
-    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      handlePlay();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      handlePause();
-    }
-  };
-
-  return (
-    <div ref={cardRef} className={`work-card rv ${idx === 0 ? '' : `d${idx}`}`}>
-      {/* Shot.so-inspired Realistic Smartphone Showcase Chassis */}
-      <div className="shot-phone-chassis">
-        {/* Dynamic Island Notch (Shot.so inspired) - only for video/phone frames */}
-        {!isCover && (
-          <div className="phone-dynamic-island" aria-hidden="true">
-            <span className="island-lens"></span>
-            <span className="island-sensor"></span>
-          </div>
-        )}
-
-        <div className={`work-frame ${isCover ? 'square-frame' : ''}`}>
-          {/* Cover Art / Video Category Tag Badge */}
-          <span className="work-cat-badge">
-            {isEn ? (isCover ? 'Cover Art' : 'Lyric Video') : (isCover ? 'کاور آرت' : 'لیریک ویدیو')}
-          </span>
-
-          {/* Media: Video or Static Poster */}
-          {shouldLoadVideo ? (
-            <video
-              ref={videoRef}
-              src={videoSource}
-              poster={item.primarySrc}
-              playsInline
-              loop
-              muted={isMuted}
-              preload="none"
-              className="work-video"
-              onTimeUpdate={handleTimeUpdate}
-              onError={handleVideoError}
-            />
-          ) : (
-            <img
-              src={item.primarySrc}
-              alt={isEn ? item.labelEn : item.labelFa}
-              width={isCover ? 600 : 360}
-              height={isCover ? 600 : 640}
-              loading="lazy"
-              decoding="async"
-              className="work-img"
-              onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                const target = e.currentTarget;
-                const currentAttempt = parseInt(target.dataset.attempt || '0', 10);
-                if (currentAttempt < item.fallbacks.length) {
-                  target.dataset.attempt = String(currentAttempt + 1);
-                  target.src = item.fallbacks[currentAttempt];
-                }
-              }}
-            />
-          )}
-
-          {/* Physical Glass Glare Reflection (Shot.so inspired) */}
-          <div className="phone-glass-glare" aria-hidden="true"></div>
-
-          {/* Semantic Non-Nested Primary Action Trigger */}
-          <button
-            ref={triggerRef}
-            type="button"
-            className="work-play-trigger"
-            aria-pressed={isPlaying}
-            aria-label={
-              isEn
-                ? `${item.labelEn} - ${isCover ? 'Tap to view cover artwork' : (isPlaying ? 'Pause video' : 'Hover or tap to play')}`
-                : `${item.labelFa} - ${isCover ? 'مشاهده تصویر کاور' : (isPlaying ? 'توقف پخش' : 'هاور یا لمس برای پخش ویدیو')}`
-            }
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onClick={() => {
-              if (isCover) {
-                onOpenLightbox(item, triggerRef.current);
-              } else if (isPlaying) {
-                handlePause();
-              } else {
-                handlePlay();
-              }
-            }}
-            onKeyDown={(e: React.KeyboardEvent) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                if (isCover) {
-                  onOpenLightbox(item, triggerRef.current);
-                } else if (isPlaying) {
-                  handlePause();
-                } else {
-                  handlePlay();
-                }
-              }
-            }}
-          />
-
-          {/* Technical HUD Corners */}
-          <div className="hud-corners" aria-hidden="true">
-            <span className="corner top-left">
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M1 8V1h7" />
-              </svg>
-            </span>
-            <span className="corner top-right">
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M1 8V1h7" />
-              </svg>
-            </span>
-            <span className="corner bottom-left">
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M1 8V1h7" />
-              </svg>
-            </span>
-            <span className="corner bottom-right">
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M1 8V1h7" />
-              </svg>
-            </span>
-          </div>
-
-          {/* Hover / Tap to Play Badge */}
-          <div
-            className={`work-play-badge ${isPlaying ? 'playing' : ''}`}
-            aria-hidden="true"
-          >
-            {isCover ? (
-              <>
-                <Maximize2 className="w-3 h-3" />
-                <span>{isEn ? 'View Cover Artwork' : 'مشاهده کاور آرت'}</span>
-              </>
-            ) : (
-              <>
-                <div className="badge-orbit" aria-hidden="true">
-                  <span className="radar-circle"></span>
-                  <span className="radar-orbit"></span>
-                  <span className="radar-dot"></span>
-                </div>
-                <Play className="w-3 h-3 fill-current" />
-                <span>{isEn ? 'Tap or hover to play' : 'لمس یا هاور برای پخش'}</span>
-              </>
-            )}
-          </div>
-
-          {/* Live Playback Technical HUD Indicator & Sound Equalizer (Dark.design inspired) */}
-          {isPlaying && (
-            <div className="work-live-hud" aria-hidden="true">
-              <div className="hud-radar">
-                <span className="hud-dot"></span>
-                <span className="hud-pulse"></span>
-                <span className="hud-orbit"></span>
-              </div>
-              <span className="hud-label">LIVE • 30FPS</span>
-              <div className="work-eq-visualizer">
-                <span className="eq-bar bar-1"></span>
-                <span className="eq-bar bar-2"></span>
-                <span className="eq-bar bar-3"></span>
-                <span className="eq-bar bar-4"></span>
-              </div>
-            </div>
-          )}
-
-          {/* Sound toggle button (Sibling button, no nesting violation) */}
-          {isPlaying && (
-            <button
-              type="button"
-              className="work-audio-btn"
-              onClick={toggleMute}
-              aria-label={
-                isEn
-                  ? isMuted
-                    ? 'Unmute sound'
-                    : 'Mute sound'
-                  : isMuted
-                    ? 'وصل کردن صدا'
-                    : 'قطع کردن صدا'
-              }
-            >
-              {isMuted ? (
-                <VolumeX className="w-4 h-4" />
-              ) : (
-                <Volume2 className="w-4 h-4" />
-              )}
-            </button>
-          )}
-
-          {/* Progress bar */}
-          {isPlaying && (
-            <div className="work-progress-track" aria-hidden="true">
-              <div
-                className="work-progress-fill"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          )}
-
-          {/* Expand / Lightbox Button (Sibling button, no nesting violation) */}
-          <button
-            type="button"
-            className="work-zoom-btn"
-            aria-label={isEn ? `Expand ${item.labelEn}` : `بزرگ‌نمایی ${item.labelFa}`}
-            onClick={(e: React.MouseEvent) => {
-              e.stopPropagation();
-              onOpenLightbox(item, triggerRef.current);
-            }}
-          >
-            <Maximize2 className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Phone Home Indicator Bar (Shot.so inspired) - only for video/phone frames */}
-        {!isCover && (
-          <div className="phone-home-indicator" aria-hidden="true">
-            <span className="home-bar"></span>
-          </div>
-        )}
-      </div>
-
-      <div className="work-meta">
-        <div className="work-meta-row">
-          <span className="work-label">
-            {isEn ? item.labelEn : item.labelFa}
-          </span>
-          <span className="work-spec-pill">
-            {item.specFa && item.specEn ? (isEn ? item.specEn : item.specFa) : (isCover ? '1:1 COVER' : '9:16 REELS')}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
+import { InstagramReel, INITIAL_INSTAGRAM_DATA } from '../data/instagram';
+import { Shuffle, AlertCircle } from 'lucide-react';
+import {
+  fetchRandomInstagramReelIds,
+  fetchShuffledInstagramReels,
+  createInstagramReelFromId,
+} from '../utils/instagram';
 
 export const Work: React.FC = () => {
   const { isEn } = useLanguage();
-  const [activeCategory, setActiveCategory] = useState<'all' | 'reels' | 'cover'>('all');
   const [activeItem, setActiveItem] = useState<WorkItem | null>(null);
   const lastActiveTriggerRef = useRef<HTMLButtonElement | null>(null);
-  const lightboxVideoRef = useRef<HTMLVideoElement>(null);
-  const lightboxModalRef = useRef<HTMLDivElement>(null);
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
-  const [lightboxPlaying, setLightboxPlaying] = useState(false);
-  const [lightboxMuted, setLightboxMuted] = useState(true);
-  const [showSafeZone, setShowSafeZone] = useState(false);
+  const lightboxModalRef = useRef<HTMLDivElement | null>(null);
+  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
+
+  // Dynamic Instagram reels state & shuffle mechanism
+  const [instagramReel, setInstagramReel] = useState<InstagramReel | null>(() => {
+    const list = INITIAL_INSTAGRAM_DATA.reels || [];
+    return list.length > 0 ? list[0] : null;
+  });
+  const [isShufflingReels, setIsShufflingReels] = useState(false);
+
+  // Shuffle mechanism to dynamically fetch & rotate reels from public profile
+  const handleShuffleReels = useCallback(async () => {
+    setIsShufflingReels(true);
+    try {
+      // 1. Fetch randomized reel IDs from public Instagram profile
+      const randomIds = await fetchRandomInstagramReelIds({
+        excludeId: instagramReel?.id,
+        count: 6,
+      });
+
+      // 2. Retrieve corresponding shuffled reel objects
+      const shuffled = await fetchShuffledInstagramReels({
+        excludeId: instagramReel?.id,
+      });
+
+      if (shuffled.length > 0) {
+        setInstagramReel(shuffled[0]);
+      } else if (randomIds.length > 0) {
+        setInstagramReel(createInstagramReelFromId(randomIds[0]));
+      }
+    } catch (err) {
+      console.warn('Error shuffling Instagram reels:', err);
+    } finally {
+      setTimeout(() => {
+        setIsShufflingReels(false);
+      }, 300);
+    }
+  }, [instagramReel?.id]);
+
+  // On mount, dynamically fetch & shuffle to display a fresh reel from the public profile
+  useEffect(() => {
+    let isMounted = true;
+    fetchShuffledInstagramReels().then((shuffled) => {
+      if (isMounted && shuffled.length > 0) {
+        setInstagramReel(shuffled[0]);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleOpenYouTubeLightbox = (ytData: YouTubeVideoData, triggerEl: HTMLButtonElement | null) => {
     lastActiveTriggerRef.current = triggerEl;
@@ -381,8 +87,6 @@ export const Work: React.FC = () => {
       youtubeUrl: ytData.url,
       youtubeEmbedUrl: ytData.embedUrl,
     });
-    setLightboxPlaying(true);
-    setShowSafeZone(false);
   };
 
   const handleOpenTikTokLightbox = (ttData: TikTokVideo, triggerEl: HTMLButtonElement | null) => {
@@ -400,8 +104,6 @@ export const Work: React.FC = () => {
       tiktokId: ttData.id,
       tiktokUrl: ttData.url,
     });
-    setLightboxPlaying(true);
-    setShowSafeZone(false);
   };
 
   const handleOpenInstagramLightbox = (igData: InstagramReel, triggerEl: HTMLButtonElement | null) => {
@@ -420,18 +122,10 @@ export const Work: React.FC = () => {
       instagramUrl: igData.url,
       instagramEmbedUrl: igData.embedUrl,
     });
-    setLightboxPlaying(true);
-    setShowSafeZone(false);
   };
-
-  const displayedItems = activeCategory === 'all'
-    ? WORK_ITEMS
-    : WORK_ITEMS.filter((it) => it.category === activeCategory);
 
   const closeModal = useCallback(() => {
     setActiveItem(null);
-    setLightboxPlaying(false);
-    setShowSafeZone(false);
     // Return focus to the originating card trigger button
     if (lastActiveTriggerRef.current) {
       lastActiveTriggerRef.current.focus();
@@ -485,369 +179,86 @@ export const Work: React.FC = () => {
     };
   }, [activeItem, closeModal]);
 
-  // Attempt reliable muted autoplay when lightbox opens
-  useEffect(() => {
-    if (!activeItem || !activeItem.videoSrc) return;
-    const video = lightboxVideoRef.current;
-    if (!video) return;
-
-    video.muted = true;
-    setLightboxMuted(true);
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          setLightboxPlaying(true);
-        })
-        .catch(() => {
-          setLightboxPlaying(false);
-        });
-    }
-  }, [activeItem]);
-
-  const toggleLightboxPlay = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!lightboxVideoRef.current) return;
-    if (lightboxPlaying) {
-      lightboxVideoRef.current.pause();
-      setLightboxPlaying(false);
-    } else {
-      lightboxVideoRef.current
-        .play()
-        .then(() => setLightboxPlaying(true))
-        .catch(() => setLightboxPlaying(false));
-    }
-  };
-
-  const toggleLightboxMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!lightboxVideoRef.current) return;
-    const next = !lightboxMuted;
-    lightboxVideoRef.current.muted = next;
-    setLightboxMuted(next);
-  };
-
-  const toggleSafeZone = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const next = !showSafeZone;
-    setShowSafeZone(next);
-    trackSafeZoneToggled(next, activeItem?.id);
-  };
-
-  const totalCount = WORK_ITEMS.length + 3; // includes YouTube, Instagram, and TikTok
-  const reelsCount = WORK_ITEMS.filter((it) => it.category === 'reels').length + 3;
-  const coverCount = WORK_ITEMS.filter((it) => it.category === 'cover').length;
-
   return (
     <section className="work-sec" id="work" aria-label={isEn ? 'Selected output' : 'نمونه خروجی'}>
       <div className="work-header">
-        <h2 className="rv">
-          {isEn ? 'Selected output' : 'نمونه خروجی'}
-        </h2>
-        {coverCount > 0 && (
-          <div className="work-cat-tabs rv d1" role="tablist" aria-label={isEn ? "Filter work samples" : "فیلتر دسته‌بندی نمونه‌کارها"}>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCategory === 'all'}
-              className={`work-cat-btn ${activeCategory === 'all' ? 'active' : ''}`}
-              onClick={() => setActiveCategory('all')}
-            >
-              {isEn ? `All Works (${totalCount})` : `همه نمونه‌ها (${totalCount})`}
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCategory === 'reels'}
-              className={`work-cat-btn ${activeCategory === 'reels' ? 'active' : ''}`}
-              onClick={() => setActiveCategory('reels')}
-            >
-              {isEn ? `Reels & Kinetic (${reelsCount})` : `تایپوگرافی و ریلز (${reelsCount})`}
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCategory === 'cover'}
-              className={`work-cat-btn ${activeCategory === 'cover' ? 'active' : ''}`}
-              onClick={() => setActiveCategory('cover')}
-            >
-              {isEn ? `Cover Art (${coverCount})` : `کاور موزیک (${coverCount})`}
-            </button>
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <h2 className="rv">
+              {isEn ? 'Selected output' : 'نمونه خروجی'}
+            </h2>
+            <p className="text-xs sm:text-sm text-neutral-400 mt-1 font-mono">
+              {isEn ? 'Live feeds from YouTube Shorts, Instagram & TikTok' : 'پخش مستقیم خروجی از یوتیوب شورتز، اینستاگرام و تیک‌تاک'}
+            </p>
           </div>
-        )}
+
+          {/* Dynamic Instagram Shuffle Reels trigger */}
+          <button
+            type="button"
+            className={`work-cat-btn shuffle-btn ${isShufflingReels ? 'shuffling' : ''}`}
+            onClick={handleShuffleReels}
+            disabled={isShufflingReels}
+            aria-label={isEn ? 'Shuffle Instagram Reels' : 'تغییر تصادفی ریلزهای اینستاگرام'}
+            title={isEn ? 'Shuffle Instagram Reels' : 'تغییر تصادفی ریلزهای اینستاگرام'}
+          >
+            <Shuffle className={`w-3.5 h-3.5 text-rose-400 ${isShufflingReels ? 'animate-spin' : ''}`} aria-hidden="true" />
+            <span>{isEn ? 'Shuffle Reels' : 'تغییر تصادفی ریلز'}</span>
+          </button>
+        </div>
+
+        {/* VPN Pay Attention Notice */}
+        <div
+          className="work-vpn-notice rv d1"
+          role="note"
+          aria-label={isEn ? 'Pay Attention: VPN Required' : 'توجه: نیاز به فیلترشکن برای بارگذاری'}
+        >
+          <div className="work-vpn-badge">
+            <AlertCircle className="w-3.5 h-3.5 text-amber-400" aria-hidden="true" />
+            <span className="pulse-dot" aria-hidden="true" />
+            <span>{isEn ? 'Pay Attention' : 'توجه / Pay Attention'}</span>
+          </div>
+          <p className="work-vpn-text">
+            {isEn
+              ? 'Please turn on your VPN to load and view live portfolio media, images, and embeds smoothly.'
+              : 'برای لود شدن و باز شدن کامل عکس‌ها و ویدیوهای نمونه‌کارها، حتماً فیلترشکن (VPN) خود را روشن کنید.'}
+          </p>
+        </div>
       </div>
 
       <div className="work-grid">
-        {/* First Work Sample */}
-        {displayedItems.length > 0 && (
-          <WorkCard
-            key={displayedItems[0].id}
-            item={displayedItems[0]}
-            idx={0}
-            isEn={isEn}
-            onOpenLightbox={(selected, triggerEl) => {
-              lastActiveTriggerRef.current = triggerEl;
-              setActiveItem(selected);
-              setLightboxPlaying(true);
-              setLightboxMuted(true);
-              trackWorkPreview(selected.id, 'lightbox');
-            }}
-          />
-        )}
+        {/* Latest YouTube Release */}
+        <YouTubeWorkCard
+          key="youtube-latest-card"
+          isEn={isEn}
+          onOpenLightbox={handleOpenYouTubeLightbox}
+        />
 
-        {/* Latest YouTube Release (Positioned directly alongside first sample) */}
-        {(activeCategory === 'all' || activeCategory === 'reels') && (
-          <YouTubeWorkCard
-            key="youtube-latest-card"
-            isEn={isEn}
-            onOpenLightbox={handleOpenYouTubeLightbox}
-          />
-        )}
+        {/* Dynamic Instagram Reel Showcase */}
+        <InstagramWorkCard
+          key={`instagram-${instagramReel?.id || 'showcase'}`}
+          isEn={isEn}
+          reel={instagramReel}
+          isShuffling={isShufflingReels}
+          onShuffle={handleShuffleReels}
+          onOpenLightbox={handleOpenInstagramLightbox}
+        />
 
-        {/* Second Work Sample */}
-        {displayedItems.length > 1 && (
-          <WorkCard
-            key={displayedItems[1].id}
-            item={displayedItems[1]}
-            idx={2}
-            isEn={isEn}
-            onOpenLightbox={(selected, triggerEl) => {
-              lastActiveTriggerRef.current = triggerEl;
-              setActiveItem(selected);
-              setLightboxPlaying(true);
-              setLightboxMuted(true);
-              trackWorkPreview(selected.id, 'lightbox');
-            }}
-          />
-        )}
-
-        {/* Random Instagram Reel Showcase (Positioned alongside second sample) */}
-        {(activeCategory === 'all' || activeCategory === 'reels') && (
-          <InstagramWorkCard
-            key="instagram-showcase-card"
-            isEn={isEn}
-            onOpenLightbox={handleOpenInstagramLightbox}
-          />
-        )}
-
-        {/* TikTok Channel Showcase (Positioned alongside Instagram showcase) */}
-        {(activeCategory === 'all' || activeCategory === 'reels') && (
-          <TikTokWorkCard
-            key="tiktok-showcase-card"
-            isEn={isEn}
-            onOpenLightbox={handleOpenTikTokLightbox}
-          />
-        )}
-
-        {/* Remaining Work Samples */}
-        {displayedItems.slice(2).map((item, idx) => (
-          <WorkCard
-            key={item.id}
-            item={item}
-            idx={idx + 5}
-            isEn={isEn}
-            onOpenLightbox={(selected, triggerEl) => {
-              lastActiveTriggerRef.current = triggerEl;
-              setActiveItem(selected);
-              setLightboxPlaying(true);
-              setLightboxMuted(true);
-              trackWorkPreview(selected.id, 'lightbox');
-            }}
-          />
-        ))}
+        {/* TikTok Channel Showcase */}
+        <TikTokWorkCard
+          key="tiktok-showcase-card"
+          isEn={isEn}
+          onOpenLightbox={handleOpenTikTokLightbox}
+        />
       </div>
 
       {/* Lightbox Modal */}
-      {activeItem && (
-        <div
-          ref={lightboxModalRef}
-          className="work-lightbox"
-          role="dialog"
-          aria-modal="true"
-          aria-label={isEn ? activeItem.labelEn : activeItem.labelFa}
-          onClick={closeModal}
-        >
-          <button
-            ref={closeBtnRef}
-            type="button"
-            className="work-lightbox-close"
-            onClick={closeModal}
-            aria-label={isEn ? 'Close preview' : 'بستن پیش‌نمایش'}
-          >
-            <X className="w-5 h-5" />
-          </button>
-
-          <div
-            className="work-lightbox-content"
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
-          >
-            <div className={`work-lightbox-frame ${activeItem.category === 'cover' ? 'square-frame' : ''}`}>
-              {activeItem.isInstagram ? (
-                <iframe
-                  src={activeItem.instagramEmbedUrl || `https://www.instagram.com/reel/${activeItem.instagramId}/embed/`}
-                  title={isEn ? activeItem.labelEn : activeItem.labelFa}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="work-lightbox-video"
-                  style={{ border: 0, width: '100%', height: '100%' }}
-                />
-              ) : activeItem.isTikTok ? (
-                <iframe
-                  src={`https://www.tiktok.com/embed/v2/${activeItem.tiktokId}`}
-                  title={isEn ? activeItem.labelEn : activeItem.labelFa}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="work-lightbox-video"
-                  style={{ border: 0, width: '100%', height: '100%' }}
-                />
-              ) : activeItem.isYouTube ? (
-                <iframe
-                  src={`${activeItem.youtubeEmbedUrl || `https://www.youtube-nocookie.com/embed/${activeItem.youtubeId}`}?autoplay=1&rel=0&modestbranding=1`}
-                  title={isEn ? activeItem.labelEn : activeItem.labelFa}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="work-lightbox-video"
-                  style={{ border: 0, width: '100%', height: '100%' }}
-                />
-              ) : activeItem.videoSrc ? (
-                <video
-                  ref={lightboxVideoRef}
-                  src={activeItem.videoSrc}
-                  poster={activeItem.primarySrc}
-                  playsInline
-                  autoPlay
-                  loop
-                  muted={lightboxMuted}
-                  onPlay={() => setLightboxPlaying(true)}
-                  onPause={() => setLightboxPlaying(false)}
-                  className="work-lightbox-video"
-                  onClick={toggleLightboxPlay}
-                />
-              ) : (
-                <img
-                  src={activeItem.primarySrc}
-                  alt={isEn ? activeItem.labelEn : activeItem.labelFa}
-                  width={activeItem.category === 'cover' ? 800 : 360}
-                  height={activeItem.category === 'cover' ? 800 : 640}
-                  className="work-lightbox-img"
-                />
-              )}
-
-              {/* Instagram Reels Safe Zone Overlay */}
-              {showSafeZone && activeItem.category !== 'cover' && !activeItem.isYouTube && (
-                <InstagramSafeZoneOverlay />
-              )}
-            </div>
-
-            {/* Lightbox Control Bar */}
-            {activeItem.isInstagram ? (
-              <div className="work-lightbox-bar">
-                <a
-                  href={activeItem.instagramUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="work-lightbox-btn ig-direct-lightbox-btn"
-                  title={isEn ? 'Watch on Instagram' : 'مشاهده در اینستاگرام'}
-                  aria-label={isEn ? 'Watch on Instagram' : 'مشاهده در اینستاگرام'}
-                >
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                  </svg>
-                  <span style={{ fontSize: '13px', fontWeight: 600 }}>
-                    {isEn ? 'Watch on Instagram' : 'مشاهده در اینستاگرام'}
-                  </span>
-                </a>
-              </div>
-            ) : activeItem.isTikTok ? (
-              <div className="work-lightbox-bar">
-                <a
-                  href={activeItem.tiktokUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="work-lightbox-btn tiktok-direct-lightbox-btn"
-                  title={isEn ? 'Watch on TikTok' : 'مشاهده در تیک‌تاک'}
-                  aria-label={isEn ? 'Watch on TikTok' : 'مشاهده در تیک‌تاک'}
-                >
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.49 6.31 6.31 0 0 0 1.86-4.49V8.71a8.29 8.29 0 0 0 4.91 1.6V6.86a4.83 4.83 0 0 1-1-.17z" />
-                  </svg>
-                  <span style={{ fontSize: '13px', fontWeight: 600 }}>
-                    {isEn ? 'Watch on TikTok' : 'مشاهده در تیک‌تاک'}
-                  </span>
-                </a>
-              </div>
-            ) : activeItem.isYouTube ? (
-              <div className="work-lightbox-bar">
-                <a
-                  href={activeItem.youtubeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="work-lightbox-btn yt-direct-lightbox-btn"
-                  title={isEn ? 'Watch on YouTube' : 'مشاهده مستقیم در یوتیوب'}
-                  aria-label={isEn ? 'Watch on YouTube' : 'مشاهده مستقیم در یوتیوب'}
-                >
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                  </svg>
-                  <span style={{ fontSize: '13px', fontWeight: 600 }}>
-                    {isEn ? 'Watch on YouTube Shorts' : 'مشاهده در یوتیوب شورتز'}
-                  </span>
-                </a>
-              </div>
-            ) : activeItem.videoSrc ? (
-              <div className="work-lightbox-bar">
-                <button
-                  type="button"
-                  className="work-lightbox-btn"
-                  onClick={toggleLightboxPlay}
-                  aria-label={isEn ? (lightboxPlaying ? 'Pause' : 'Play') : (lightboxPlaying ? 'توقف' : 'پخش')}
-                >
-                  {lightboxPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 fill-current" />}
-                </button>
-                <button
-                  type="button"
-                  className="work-lightbox-btn"
-                  onClick={toggleLightboxMute}
-                  aria-label={isEn ? (lightboxMuted ? 'Unmute' : 'Mute') : (lightboxMuted ? 'وصل صدا' : 'قطع صدا')}
-                >
-                  {lightboxMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-                </button>
-                {activeItem.category !== 'cover' && (
-                  <button
-                    type="button"
-                    className={`work-lightbox-btn safezone-toggle-btn ${showSafeZone ? 'active' : ''}`}
-                    onClick={toggleSafeZone}
-                    aria-pressed={showSafeZone}
-                    title={isEn ? "Toggle Reels Safe Zone Simulator" : "شبیه‌ساز محدوده امن اینستاگرام ریلز"}
-                    aria-label={isEn ? "Toggle Reels Safe Zone Simulator" : "شبیه‌ساز محدوده امن اینستاگرام ریلز"}
-                  >
-                    <Smartphone className="w-4 h-4" />
-                    <span className="safezone-btn-text">
-                      {isEn ? "Safe Zone" : "Safe Zone"}
-                    </span>
-                  </button>
-                )}
-              </div>
-            ) : null}
-
-            {/* Safe Zone Active Feedback Toast */}
-            {showSafeZone && activeItem.category !== 'cover' && (
-              <div className="safezone-active-hint" role="status">
-                <ShieldCheck className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
-                <span>
-                  {isEn
-                    ? "Safe Zone Active: Typography tested outside Like/Comment/Caption areas."
-                    : "شبیه‌ساز فعال است: متن لیریک کاملاً خارج از پوشش دکمه‌ها و کپشن قرار دارد."}
-                </span>
-              </div>
-            )}
-
-            <p className="work-lightbox-caption">
-              {isEn ? activeItem.labelEn : activeItem.labelFa}
-            </p>
-          </div>
-        </div>
-      )}
+      <WorkLightbox
+        activeItem={activeItem}
+        isEn={isEn}
+        closeBtnRef={closeBtnRef}
+        lightboxModalRef={lightboxModalRef}
+        onClose={closeModal}
+      />
     </section>
   );
 };

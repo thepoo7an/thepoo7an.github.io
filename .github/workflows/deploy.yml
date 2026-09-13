@@ -5,6 +5,9 @@ on:
     branches:
       - main
       - master
+    paths-ignore:
+      - 'README.md'
+      - '.github/workflows/update-youtube.yml'
   workflow_dispatch:
 
 permissions:

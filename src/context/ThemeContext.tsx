@@ -17,22 +17,22 @@ const ThemeContext = React.createContext<ThemeContextType>({
 });
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = React.useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const saved = localStorage.getItem('tp7-theme') || localStorage.getItem('app_theme');
-        if (saved === 'light' || saved === 'dark') {
-          return saved;
-        }
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-          return 'light';
-        }
-      } catch {
-        return 'dark';
+  // Always initialize to 'dark' matching static HTML data-theme="dark"
+  const [theme, setThemeState] = React.useState<Theme>('dark');
+
+  // Hydrate client-side theme preference safely after initial render
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem('tp7-theme') || localStorage.getItem('app_theme');
+      if (saved === 'light' || saved === 'dark') {
+        setThemeState(saved);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        setThemeState('light');
       }
+    } catch {
+      // ignore
     }
-    return 'dark';
-  });
+  }, []);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);

@@ -25,12 +25,21 @@ const InstagramIcon: React.FC<{ className?: string; size?: number }> = ({ classN
 interface InstagramWorkCardProps {
   key?: React.Key;
   isEn: boolean;
+  reel?: InstagramReel | null;
+  isShuffling?: boolean;
+  onShuffle?: () => void;
   onOpenLightbox?: (reel: InstagramReel, triggerEl: HTMLButtonElement | null) => void;
 }
 
-export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({ isEn, onOpenLightbox }) => {
+export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({
+  isEn,
+  reel,
+  isShuffling: isShufflingProp,
+  onShuffle,
+  onOpenLightbox,
+}) => {
   const [data, setData] = useState<InstagramData>(INITIAL_INSTAGRAM_DATA);
-  const [currentReel, setCurrentReel] = useState<InstagramReel | null>(() => {
+  const [internalReel, setInternalReel] = useState<InstagramReel | null>(() => {
     const list = INITIAL_INSTAGRAM_DATA.reels || [];
     if (list.length > 0) {
       const randIdx = Math.floor(Math.random() * list.length);
@@ -38,9 +47,19 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({ isEn, onOp
     }
     return null;
   });
-  const [isShuffling, setIsShuffling] = useState(false);
+  const [internalShuffling, setInternalShuffling] = useState(false);
   const [thumbError, setThumbError] = useState(false);
+  const [thumbOverride, setThumbOverride] = useState<string | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const currentReel = reel !== undefined ? reel : internalReel;
+  const isShuffling = isShufflingProp !== undefined ? isShufflingProp : internalShuffling;
+
+  // Reset thumbnail errors when current reel changes
+  useEffect(() => {
+    setThumbError(false);
+    setThumbOverride(null);
+  }, [currentReel?.id]);
 
   // Background live revalidation (fetch newest stats and reels list if updated on server)
   useEffect(() => {
@@ -50,7 +69,7 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({ isEn, onOp
         setData(live);
         if (live.reels && live.reels.length > 0 && !currentReel) {
           const randIdx = Math.floor(Math.random() * live.reels.length);
-          setCurrentReel(live.reels[randIdx]);
+          setInternalReel(live.reels[randIdx]);
         }
       }
     });
@@ -59,14 +78,19 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({ isEn, onOp
     };
   }, [currentReel]);
 
-  const pickRandomReel = (e?: React.MouseEvent) => {
+  const handleShuffleAction = (e?: React.MouseEvent) => {
     if (e) {
       e.stopPropagation();
     }
+    if (onShuffle) {
+      onShuffle();
+      return;
+    }
+
     const list = data.reels || [];
     if (list.length <= 1) return;
 
-    setIsShuffling(true);
+    setInternalShuffling(true);
     setThumbError(false);
 
     // Pick a reel different from current if possible
@@ -80,8 +104,8 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({ isEn, onOp
     }
 
     setTimeout(() => {
-      setCurrentReel(list[nextIdx]);
-      setIsShuffling(false);
+      setInternalReel(list[nextIdx]);
+      setInternalShuffling(false);
     }, 180);
   };
 
@@ -114,43 +138,46 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({ isEn, onOp
     >
       <div className="work-media-container instagram-media-container" style={{ aspectRatio: '9/16' }}>
         {/* Video Thumbnail with WebP & Fallback support */}
-        {currentReel.thumbnailUrl && !thumbError ? (
-          <picture className="w-full h-full">
-            {currentReel.thumbnailUrl.endsWith('.webp') && (
-              <source srcSet={currentReel.thumbnailUrl} type="image/webp" />
-            )}
-            {currentReel.fallbackThumbnailUrl && (
-              <source srcSet={currentReel.fallbackThumbnailUrl} type="image/jpeg" />
-            )}
-            <img
-              src={currentReel.thumbnailUrl}
-              alt={reelTitle}
-              className={`work-card-thumb instagram-thumb-img ${isShuffling ? 'shuffling' : ''}`}
-              loading="lazy"
-              decoding="async"
-              referrerPolicy="no-referrer"
-              onError={() => {
-                // If local path fails, try CDN fallback or fallback bg
-                if (currentReel.cdnThumbnailUrl && !currentReel.thumbnailUrl.startsWith('http')) {
-                  setCurrentReel({
-                    ...currentReel,
-                    thumbnailUrl: currentReel.cdnThumbnailUrl,
-                  });
-                } else {
-                  setThumbError(true);
-                }
-              }}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          </picture>
-        ) : (
-          <div className="instagram-fallback-bg" aria-hidden="true">
-            <div className="instagram-fallback-inner">
-              <Film className="w-12 h-12 text-rose-400 opacity-40 mb-2" />
-              <span className="text-xs text-white/50 font-mono ltr">@{data.username}</span>
-            </div>
-          </div>
-        )}
+        {(() => {
+          const effectiveThumb = thumbOverride || currentReel.thumbnailUrl;
+          if (!effectiveThumb || thumbError) {
+            return (
+              <div className="instagram-fallback-bg" aria-hidden="true">
+                <div className="instagram-fallback-inner">
+                  <Film className="w-12 h-12 text-rose-400 opacity-40 mb-2" />
+                  <span className="text-xs text-white/50 font-mono ltr">@{data.username}</span>
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <picture className="w-full h-full">
+              {effectiveThumb.endsWith('.webp') && (
+                <source srcSet={effectiveThumb} type="image/webp" />
+              )}
+              {currentReel.fallbackThumbnailUrl && !thumbOverride && (
+                <source srcSet={currentReel.fallbackThumbnailUrl} type="image/jpeg" />
+              )}
+              <img
+                src={effectiveThumb}
+                alt={reelTitle}
+                className={`work-card-thumb instagram-thumb-img ${isShuffling ? 'shuffling' : ''}`}
+                loading="lazy"
+                decoding="async"
+                referrerPolicy="no-referrer"
+                onError={() => {
+                  if (currentReel.cdnThumbnailUrl && !effectiveThumb.startsWith('http')) {
+                    setThumbOverride(currentReel.cdnThumbnailUrl);
+                  } else {
+                    setThumbError(true);
+                  }
+                }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </picture>
+          );
+        })()}
 
         {/* Ambient Dark Gradient Layer for Contrast */}
         <div className="work-card-overlay instagram-dark-overlay" aria-hidden="true" />
@@ -167,7 +194,7 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({ isEn, onOp
           <button
             type="button"
             className="instagram-shuffle-btn"
-            onClick={pickRandomReel}
+            onClick={handleShuffleAction}
             aria-label={isEn ? 'Pick another random Instagram reel' : 'انتخاب ریلز تصادفی دیگر'}
             title={isEn ? 'Shuffle Reel' : 'تغییر ریلز تصادفی'}
           >

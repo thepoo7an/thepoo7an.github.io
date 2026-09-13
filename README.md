@@ -109,7 +109,7 @@ VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ## 🏷️ تنظیمات پیشنهادی ریپازیتوری (Repository About & Topics)
 
 - **About:**
-  > Official website & portfolio for THEPOO7AN (Pooyan Karimi) — Music Lyric Typography, Video Editing, and Cover Artwork (125+ Reels, 2.2M+ Views).
+  > Official website & portfolio for THEPOO7AN (Pooyan Karimi) — Music Lyric Typography, Video Editing, and Cover Artwork.
 - **Website URL:**
   > `https://thepoo7an.github.io`
 - **Topics:**

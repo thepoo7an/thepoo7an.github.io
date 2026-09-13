@@ -26,7 +26,7 @@ export const STYLE_OPTIONS: StyleOption[] = [
     descEn: 'Wide aspect ratio, authentic film grain, refined editorial typography, and evocative atmosphere for deep emotional releases.',
     tagsFa: ['لترباکس سینمایی', 'گرین آنالوگ', 'آراندبی و پاپ'],
     tagsEn: ['Cinematic Letterbox', 'Film Grain', 'Editorial'],
-    previewAsset: './images/portfolio/sample-1.webp',
+    previewAsset: './images/portfolio/instagram/DbgAe6cNsdr.webp',
     accentClass: 'style-accent-cinematic',
   },
   {

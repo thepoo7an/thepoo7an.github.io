@@ -22,9 +22,11 @@ jobs:
           node-version: 20
 
       - name: Fetch latest video from YouTube RSS
+        continue-on-error: true
         run: node scripts/fetch-latest-youtube.js
 
       - name: Fetch latest profile & stats from TikTok
+        continue-on-error: true
         run: node scripts/fetch-tiktok.js
 
       - name: Commit and push changes
@@ -33,7 +35,9 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add src/data/latest-youtube.json public/data/latest-youtube.json src/data/tiktok.json public/data/tiktok.json
           if ! git diff --staged --quiet; then
-            git commit -m "chore(media): auto-sync YouTube & TikTok releases"
+            echo "Changes detected in media feeds. Validating JSON integrity..."
+            node -e "const fs = require('fs'); JSON.parse(fs.readFileSync('src/data/latest-youtube.json')); JSON.parse(fs.readFileSync('src/data/tiktok.json'));"
+            git commit -m "chore(media): auto-sync YouTube & TikTok releases [skip ci]"
             git push
           else
             echo "No new media updates detected. Already up to date."
