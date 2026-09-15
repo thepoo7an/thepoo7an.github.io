@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { ShieldAlert } from 'lucide-react';
 
 interface HeroProps {
   heroImgRef?: React.RefObject<HTMLImageElement>;
@@ -67,6 +68,24 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
             <path d="M5 12h14M13 6l6 6-6 6" />
           </svg>
         </a>
+      </div>
+
+      {/* Prominent Dark-Themed VPN Notification Banner */}
+      <div
+        className="hero-vpn-banner rv d3"
+        role="note"
+        aria-label={isEn ? "VPN Notice for Media Loading" : "اعلان اتصال فیلترشکن برای لود سریع مدیا"}
+      >
+        <div className="hero-vpn-badge">
+          <ShieldAlert className="w-3.5 h-3.5 text-amber-400" aria-hidden="true" />
+          <span className="pulse-dot" aria-hidden="true" />
+          <span>{isEn ? "VPN Required" : "توجه مهم"}</span>
+        </div>
+        <p className="hero-vpn-text">
+          {isEn
+            ? "Please turn on your VPN for smooth playback and complete loading of video reels, audio, and media."
+            : "برای مشاهده روان، بدون قطعی و بارگذاری سریع ویدیوها و نمونه‌کارهای ویدیویی، لطفاً فیلترشکن (VPN) خود را روشن کنید."}
+        </p>
       </div>
 
       {/* 9:16 Sample Reel Frame */}
