@@ -18,7 +18,7 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
           <span className="status-pulse"></span>
         </span>
         <span className="status-text">
-          {isEn ? "Available for new releases · Turnaround 1–3 days" : "پذیرش پروژه‌های جدید فعال است · تحویل ۱ تا ۳ روز کاری"}
+          {isEn ? "Available for new releases · Turnaround usually same-day / 1–2 days" : "پذیرش پروژه‌های جدید فعال است · تحویل معمولاً همان روز / ۱ تا ۲ روز"}
         </span>
       </div>
 
@@ -54,7 +54,7 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
 
       {/* Quiet Single-Line Specs Strip */}
       <p className="hero-specs-line rv d2" aria-label={isEn ? "Specifications" : "مشخصات فنی"}>
-        {isEn ? "9:16 Reels · 1080p · same-day delivery" : "خروجی ریلز ۹:۱۶ · ۱۰۸۰p · تحویل همان روز"}
+        {isEn ? "9:16 Reels · 1080p · Turnaround usually same-day" : "خروجی ریلز ۹:۱۶ · ۱۰۸۰p · تحویل معمولاً همان روز"}
       </p>
 
       {/* CTA Actions */}

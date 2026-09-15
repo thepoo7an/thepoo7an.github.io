@@ -76,8 +76,8 @@ export const Work: React.FC = () => {
     setActiveItem({
       id: `youtube-${ytData.videoId}`,
       category: 'reels',
-      primarySrc: ytData.maxresThumbnailUrl || ytData.thumbnailUrl,
-      fallbacks: [ytData.thumbnailUrl],
+      primarySrc: ytData.localThumbnailUrl || ytData.fallbackThumbnailUrl || ytData.maxresThumbnailUrl || ytData.thumbnailUrl,
+      fallbacks: [ytData.fallbackThumbnailUrl, ytData.thumbnailUrl].filter(Boolean) as string[],
       labelFa: ytData.title,
       labelEn: ytData.title,
       specFa: 'یوتیوب شورتز • @thepoo7an',
@@ -94,8 +94,8 @@ export const Work: React.FC = () => {
     setActiveItem({
       id: `tiktok-${ttData.id}`,
       category: 'reels',
-      primarySrc: ttData.thumbnailUrl || '',
-      fallbacks: [],
+      primarySrc: ttData.localThumbnailUrl || ttData.thumbnailUrl || '',
+      fallbacks: [ttData.fallbackThumbnailUrl, ttData.cdnThumbnailUrl].filter(Boolean) as string[],
       labelFa: ttData.title || 'ویدیوی تیک‌تاک',
       labelEn: ttData.title || 'TikTok Video',
       specFa: 'تیک‌تاک • @thepoo7an',

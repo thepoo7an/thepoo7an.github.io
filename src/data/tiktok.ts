@@ -6,6 +6,9 @@ export interface TikTokVideo {
   title: string;
   authorName?: string;
   thumbnailUrl?: string;
+  localThumbnailUrl?: string;
+  fallbackThumbnailUrl?: string;
+  cdnThumbnailUrl?: string;
 }
 
 export interface TikTokData {

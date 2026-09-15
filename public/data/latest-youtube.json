@@ -7,6 +7,8 @@
   "url": "https://www.youtube.com/shorts/Eh0NDneIYqA",
   "watchUrl": "https://www.youtube.com/watch?v=Eh0NDneIYqA",
   "embedUrl": "https://www.youtube-nocookie.com/embed/Eh0NDneIYqA",
+  "localThumbnailUrl": "./images/portfolio/youtube/Eh0NDneIYqA.webp",
+  "fallbackThumbnailUrl": "./images/portfolio/youtube/Eh0NDneIYqA.jpg",
   "thumbnailUrl": "https://i.ytimg.com/vi/Eh0NDneIYqA/hqdefault.jpg",
   "maxresThumbnailUrl": "https://i.ytimg.com/vi/Eh0NDneIYqA/maxresdefault.jpg",
   "publishedAt": "2026-09-14T16:38:36+00:00",

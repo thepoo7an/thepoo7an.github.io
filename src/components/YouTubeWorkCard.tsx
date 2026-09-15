@@ -12,7 +12,10 @@ interface YouTubeWorkCardProps {
 export const YouTubeWorkCard: React.FC<YouTubeWorkCardProps> = ({ isEn, onOpenLightbox }) => {
   const [video, setVideo] = useState<YouTubeVideoData>(INITIAL_YOUTUBE_DATA);
   const [thumbSrc, setThumbSrc] = useState(
-    INITIAL_YOUTUBE_DATA.maxresThumbnailUrl || INITIAL_YOUTUBE_DATA.thumbnailUrl
+    INITIAL_YOUTUBE_DATA.localThumbnailUrl ||
+    INITIAL_YOUTUBE_DATA.fallbackThumbnailUrl ||
+    INITIAL_YOUTUBE_DATA.maxresThumbnailUrl ||
+    INITIAL_YOUTUBE_DATA.thumbnailUrl
   );
   const triggerRef = useRef<HTMLButtonElement>(null);
 
@@ -22,7 +25,12 @@ export const YouTubeWorkCard: React.FC<YouTubeWorkCardProps> = ({ isEn, onOpenLi
     fetchLiveYouTubeRelease().then((liveData) => {
       if (isMounted && liveData && liveData.videoId !== video.videoId) {
         setVideo(liveData);
-        setThumbSrc(liveData.maxresThumbnailUrl || liveData.thumbnailUrl);
+        setThumbSrc(
+          liveData.localThumbnailUrl ||
+          liveData.fallbackThumbnailUrl ||
+          liveData.maxresThumbnailUrl ||
+          liveData.thumbnailUrl
+        );
       }
     });
     return () => {
@@ -36,8 +44,10 @@ export const YouTubeWorkCard: React.FC<YouTubeWorkCardProps> = ({ isEn, onOpenLi
   };
 
   const handleThumbError = () => {
-    // Fallback to standard quality thumbnail if maxres is unavailable
-    if (thumbSrc !== video.thumbnailUrl) {
+    // Fallback cascade: local webp -> local jpg -> maxres -> standard YouTube CDN
+    if (video.fallbackThumbnailUrl && thumbSrc === video.localThumbnailUrl) {
+      setThumbSrc(video.fallbackThumbnailUrl);
+    } else if (thumbSrc !== video.thumbnailUrl) {
       setThumbSrc(video.thumbnailUrl);
     }
   };

@@ -10,6 +10,8 @@ export interface YouTubeVideoData {
   watchUrl: string;
   embedUrl: string;
   thumbnailUrl: string;
+  localThumbnailUrl?: string;
+  fallbackThumbnailUrl?: string;
   maxresThumbnailUrl?: string;
   publishedAt: string;
   lastUpdated: string;

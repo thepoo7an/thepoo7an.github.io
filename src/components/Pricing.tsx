@@ -28,8 +28,8 @@ export const PRICING_PLANS: PricingPlan[] = [
     planParam: 'base',
     titleFa: 'تایپوگرافی لیریک موزیک',
     titleEn: 'Lyric Typography',
-    priceFa: '۱۵۰٬۰۰۰ تومان',
-    priceEn: '150,000 Tomans',
+    priceFa: 'از ۱۵۰٬۰۰۰ تومان',
+    priceEn: 'From 150,000 Tomans',
     whoFa: 'تک‌پست و کاور ریلز / short lyric clip',
     whoEn: 'For single posts & Reels covers / short lyric clip',
     featuresFa: [
@@ -140,8 +140,8 @@ export const Pricing: React.FC = () => {
         </h2>
         <p className="lead rv d2">
           {isEn
-            ? "Straightforward deliverables for music artists, producers, and creators with no hidden surprises."
-            : "تعرفه‌های شفاف و خروجی استاندارد برای هنرمندان و تولیدکنندگان محتوای موسیقی."}
+            ? "Transparent baseline rates. The exact final price is confirmed upfront based on track length and scope before kick-off, with no hidden surprises."
+            : "تعرفه‌ها نرخ پایه (شروع از) هستند؛ قیمت نهایی و قطعی پس از بررسی فایل صوتی و پیش از شروع پروژه شفاف اعلام می‌شود."}
         </p>
       </div>
 
@@ -220,14 +220,14 @@ export const Pricing: React.FC = () => {
             <>
               • Online collaboration for clients across Iran and global creators.<br />
               • Direct order via website form, Instagram (@thepoo7an), or Telegram.<br />
-              • Final rate starts from these figures and is confirmed upfront before project kick-off.<br />
+              • Rates indicate starting baseline figures; your exact final quote is confirmed upfront before project kick-off with zero hidden fees.<br />
               • Cover artwork & identity: available standalone or bundled with reels.
             </>
           ) : (
             <>
               • همکاری به‌صورت آنلاین است؛ ویژه هنرمندان سراسر کشور و پروژه‌های بین‌المللی.<br />
               • ثبت سفارش مستقیم از طریق فرم سایت، دایرکت اینستاگرام یا تلگرام.<br />
-              • قیمت نهایی قبل از شروع پروژه شفاف مشخص می‌شود و تغییری نخواهد داشت.<br />
+              • قیمت‌ها نرخ شروع هستند؛ قیمت نهایی پس از بررسی فایل صوتی پیش از شروع کار به صورت قطعی مشخص می‌شود و تغییری نخواهد داشت.<br />
               • طراحی کاور موزیک و پکیج‌های ماهانه با تخفیف ویژه همکاری تکرارشونده محاسبه می‌شوند.
             </>
           )}

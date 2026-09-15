@@ -19,9 +19,25 @@ export const TikTokWorkCard: React.FC<TikTokWorkCardProps> = ({ isEn, onOpenLigh
     }
     return null;
   });
+  const [thumbSrc, setThumbSrc] = useState<string | undefined>(() => {
+    const list = INITIAL_TIKTOK_DATA.videos || [];
+    if (list.length > 0) {
+      const v = list[0];
+      return v.localThumbnailUrl || v.thumbnailUrl;
+    }
+    return undefined;
+  });
   const [isShuffling, setIsShuffling] = useState(false);
   const [thumbError, setThumbError] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
+
+  // Sync thumbSrc when currentVideo changes
+  useEffect(() => {
+    if (currentVideo) {
+      setThumbSrc(currentVideo.localThumbnailUrl || currentVideo.thumbnailUrl);
+      setThumbError(false);
+    }
+  }, [currentVideo]);
 
   // Background live revalidation (fetch newest stats and videos list)
   useEffect(() => {
@@ -66,6 +82,21 @@ export const TikTokWorkCard: React.FC<TikTokWorkCardProps> = ({ isEn, onOpenLigh
     }, 180);
   };
 
+  const handleThumbError = () => {
+    if (!currentVideo) {
+      setThumbError(true);
+      return;
+    }
+    // Fallback: local webp -> local jpg -> remote cdn -> placeholder
+    if (currentVideo.fallbackThumbnailUrl && thumbSrc === currentVideo.localThumbnailUrl) {
+      setThumbSrc(currentVideo.fallbackThumbnailUrl);
+    } else if (currentVideo.cdnThumbnailUrl && thumbSrc !== currentVideo.cdnThumbnailUrl) {
+      setThumbSrc(currentVideo.cdnThumbnailUrl);
+    } else {
+      setThumbError(true);
+    }
+  };
+
   const handleOpen = () => {
     if (!currentVideo) return;
     trackWorkPreview(`tiktok-${currentVideo.id}`, 'lightbox');
@@ -93,15 +124,15 @@ export const TikTokWorkCard: React.FC<TikTokWorkCardProps> = ({ isEn, onOpenLigh
     >
       <div className="work-media-container tiktok-media-container" style={{ aspectRatio: '9/16' }}>
         {/* Video Thumbnail or Fallback Background */}
-        {currentVideo.thumbnailUrl && !thumbError ? (
+        {thumbSrc && !thumbError ? (
           <img
-            src={currentVideo.thumbnailUrl}
+            src={thumbSrc}
             alt={currentVideo.title}
             className={`work-card-thumb tiktok-thumb-img ${isShuffling ? 'shuffling' : ''}`}
             loading="lazy"
             decoding="async"
             referrerPolicy="no-referrer"
-            onError={() => setThumbError(true)}
+            onError={handleThumbError}
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         ) : (

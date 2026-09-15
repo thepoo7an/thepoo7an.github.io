@@ -121,19 +121,6 @@ export const trackWorkPreview = (workId: string, action: 'play' | 'pause' | 'lig
   });
 };
 
-export const trackStyleGalleryView = (): void => {
-  trackEvent('style_gallery_view', {
-    page_location: typeof window !== 'undefined' ? window.location.href : '',
-  });
-};
-
-export const trackStyleSelected = (styleId: string, styleName: string): void => {
-  trackEvent('style_selected', {
-    style_id: styleId,
-    style_name: styleName,
-  });
-};
-
 export const trackSafeZoneToggled = (enabled: boolean, workId?: string): void => {
   trackEvent('safe_zone_toggled', {
     enabled,
