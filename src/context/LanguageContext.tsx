@@ -52,8 +52,24 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
     if (lang === 'en') {
       document.body.classList.add('lang-en');
+      document.title = 'THEPOO7AN | Music Lyric Typography & Video Editing — Pooyan Karimi';
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute(
+          'content',
+          'Pooyan Karimi (@thepoo7an) — Specialized music lyric typography, reels video editing, and beat-synced visual production for artists and release marketing teams.'
+        );
+      }
     } else {
       document.body.classList.remove('lang-en');
+      document.title = 'پویان کریمی | تایپوگرافی لیریک و ادیت ویدیویی موزیک — thepoo7an';
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute(
+          'content',
+          'پویان کریمی (@thepoo7an) — متخصص تایپوگرافی لیریک موزیک، ادیت ویدیویی ریلز، موشن‌گرافی و تولید محتوای بصری موسیقی با خروجی 1080p و تحویل سریع.'
+        );
+      }
     }
   }, [lang]);
 

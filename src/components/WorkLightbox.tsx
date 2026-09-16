@@ -1,5 +1,5 @@
-import React from 'react';
-import { X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Film } from 'lucide-react';
 import { WorkItem } from '../data/works';
 
 export interface WorkLightboxProps {
@@ -17,7 +17,17 @@ export const WorkLightbox: React.FC<WorkLightboxProps> = ({
   lightboxModalRef,
   onClose,
 }) => {
+  const [preferEmbed, setPreferEmbed] = useState(false);
+
+  // Reset to local video player whenever active item changes
+  useEffect(() => {
+    setPreferEmbed(false);
+  }, [activeItem?.id]);
+
   if (!activeItem) return null;
+
+  const hasLocalVideo = Boolean(activeItem.videoSrc);
+  const showLocalVideo = hasLocalVideo && !preferEmbed;
 
   return (
     <div
@@ -43,7 +53,28 @@ export const WorkLightbox: React.FC<WorkLightboxProps> = ({
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
       >
         <div className="work-lightbox-frame">
-          {activeItem.isInstagram ? (
+          {showLocalVideo ? (
+            <div className="relative w-full h-full flex items-center justify-center bg-black">
+              <video
+                key={activeItem.videoSrc}
+                src={activeItem.videoSrc}
+                poster={activeItem.primarySrc}
+                controls
+                playsInline
+                autoPlay
+                className="work-lightbox-video"
+                style={{ width: '100%', height: '100%', objectFit: 'contain', backgroundColor: '#000' }}
+              />
+              {/* Direct Play Notice */}
+              <div 
+                className="absolute top-3 left-3 bg-black/75 backdrop-blur-md border border-emerald-500/30 text-emerald-300 text-[11px] px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-lg pointer-events-none select-none"
+                style={{ zIndex: 10 }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>{isEn ? 'Direct Play (No VPN Needed)' : 'پخش مستقیم محلی (بدون نیاز به فیلترشکن)'}</span>
+              </div>
+            </div>
+          ) : activeItem.isInstagram ? (
             <iframe
               src={activeItem.instagramEmbedUrl || `https://www.instagram.com/reel/${activeItem.instagramId}/embed/`}
               title={isEn ? activeItem.labelEn : activeItem.labelFa}
@@ -84,6 +115,21 @@ export const WorkLightbox: React.FC<WorkLightboxProps> = ({
         {/* Lightbox Control Bar */}
         {activeItem.isInstagram ? (
           <div className="work-lightbox-bar">
+            {hasLocalVideo && (
+              <button
+                type="button"
+                className="work-lightbox-btn"
+                onClick={() => setPreferEmbed(!preferEmbed)}
+                title={preferEmbed ? (isEn ? 'Switch to Local Video' : 'پخش بدون فیلترشکن') : (isEn ? 'Switch to Instagram Embed' : 'امبد اصلی اینستاگرام')}
+              >
+                <Film className="w-3.5 h-3.5 text-zinc-400" />
+                <span style={{ fontSize: '12px' }}>
+                  {preferEmbed 
+                    ? (isEn ? 'Local Player (No VPN)' : 'پخش مستقیم (بدون VPN)')
+                    : (isEn ? 'Official Embed' : 'امبد اینستاگرام')}
+                </span>
+              </button>
+            )}
             <a
               href={activeItem.instagramUrl}
               target="_blank"

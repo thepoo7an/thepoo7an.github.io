@@ -75,8 +75,8 @@ export const WorkflowStandards: React.FC = () => {
             <Clock className="w-5 h-5 text-neutral-300" />
           </div>
           <div className="stat-content">
-            <span className="stat-num">{isEn ? '1–3 Days' : '۱ تا ۳ روز کاری'}</span>
-            <span className="stat-label">{isEn ? 'Fast turnaround (often same-day)' : 'تحویل سریع (معمولاً همان روز)'}</span>
+            <span className="stat-num">{isEn ? 'Same-Day / 1–3 Days' : 'همان روز / ۱ تا ۳ روز'}</span>
+            <span className="stat-label">{isEn ? 'Fast turnaround (lyrics usually same-day)' : 'تحویل سریع (لیریک معمولاً همان روز)'}</span>
           </div>
         </div>
 

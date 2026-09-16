@@ -85,16 +85,23 @@ export const AppContent: React.FC = () => {
     }
   }, []);
 
-  // Sync menu open class on body
+  // Sync menu open class on body and handle Escape key to close
   useEffect(() => {
     if (isMenuOpen) {
       document.body.classList.add('menu-open');
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setIsMenuOpen(false);
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.classList.remove('menu-open');
+        window.removeEventListener('keydown', handleKeyDown);
+      };
     } else {
       document.body.classList.remove('menu-open');
     }
-    return () => {
-      document.body.classList.remove('menu-open');
-    };
   }, [isMenuOpen]);
 
   const closeMenu = () => setIsMenuOpen(false);
@@ -131,7 +138,9 @@ export const AppContent: React.FC = () => {
               id="menuBtn"
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label={isEn ? 'Menu' : 'منو'}
+              aria-label={isEn ? 'Toggle Menu' : 'باز و بسته کردن منو'}
+              aria-expanded={isMenuOpen}
+              aria-controls="sheet"
             >
               <span></span>
               <span></span>
@@ -141,7 +150,14 @@ export const AppContent: React.FC = () => {
       </nav>
 
       {/* Mobile Drawer Sheet */}
-      <div className="sheet" id="sheet">
+      <div
+        className="sheet"
+        id="sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-label={isEn ? 'Mobile Navigation Menu' : 'منوی ناوبری موبایل'}
+        aria-hidden={!isMenuOpen}
+      >
         <a href="#work" onClick={closeMenu}>
           {isEn ? 'Work' : 'نمونه'}
         </a>

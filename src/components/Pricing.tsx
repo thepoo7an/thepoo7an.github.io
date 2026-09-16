@@ -149,12 +149,12 @@ export const Pricing: React.FC = () => {
       <div className="pricing-upsell-strip rv d1" style={{ maxWidth: '840px', margin: '0 auto 32px' }}>
         <div className="pricing-upsell-badge">
           <Zap className="w-4 h-4 text-amber-400" />
-          <span>{isEn ? 'Express Rush Option (+50%)' : 'تحویل فوری اکسپرس (+۵۰٪)'}</span>
+          <span>{isEn ? 'Express Rush (+50%)' : 'تحویل فوری اکسپرس (+۵۰٪)'}</span>
         </div>
         <p className="pricing-upsell-text">
           {isEn
-            ? 'Urgent releases and full video edits — priority rendering and delivery under 12 hours or same-day (including off-hours), +50%.'
-            : 'تحویل فوری برای پروژه‌های سنگین و ادیت کامل — رندر و تحویل زیر ۱۲ ساعت یا همان روز (حتی در ساعت‌های غیرکاری)، +۵۰٪'}
+            ? 'For tight deadlines — instant kickoff, top-priority queue, and under-12-hour delivery (including off-hours/overnight), +50%.'
+            : 'برای موعدهای اضطراری انتشار — شروع آنی، اولویت رندر خارج از نوبت و تحویل زیر ۱۲ ساعت (حتی ساعات غیرکاری)، +۵۰٪'}
         </p>
       </div>
 

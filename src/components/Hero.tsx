@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { ShieldAlert } from 'lucide-react';
+import { Info } from 'lucide-react';
 
 interface HeroProps {
   heroImgRef?: React.RefObject<HTMLImageElement>;
@@ -54,7 +54,7 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
 
       {/* Quiet Single-Line Specs Strip */}
       <p className="hero-specs-line rv d2" aria-label={isEn ? "Specifications" : "مشخصات فنی"}>
-        {isEn ? "9:16 Reels · 1080p · Turnaround usually same-day" : "خروجی ریلز ۹:۱۶ · ۱۰۸۰p · تحویل معمولاً همان روز"}
+        {isEn ? "9:16 Reels · 1080p · Turnaround usually same-day / 1–2 days" : "خروجی ریلز ۹:۱۶ · ۱۰۸۰p · تحویل معمولاً همان روز / ۱ تا ۲ روز"}
       </p>
 
       {/* CTA Actions */}
@@ -70,21 +70,20 @@ export const Hero: React.FC<HeroProps> = ({ heroImgRef }) => {
         </a>
       </div>
 
-      {/* Prominent Dark-Themed VPN Notification Banner */}
+      {/* Subtle & Calm Dark-Themed VPN Connection Tip */}
       <div
         className="hero-vpn-banner rv d3"
         role="note"
-        aria-label={isEn ? "VPN Notice for Media Loading" : "اعلان اتصال فیلترشکن برای لود سریع مدیا"}
+        aria-label={isEn ? "Network Note: VPN recommended for media streaming" : "نکته اتصال: پیشنهاد روشن بودن فیلترشکن برای لود مدیا"}
       >
         <div className="hero-vpn-badge">
-          <ShieldAlert className="w-3.5 h-3.5 text-amber-400" aria-hidden="true" />
-          <span className="pulse-dot" aria-hidden="true" />
-          <span>{isEn ? "VPN Required" : "توجه مهم"}</span>
+          <Info className="w-3.5 h-3.5 text-zinc-400" aria-hidden="true" />
+          <span>{isEn ? "Network Tip" : "نکته مدیا"}</span>
         </div>
         <p className="hero-vpn-text">
           {isEn
-            ? "Please turn on your VPN for smooth playback and complete loading of video reels, audio, and media."
-            : "برای مشاهده روان، بدون قطعی و بارگذاری سریع ویدیوها و نمونه‌کارهای ویدیویی، لطفاً فیلترشکن (VPN) خود را روشن کنید."}
+            ? "For optimal loading and seamless playback of video embeds and audio clips, keeping your VPN active is recommended."
+            : "برای پخش روان‌تر و بدون وقفه ویدیوها و نمونه‌کارهای آنلاین، روشن بودن فیلترشکن پیشنهاد می‌شود."}
         </p>
       </div>
 

@@ -10,9 +10,7 @@ import { InstagramWorkCard } from './InstagramWorkCard';
 import { InstagramReel, INITIAL_INSTAGRAM_DATA } from '../data/instagram';
 import { Shuffle, AlertCircle } from 'lucide-react';
 import {
-  fetchRandomInstagramReelIds,
   fetchShuffledInstagramReels,
-  createInstagramReelFromId,
 } from '../utils/instagram';
 
 export const Work: React.FC = () => {
@@ -33,24 +31,29 @@ export const Work: React.FC = () => {
   const handleShuffleReels = useCallback(async () => {
     setIsShufflingReels(true);
     try {
-      // 1. Fetch randomized reel IDs from public Instagram profile
-      const randomIds = await fetchRandomInstagramReelIds({
-        excludeId: instagramReel?.id,
-        count: 6,
-      });
-
-      // 2. Retrieve corresponding shuffled reel objects
+      // Fetch shuffled reel objects (single fetch, no duplicate network call)
       const shuffled = await fetchShuffledInstagramReels({
         excludeId: instagramReel?.id,
       });
 
       if (shuffled.length > 0) {
         setInstagramReel(shuffled[0]);
-      } else if (randomIds.length > 0) {
-        setInstagramReel(createInstagramReelFromId(randomIds[0]));
+      } else {
+        // Safe offline/failure fallback: cycle to next local reel
+        const fallbackList = INITIAL_INSTAGRAM_DATA.reels || [];
+        if (fallbackList.length > 1) {
+          const currentIndex = fallbackList.findIndex((r) => r.id === instagramReel?.id);
+          const nextIndex = (currentIndex + 1) % fallbackList.length;
+          setInstagramReel(fallbackList[nextIndex]);
+        }
       }
     } catch (err) {
-      console.warn('Error shuffling Instagram reels:', err);
+      console.warn('Error shuffling Instagram reels, using local fallback:', err);
+      const fallbackList = INITIAL_INSTAGRAM_DATA.reels || [];
+      if (fallbackList.length > 0) {
+        const nextReel = fallbackList.find((r) => r.id !== instagramReel?.id) || fallbackList[0];
+        setInstagramReel(nextReel);
+      }
     } finally {
       setTimeout(() => {
         setIsShufflingReels(false);
@@ -111,6 +114,7 @@ export const Work: React.FC = () => {
     setActiveItem({
       id: `instagram-${igData.id}`,
       category: 'reels',
+      videoSrc: igData.localVideoUrl,
       primarySrc: igData.thumbnailUrl || '',
       fallbacks: igData.fallbackThumbnailUrl ? [igData.fallbackThumbnailUrl] : [],
       labelFa: igData.title || 'ریلز اینستاگرام',
@@ -188,7 +192,7 @@ export const Work: React.FC = () => {
               {isEn ? 'Selected output' : 'نمونه خروجی'}
             </h2>
             <p className="text-xs sm:text-sm text-neutral-400 mt-1 font-mono">
-              {isEn ? 'Live feeds from YouTube Shorts, Instagram & TikTok' : 'پخش مستقیم خروجی از یوتیوب شورتز، اینستاگرام و تیک‌تاک'}
+              {isEn ? 'Latest releases from YouTube Shorts, Instagram & TikTok' : 'جدیدترین آثار منتشرشده در یوتیوب شورتز، اینستاگرام و تیک‌تاک'}
             </p>
           </div>
 
@@ -206,21 +210,20 @@ export const Work: React.FC = () => {
           </button>
         </div>
 
-        {/* VPN Pay Attention Notice */}
+        {/* Media Connection Tip */}
         <div
           className="work-vpn-notice rv d1"
           role="note"
-          aria-label={isEn ? 'Pay Attention: VPN Required' : 'توجه: نیاز به فیلترشکن برای بارگذاری'}
+          aria-label={isEn ? 'Network Tip: Direct video playback enabled for selected reels' : 'نکته اتصال: پخش مستقیم ویدیوهای منتخب بدون نیاز به فیلترشکن'}
         >
           <div className="work-vpn-badge">
-            <AlertCircle className="w-3.5 h-3.5 text-amber-400" aria-hidden="true" />
-            <span className="pulse-dot" aria-hidden="true" />
-            <span>{isEn ? 'Pay Attention' : 'توجه / Pay Attention'}</span>
+            <AlertCircle className="w-3.5 h-3.5 text-zinc-400" aria-hidden="true" />
+            <span>{isEn ? 'Media Tip' : 'نکته مدیا'}</span>
           </div>
           <p className="work-vpn-text">
             {isEn
-              ? 'Please turn on your VPN to load and view live portfolio media, images, and embeds smoothly.'
-              : 'برای لود شدن و باز شدن کامل عکس‌ها و ویدیوهای نمونه‌کارها، حتماً فیلترشکن (VPN) خود را روشن کنید.'}
+              ? 'Selected Instagram reels play directly without VPN. For YouTube & external embeds, keep your VPN connected.'
+              : 'ریلزهای اینستاگرام به‌صورت مستقیم و بدون نیاز به فیلترشکن پخش می‌شوند؛ برای یوتیوب و تیک‌تاک فیلترشکن پیشنهاد می‌شود.'}
           </p>
         </div>
       </div>
@@ -233,9 +236,9 @@ export const Work: React.FC = () => {
           onOpenLightbox={handleOpenYouTubeLightbox}
         />
 
-        {/* Dynamic Instagram Reel Showcase */}
+        {/* Dynamic Instagram Reel Showcase - Stable key prevents remounting */}
         <InstagramWorkCard
-          key={`instagram-${instagramReel?.id || 'showcase'}`}
+          key="instagram-showcase-card"
           isEn={isEn}
           reel={instagramReel}
           isShuffling={isShufflingReels}

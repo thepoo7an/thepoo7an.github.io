@@ -50,7 +50,7 @@ export const PackageMatcher: React.FC = () => {
         ],
         featuresEn: [
           '4 complete Reels delivered across the month',
-          'Tight beat-syncing + unified art direction',
+          'Tight beat-syncing + unified visual style',
           'Cost savings compared to single orders',
         ],
       };

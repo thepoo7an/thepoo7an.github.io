@@ -123,6 +123,24 @@ export const TwoFacesNav: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent, idx: number) => {
+    const isRtl = !isEn;
+    const forwardKey = isRtl ? 'ArrowLeft' : 'ArrowRight';
+    const backwardKey = isRtl ? 'ArrowRight' : 'ArrowLeft';
+
+    if (e.key === forwardKey || e.key === 'ArrowDown') {
+      e.preventDefault();
+      const nextIdx = (idx + 1) % NAV_ITEMS.length;
+      itemRefs.current[nextIdx]?.focus();
+      setActiveId(NAV_ITEMS[nextIdx].id);
+    } else if (e.key === backwardKey || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prevIdx = (idx - 1 + NAV_ITEMS.length) % NAV_ITEMS.length;
+      itemRefs.current[prevIdx]?.focus();
+      setActiveId(NAV_ITEMS[prevIdx].id);
+    }
+  };
+
   return (
     <div
       ref={containerRef}
@@ -159,9 +177,11 @@ export const TwoFacesNav: React.FC = () => {
             className={`item ${isSelected ? 'is-active' : ''}`}
             role="tab"
             aria-selected={isSelected}
+            tabIndex={isSelected ? 0 : -1}
             onMouseEnter={() => setHoverIndex(idx)}
             onFocus={() => setHoverIndex(idx)}
             onBlur={() => setHoverIndex(null)}
+            onKeyDown={(e: React.KeyboardEvent<HTMLAnchorElement>) => handleKeyDown(e, idx)}
             onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleItemClick(e, item.id)}
           >
             <span className="item_face">

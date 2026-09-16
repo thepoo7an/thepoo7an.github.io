@@ -125,11 +125,14 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({
     trackContactClick('instagram');
   };
 
-  if (!currentReel) {
+  // Ensure we always have a reel even under network error or initial load failure
+  const activeReel = currentReel || (data.reels && data.reels.length > 0 ? data.reels[0] : null);
+
+  if (!activeReel) {
     return null;
   }
 
-  const reelTitle = isEn ? currentReel.titleEn || currentReel.title : currentReel.title;
+  const reelTitle = isEn ? activeReel.titleEn || activeReel.title : activeReel.title;
 
   return (
     <article
@@ -139,7 +142,7 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({
       <div className="work-media-container instagram-media-container" style={{ aspectRatio: '9/16' }}>
         {/* Video Thumbnail with WebP & Fallback support */}
         {(() => {
-          const effectiveThumb = thumbOverride || currentReel.thumbnailUrl;
+          const effectiveThumb = thumbOverride || activeReel.thumbnailUrl;
           if (!effectiveThumb || thumbError) {
             return (
               <div className="instagram-fallback-bg" aria-hidden="true">
@@ -156,8 +159,8 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({
               {effectiveThumb.endsWith('.webp') && (
                 <source srcSet={effectiveThumb} type="image/webp" />
               )}
-              {currentReel.fallbackThumbnailUrl && !thumbOverride && (
-                <source srcSet={currentReel.fallbackThumbnailUrl} type="image/jpeg" />
+              {activeReel.fallbackThumbnailUrl && !thumbOverride && (
+                <source srcSet={activeReel.fallbackThumbnailUrl} type="image/jpeg" />
               )}
               <img
                 src={effectiveThumb}
@@ -167,8 +170,8 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({
                 decoding="async"
                 referrerPolicy="no-referrer"
                 onError={() => {
-                  if (currentReel.cdnThumbnailUrl && !effectiveThumb.startsWith('http')) {
-                    setThumbOverride(currentReel.cdnThumbnailUrl);
+                  if (activeReel.cdnThumbnailUrl && !effectiveThumb.startsWith('http')) {
+                    setThumbOverride(activeReel.cdnThumbnailUrl);
                   } else {
                     setThumbError(true);
                   }
@@ -220,13 +223,24 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({
 
         {/* Bottom Card Info & Quick Actions */}
         <div className="work-card-meta instagram-video-meta">
-          <span className="work-card-spec">
-            <InstagramIcon className="w-3 h-3 text-rose-400 shrink-0 inline-block" />
-            <span>
-              {isEn
-                ? `Instagram • @${data.username} • Music Reel`
-                : `اینستاگرام • @${data.username} • ریلز موزیک`}
+          <span className="work-card-spec flex items-center justify-between gap-2">
+            <span className="flex items-center gap-1.5 truncate">
+              <InstagramIcon className="w-3 h-3 text-rose-400 shrink-0 inline-block" />
+              <span className="truncate">
+                {isEn
+                  ? `Instagram • @${data.username} • Music Reel`
+                  : `اینستاگرام • @${data.username} • ریلز موزیک`}
+              </span>
             </span>
+            {activeReel.localVideoUrl && (
+              <span 
+                className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
+                title={isEn ? 'Direct video playback without VPN' : 'پخش سریع و مستقیم بدون نیاز به فیلترشکن'}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                {isEn ? 'No VPN' : 'بدون VPN'}
+              </span>
+            )}
           </span>
 
           <h3 className="work-card-title line-clamp-2" title={reelTitle}>
@@ -242,7 +256,7 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({
               {isEn ? 'Preview' : 'پیش‌نمایش'}
             </button>
             <a
-              href={currentReel.url}
+              href={activeReel.url}
               target="_blank"
               rel="noopener noreferrer"
               className="yt-watch-btn instagram-watch-btn"

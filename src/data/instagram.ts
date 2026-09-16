@@ -11,6 +11,7 @@ export interface InstagramReel {
   thumbnailUrl: string;
   fallbackThumbnailUrl?: string;
   cdnThumbnailUrl?: string;
+  localVideoUrl?: string;
 }
 
 export interface InstagramData {

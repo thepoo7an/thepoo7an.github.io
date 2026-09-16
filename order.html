@@ -257,6 +257,25 @@ html[data-theme="light"] .style-badge-banner{background:rgba(0,113,227,.06);bord
 .style-badge-clear{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--muted);cursor:pointer;transition:all .2s ease}
 .style-badge-clear:hover{background:var(--err);color:#fff;border-color:var(--err)}
 
+/* ---------- Live Order Estimate & Telegram Route ---------- */
+.order-estimate-card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px 18px;margin-top:24px;display:flex;flex-direction:column;gap:12px}
+html[data-theme="light"] .order-estimate-card{background:rgba(0,0,0,.02);border-color:rgba(0,0,0,.08)}
+.estimate-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.estimate-badge{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--txt);background:rgba(41,151,255,.1);border:1px solid rgba(41,151,255,.25);padding:4px 10px;border-radius:999px}
+.estimate-badge b{color:var(--link);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 8px rgba(16,185,129,.7);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.85)}}
+.estimate-timing{font-size:12px;color:var(--muted);font-weight:600}
+.estimate-details{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px 12px;background:rgba(0,0,0,.25);border-radius:10px;border:1px solid rgba(255,255,255,.05)}
+html[data-theme="light"] .estimate-details{background:rgba(255,255,255,.8);border-color:rgba(0,0,0,.06)}
+.estimate-item{display:flex;flex-direction:column;gap:3px}
+.estimate-lbl{font-size:11.5px;color:var(--muted)}
+.estimate-val{font-size:13.5px;font-weight:700;color:var(--txt)}
+.estimate-price{color:#34d399;font-feature-settings:"tnum"}
+html[data-theme="light"] .estimate-price{color:#059669}
+.estimate-hint{font-size:11.5px;color:var(--muted);line-height:1.6;margin:0}
+@media(max-width:540px){.estimate-details{grid-template-columns:1fr;gap:8px}}
+
 /* ---------- Responsive ---------- */
 @media(max-width:760px){
   .grid-2{grid-template-columns:1fr}
@@ -313,7 +332,7 @@ html[data-theme="light"] .style-badge-banner{background:rgba(0,113,227,.06);bord
   </header>
 
   <div class="info-row rv d2">
-    <div class="info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><b>تحویل ۱ تا ۳ روزه</b><span>۱ روز برای تایپوگرافی / ۲–۳ روز ادیت</span></div>
+    <div class="info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><b>تحویل همان روز تا ۳ روز</b><span>معمولاً همان روز برای لیریک / ۲–۳ روز ادیت</span></div>
     <div class="info"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg><b>هماهنگی کانسپت قبل از شروع</b><span>تعیین دقیق سبک بصری و بدون ابهام</span></div>
     <div class="info"><svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg><b>ارسال مستقیم به دایرکت</b><span>@thepoo7an در اینستاگرام و تلگرام</span></div>
   </div>
@@ -389,8 +408,8 @@ html[data-theme="light"] .style-badge-banner{background:rgba(0,113,227,.06);bord
         <div class="field" id="f-time">
           <label for="time">زمان‌بندی تحویل <span class="opt">(اختیاری)</span></label>
           <select id="time">
-            <option value="عادی (طبق زمان‌بندی استاندارد خدمت)">عادی (طبق زمان‌بندی استاندارد خدمت)</option>
-            <option value="فوری (۱ روز کاری)">فوری (۱ روز کاری)</option>
+            <option value="عادی (معمولاً همان روز برای لیریک / ۲ تا ۳ روز برای ادیت کامل)">عادی (معمولاً همان روز برای لیریک / ۲ تا ۳ روز برای ادیت کامل)</option>
+            <option value="فوری اکسپرس (زیر ۱۲ ساعت / شروع آنی، +۵۰٪)">فوری اکسپرس (زیر ۱۲ ساعت / شروع آنی، +۵۰٪)</option>
             <option value="منعطف">منعطف</option>
           </select>
         </div>
@@ -401,10 +420,34 @@ html[data-theme="light"] .style-badge-banner{background:rgba(0,113,227,.06);bord
         </div>
       </div>
 
+      <!-- Live Order Estimate & Telegram Direct Route Banner -->
+      <div class="order-estimate-card" id="orderEstimateCard" aria-live="polite">
+        <div class="estimate-top">
+          <div class="estimate-badge">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            <span>هدایت مستقیم به تلگرام: <b>t.me/thepoo7an</b></span>
+          </div>
+          <span class="estimate-timing" id="estimateTiming">تحویل ۱ روزه (ساعت ۱۰ تا ۲۳)</span>
+        </div>
+        <div class="estimate-details">
+          <div class="estimate-item">
+            <span class="estimate-lbl">سرویس انتخابی:</span>
+            <span class="estimate-val" id="estimateServiceTitle">تایپوگرافی لیریک موزیک</span>
+          </div>
+          <div class="estimate-item">
+            <span class="estimate-lbl">شروع تعرفه مصوب:</span>
+            <span class="estimate-val estimate-price" id="estimatePrice">از ۱۵۰٬۰۰۰ تومان</span>
+          </div>
+        </div>
+        <p class="estimate-hint">
+          با زدن دکمه تلگرام، متن کامل سفارش شما در کلیپ‌بورد کپی شده و مستقیماً چت اختصاصی <span class="ltr">t.me/thepoo7an</span> با متن آماده باز می‌شود.
+        </p>
+      </div>
+
       <div class="submit-row">
         <div class="submit-actions">
           <button type="button" class="pill pill-tg" id="submitTgBtn">
-            ارسال سفارش در تلگرام
+            ارسال مستقیم به تلگرام (@thepoo7an)
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
           </button>
           <button type="button" class="pill pill-ig" id="submitIgBtn">
@@ -414,7 +457,7 @@ html[data-theme="light"] .style-badge-banner{background:rgba(0,113,227,.06);bord
         </div>
         <p class="submit-note">
           <svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
-          با کلیک روی هر دکمه، بریف کامل در کلیپ‌بورد کپی شده و پیام‌رسان مربوطه با متن آماده باز می‌شود.
+          بریف پروژه به طور خودکار به آیدی تلگرام <b class="ltr">@thepoo7an</b> هدایت می‌شود؛ در صورت تمایل می‌توانید از دایرکت اینستاگرام نیز استفاده کنید.
         </p>
       </div>
     </form>
@@ -603,6 +646,48 @@ html[data-theme="light"] .style-badge-banner{background:rgba(0,113,227,.06);bord
       el.addEventListener('focus', function(){ triggerOrderStartedOnce('field_focus'); }, {once: true});
       el.addEventListener('input', function(){ triggerOrderStartedOnce('field_input'); }, {once: true});
     });
+
+    /* Live Order Estimate calculation */
+    var serviceTitleEl = document.getElementById('estimateServiceTitle');
+    var estimatePriceEl = document.getElementById('estimatePrice');
+    var estimateTimingEl = document.getElementById('estimateTiming');
+    var timeSelect = document.getElementById('time');
+
+    function updateOrderEstimate() {
+      if (!typeSelect) return;
+      var curType = typeSelect.value;
+      var curTime = timeSelect ? timeSelect.value : '';
+
+      var priceMap = {
+        'تایپوگرافی لیریک موزیک (۱۵ الی ۲۰ ثانیه)': { price: 'از ۱۵۰٬۰۰۰ تومان', time: 'تحویل ۱ روز کاری (۱۰ تا ۲۳)' },
+        'ادیت ویدیو + تایپوگرافی لیریک': { price: 'از ۳۰۰٬۰۰۰ تومان', time: 'تحویل ۲ الی ۳ روز کاری' },
+        'پکیج ماهانه (۴ ریلز در ماه)': { price: 'از ۱٬۰۰۰٬۰۰۰ تومان', time: 'اولویت اختصاصی رندرینگ ماهانه' },
+        'پروژه ویژه / سفارشی': { price: 'از ۴۹۰٬۰۰۰ تومان', time: 'هماهنگی زمان‌بندی بسته به دامنه کار' },
+        'طراحی کاور موزیک': { price: 'از ۲۵۰٬۰۰۰ تومان', time: 'تحویل فایل ۳۰۰۰×۳۰۰۰ پیکسل (۱ الی ۲ روز)' }
+      };
+
+      var matched = priceMap[curType] || { price: 'هماهنگی در تلگرام', time: 'تحویل توافقی' };
+      if (serviceTitleEl) serviceTitleEl.textContent = curType || 'تایپوگرافی لیریک موزیک';
+      if (estimatePriceEl) estimatePriceEl.textContent = matched.price;
+
+      if (estimateTimingEl) {
+        if (curTime && curTime.indexOf('فوری') !== -1) {
+          estimateTimingEl.textContent = '⚡ اولویت تحویل اکسپرس (زیر ۱۲ ساعت)';
+          estimateTimingEl.style.color = '#f59e0b';
+        } else {
+          estimateTimingEl.textContent = matched.time;
+          estimateTimingEl.style.color = '';
+        }
+      }
+    }
+
+    if (typeSelect) {
+      typeSelect.addEventListener('change', updateOrderEstimate);
+    }
+    if (timeSelect) {
+      timeSelect.addEventListener('change', updateOrderEstimate);
+    }
+    updateOrderEstimate();
   } catch(e) {}
 
   /* Nav scroll */
@@ -786,8 +871,24 @@ html[data-theme="light"] .style-badge-banner{background:rgba(0,113,227,.06);bord
       var copied = await copyToClipboard(msg);
 
       if (targetPlatform === 'tg') {
-        showToast(copied ? 'متن سفارش کپی شد؛ در حال باز کردن تلگرام…' : 'در حال باز کردن تلگرام…');
-        window.open('https://t.me/thepoo7an?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
+        showToast(copied ? 'متن سفارش کپی شد؛ در حال باز کردن تلگرام @thepoo7an…' : 'در حال باز کردن تلگرام…');
+        var encodedMsg = encodeURIComponent(msg);
+        var tgWebUrl = 'https://t.me/thepoo7an?text=' + encodedMsg;
+        var tgAppUrl = 'tg://resolve?domain=thepoo7an&text=' + encodedMsg;
+
+        var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        if (isMobile) {
+          // Open native Telegram app directly on mobile, with web fallback
+          window.location.href = tgAppUrl;
+          setTimeout(function() {
+            window.location.href = tgWebUrl;
+          }, 850);
+        } else {
+          var win = window.open(tgWebUrl, '_blank', 'noopener,noreferrer');
+          if (!win || win.closed || typeof win.closed === 'undefined') {
+            window.location.href = tgWebUrl;
+          }
+        }
       } else {
         showToast(copied ? 'متن سفارش کپی شد؛ در حال باز کردن دایرکت اینستاگرام…' : 'در حال باز کردن دایرکت اینستاگرام…');
         window.open('https://ig.me/m/thepoo7an?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
@@ -843,22 +944,6 @@ html[data-theme="light"] .style-badge-banner{background:rgba(0,113,227,.06);bord
       }
     });
   });
-
-  /* GA4 Integration */
-  try {
-    var gaMeta = document.querySelector('meta[name="ga-measurement-id"]');
-    var gaId = (gaMeta && gaMeta.getAttribute('content') || window.GA_MEASUREMENT_ID || '').trim();
-    if (gaId && !document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) {
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
-      var gas = document.createElement('script');
-      gas.async = true;
-      gas.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId);
-      document.head.appendChild(gas);
-      window.gtag('js', new Date());
-      window.gtag('config', gaId, { send_page_view: true, anonymize_ip: true });
-    }
-  } catch(e) {}
 })();
 </script>
 </body>
