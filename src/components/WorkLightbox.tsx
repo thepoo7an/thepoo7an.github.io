@@ -24,6 +24,37 @@ export const WorkLightbox: React.FC<WorkLightboxProps> = ({
     setPreferEmbed(false);
   }, [activeItem?.id]);
 
+  // Accessibility: Close lightbox on Escape key
+  useEffect(() => {
+    if (!activeItem) return;
+    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeItem, onClose]);
+
+  // Lock background scroll when lightbox is active
+  useEffect(() => {
+    if (activeItem) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [activeItem]);
+
+  // Auto-focus close button when modal mounts
+  useEffect(() => {
+    if (activeItem && closeBtnRef.current) {
+      closeBtnRef.current.focus();
+    }
+  }, [activeItem, closeBtnRef]);
+
   if (!activeItem) return null;
 
   const hasLocalVideo = Boolean(activeItem.videoSrc);
