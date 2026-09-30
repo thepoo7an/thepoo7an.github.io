@@ -189,6 +189,49 @@ html[data-theme="light"],
   box-sizing: border-box;
 }
 
+/* ============ iOS + Android Base Compatibility ============ */
+
+/* Prevent unwanted font zoom on iOS */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Disable iOS tap highlight (too aggressive) */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Re-enable for interactive elements only */
+a, button, .pill, .tlink, .soc, .rail-btn, .nav-cta {
+  -webkit-tap-highlight-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Prevent overscroll bounce on body */
+body {
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Allow overscroll on scrollable containers */
+.rail, .sheet {
+  overscroll-behavior-y: contain;
+}
+
+/* Prevent iOS text zoom in landscape */
+@media screen and (orientation: landscape) {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
+/* Improve touch scrolling on Android */
+.rail, .sheet, main {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-h) + 16px);
@@ -3892,19 +3935,23 @@ html[data-theme="light"] .f-monumental-text {
   }
 }
 
-/* ============ Mobile UI Fixes (patch) ============ */
+/* ============ Mobile UI Fixes (iOS + Android) ============ */
 
-/* (3) مقدار رنگ نامعتبر */
-.rail-head p { color: var(--muted); }
+/* PART 1: FIX CRITICAL CSS BUGS */
+.rail-head p { 
+  color: var(--muted); 
+}
 
-/* (11) آفست اسکرول لنگرها زیر ناو ثابت */
-html { scroll-padding-top: calc(var(--nav-h) + 12px); }
+html { 
+  scroll-padding-top: calc(var(--nav-h) + 16px); 
+}
 
-/* (2) چیدمان و اسکرول افقی برای .rail */
+/* PART 4: FIX RAIL CAROUSEL (SERVICES SECTION) */
 .rail {
   display: flex;
   gap: 16px;
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
@@ -3913,70 +3960,231 @@ html { scroll-padding-top: calc(var(--nav-h) + 12px); }
   margin: 34px auto 0;
   padding: 4px 22px 16px;
 }
-.rail::-webkit-scrollbar { display: none; }
-.rail .s-card { flex: 0 0 min(320px, 82vw); scroll-snap-align: start; }
 
-/* (9-safe) پایین sheet برای ناچ */
-.sheet { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
-
-@media (max-width: 900px) {
-  /* (4) اهداف لمسی ≥44px */
-  .tile-links .pill { min-height: 44px; }
-  .rail-btn { width: 44px; height: 44px; }
-  .soc { min-height: 44px; }
-  .copy-btn { min-height: 44px; padding: 10px 18px; }
-
-  /* (5) ارتفاع طبیعی کارت پورتفولیو + نسبت تصویر */
-  .tile { min-height: 0; }
-  .tile-media { min-height: 0; }
-  .tile-media img, .tile-image { height: auto; aspect-ratio: 4 / 5; }
-  .tile.wide .tile-media img { height: auto; aspect-ratio: 16 / 9; object-fit: cover; padding: 0; }
+.rail::-webkit-scrollbar { 
+  display: none; 
 }
 
-@media (max-width: 760px) {
-  /* (7) ریتم عمودی فشردهتر */
-  .statement { padding: 64px 18px; margin-top: 24px; }
-  .feat-row { margin-top: 36px; }
-  .rail-sec { padding: 56px 0 20px; }
-  .price-sec { padding: 64px 18px; }
-  .band { padding: 64px 18px; }
-  .tiles-sec { padding: 10px; gap: 10px; }
+.rail .s-card { 
+  flex: 0 0 min(320px, 82vw); 
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
-@media (max-width: 480px) {
-  /* دسترسی دائمی به دکمه سفارش با ابعاد بهینه در موبایل */
-  .nav-cta {
-    font-size: 11px;
-    padding: 5px 10px;
-    min-height: 32px;
-    white-space: nowrap;
+/* Ensure rail buttons are touch-friendly */
+.rail-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* On mobile, hide rail nav buttons (user can swipe) */
+@media (max-width: 768px) {
+  .rail-nav {
+    display: none;
+  }
+  .rail {
+    padding: 4px 16px 16px;
+  }
+  .rail .s-card {
+    flex: 0 0 min(300px, 85vw);
   }
 }
 
-@media (max-width: 430px) {
-  .nav-in { padding: 0 14px; gap: 8px; }
-  .nav-act { gap: 8px; }
-  .brand { font-size: 14px; }
+/* PART 5: FIX PORTFOLIO CARDS HEIGHT */
+@media (max-width: 900px) {
+  .tile { 
+    min-height: 0; 
+  }
+  .tile-media { 
+    min-height: 0; 
+  }
+  .tile-media img, 
+  .tile-image { 
+    height: auto; 
+    aspect-ratio: 4 / 5; 
+  }
+  .tile.wide .tile-media img { 
+    height: auto; 
+    aspect-ratio: 16 / 9; 
+    object-fit: cover; 
+    padding: 0; 
+  }
+}
 
-  /* (6) مقیاس تایپو هیرو */
-  .hero { padding-top: calc(var(--nav-h) + 40px); }
-  .hero h1 { font-size: clamp(32px, 9.6vw, 44px); }
-  .hero .sub { font-size: 15px; }
-  .hero-media { margin-top: 36px; }
+/* Ensure touch targets in tile links */
+@media (max-width: 900px) {
+  .tile-links .pill { 
+    min-height: 44px; 
+    min-width: 44px;
+  }
+  .tile-links .tlink {
+    min-height: 44px;
+    padding: 8px 12px;
+  }
+  .copy-btn {
+    min-height: 44px;
+    padding: 10px 18px;
+  }
+}
+
+/* PART 10: ADD SOCIAL LINKS TOUCH TARGETS */
+.soc { 
+  min-height: 44px; 
+  min-width: 44px;
+  padding: 10px 20px;
+}
+
+@media (max-width: 900px) {
+  .soc {
+    padding: 12px 24px;
+  }
+}
+
+/* PART 7: FIX VERTICAL SPACING ON MOBILE */
+@media (max-width: 760px) {
+  .statement { 
+    padding: 64px 18px; 
+    margin-top: 24px; 
+  }
+  .feat-row { 
+    margin-top: 36px; 
+    gap: 12px;
+  }
+  .rail-sec { 
+    padding: 56px 0 20px; 
+  }
+  .price-sec { 
+    padding: 64px 18px; 
+  }
+  .band { 
+    padding: 64px 18px; 
+  }
+  .tiles-sec { 
+    padding: 10px; 
+    gap: 10px; 
+  }
+  footer {
+    padding: 24px 16px 32px;
+  }
+}
+
+/* PART 3: FIX NAVIGATION OVERFLOW (CRITICAL FOR 320-430px) */
+/* Hide CTA on very small screens to prevent overflow */
+@media (max-width: 480px) {
+  .nav-cta { 
+    display: none; 
+  }
+}
+
+/* Tighten spacing on small screens */
+@media (max-width: 430px) {
+  .nav-in { 
+    padding: 0 14px; 
+    gap: 8px; 
+  }
+  .nav-act { 
+    gap: 8px; 
+  }
+  .brand { 
+    font-size: 14px; 
+  }
+  
+  /* Ensure theme button is touch-friendly */
+  #themeBtn, #menuBtn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Extra small screens (320px) */
+@media (max-width: 360px) {
+  .nav-in { 
+    padding: 0 12px; 
+    gap: 6px; 
+  }
+  .brand { 
+    font-size: 13px; 
+    gap: 6px;
+  }
+  .brand i {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* PART 6: FIX HERO TYPOGRAPHY ON SMALL SCREENS */
+@media (max-width: 430px) {
+  .hero { 
+    padding-top: calc(var(--nav-h) + 40px); 
+  }
+  .hero h1 { 
+    font-size: clamp(32px, 9.6vw, 44px); 
+    line-height: 1.2;
+  }
+  .hero .sub { 
+    font-size: 15px; 
+    line-height: 1.6;
+  }
+  .hero-media { 
+    margin-top: 36px; 
+  }
+  .hero-media img {
+    width: min(600px, 95%);
+  }
 }
 
 @media (max-width: 360px) {
-  .nav-in {
-    padding: 0 10px;
-    gap: 6px;
+  .hero h1 { 
+    font-size: clamp(28px, 9vw, 36px); 
   }
-  .nav-act {
-    gap: 6px;
+  .hero .sub { 
+    font-size: 14px; 
   }
-  .nav-cta {
-    font-size: 10.5px;
-    padding: 4px 8px;
-    min-height: 30px;
+  .eyebrow {
+    font-size: 12px;
+  }
+}
+
+/* PART 8: FIX SHEET (MOBILE MENU) SAFE AREA */
+.sheet { 
+  padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); 
+}
+
+.sheet a {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 14px 0;
+}
+
+/* On iOS with home indicator */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .sheet {
+    padding-bottom: calc(40px + env(safe-area-inset-bottom));
+  }
+}
+
+/* PART 12: ADD ACTIVE STATE FEEDBACK FOR TOUCH */
+a:active, 
+button:active, 
+.pill:active, 
+.tlink:active, 
+.soc:active,
+.interactive-card:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Disable on devices that don't support active state well */
+@media (hover: none) and (pointer: coarse) {
+  a:active, 
+  button:active {
+    opacity: 0.7;
+    transform: none;
   }
 }
 

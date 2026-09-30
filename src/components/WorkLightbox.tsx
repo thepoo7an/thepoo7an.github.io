@@ -89,7 +89,10 @@ export const WorkLightbox: React.FC<WorkLightboxProps> = ({
               <video
                 key={activeItem.videoSrc}
                 src={activeItem.videoSrc}
-                poster={activeItem.primarySrc}
+                poster={
+                  activeItem.primarySrc ||
+                  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 16'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231d1d1f'/%3E%3Cstop offset='1' stop-color='%230b0b0c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3Cpath d='M6 5 L10 8 L6 11 Z' fill='%23f5f5f7' opacity='0.5'/%3E%3C/svg%3E"
+                }
                 controls
                 playsInline
                 autoPlay
