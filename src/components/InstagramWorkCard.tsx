@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Play, ExternalLink, Shuffle, Film } from 'lucide-react';
 import { InstagramData, InstagramReel, INITIAL_INSTAGRAM_DATA, fetchLiveInstagramData } from '../data/instagram';
 import { trackContactClick, trackWorkPreview } from '../utils/analytics';
+import { getDisplayTitle } from '../data/titleOverrides';
 
 const InstagramIcon: React.FC<{ className?: string; size?: number }> = ({ className = "w-4 h-4", size = 16 }) => (
   <svg
@@ -132,12 +133,12 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({
     return null;
   }
 
-  const reelTitle = isEn ? activeReel.titleEn || activeReel.title : activeReel.title;
+  const displayTitle = getDisplayTitle(activeReel.title, 'instagram');
 
   return (
     <article
       className="work-card rv in work-card-instagram"
-      aria-label={isEn ? `Random Instagram Reel: ${reelTitle}` : `ریلز تصادفی اینستاگرام: ${reelTitle}`}
+      aria-label={isEn ? `Random Instagram Reel: ${displayTitle}` : `ریلز تصادفی اینستاگرام: ${displayTitle}`}
     >
       <div className="work-media-container instagram-media-container" style={{ aspectRatio: '9/16' }}>
         {/* Video Thumbnail with WebP & Fallback support */}
@@ -164,7 +165,7 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({
               )}
               <img
                 src={effectiveThumb}
-                alt={reelTitle}
+                alt={displayTitle}
                 className={`work-card-thumb instagram-thumb-img ${isShuffling ? 'shuffling' : ''}`}
                 loading="lazy"
                 decoding="async"
@@ -215,7 +216,7 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({
             type="button"
             className="work-card-play-btn instagram-play-btn"
             onClick={handleOpen}
-            aria-label={isEn ? `Play Instagram reel: ${reelTitle}` : `پخش ریلز اینستاگرام: ${reelTitle}`}
+            aria-label={isEn ? `Play Instagram reel: ${displayTitle}` : `پخش ریلز اینستاگرام: ${displayTitle}`}
           >
             <Play className="w-5 h-5 fill-current text-white" aria-hidden="true" />
           </button>
@@ -243,9 +244,12 @@ export const InstagramWorkCard: React.FC<InstagramWorkCardProps> = ({
             )}
           </span>
 
-          <h3 className="work-card-title line-clamp-2" title={reelTitle}>
-            {reelTitle || (isEn ? 'Instagram Music Reel' : 'ریلز موزیک اینستاگرام')}
+          <h3 className="work-card-title line-clamp-2" title={displayTitle}>
+            {displayTitle}
           </h3>
+          <p className="text-xs text-neutral-400 mt-1 line-clamp-1">
+            {isEn ? 'Beat-synced lyric typography & animation' : 'تایپوگرافی لیریک با بیت‌سینک دقیق و انیمیشن حرفه‌ای'}
+          </p>
 
           <div className="instagram-card-links">
             <button

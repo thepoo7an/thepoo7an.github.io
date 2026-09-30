@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Play, ExternalLink, Radio } from 'lucide-react';
 import { YouTubeVideoData, INITIAL_YOUTUBE_DATA, fetchLiveYouTubeRelease } from '../data/youtube';
 import { trackWorkPreview } from '../utils/analytics';
+import { getDisplayTitle } from '../data/titleOverrides';
 
 interface YouTubeWorkCardProps {
   key?: React.Key;
@@ -52,16 +53,18 @@ export const YouTubeWorkCard: React.FC<YouTubeWorkCardProps> = ({ isEn, onOpenLi
     }
   };
 
+  const displayTitle = getDisplayTitle(video.title, 'youtube');
+
   return (
     <article
       className="work-card rv in work-card-youtube"
-      aria-label={isEn ? `YouTube Short: ${video.title}` : `شورت یوتیوب: ${video.title}`}
+      aria-label={isEn ? `YouTube Short: ${displayTitle}` : `شورت یوتیوب: ${displayTitle}`}
     >
       <div className="work-media-container" style={{ aspectRatio: '9/16' }}>
         {/* Cover Thumbnail */}
         <img
           src={thumbSrc}
-          alt={video.title}
+          alt={displayTitle}
           className="work-card-thumb"
           loading="lazy"
           decoding="async"
@@ -90,7 +93,7 @@ export const YouTubeWorkCard: React.FC<YouTubeWorkCardProps> = ({ isEn, onOpenLi
             type="button"
             className="work-card-play-btn"
             onClick={handleOpen}
-            aria-label={isEn ? `Play YouTube Short: ${video.title}` : `پخش شورت یوتیوب: ${video.title}`}
+            aria-label={isEn ? `Play YouTube Short: ${displayTitle}` : `پخش شورت یوتیوب: ${displayTitle}`}
           >
             <Play className="w-5 h-5 fill-current" aria-hidden="true" />
           </button>
@@ -102,7 +105,10 @@ export const YouTubeWorkCard: React.FC<YouTubeWorkCardProps> = ({ isEn, onOpenLi
             <Radio className="w-3 h-3 text-red-500 shrink-0 inline-block" aria-hidden="true" />
             <span>{isEn ? 'YouTube Shorts • @thepoo7an' : 'یوتیوب شورتز • @thepoo7an'}</span>
           </span>
-          <h3 className="work-card-title">{video.title}</h3>
+          <h3 className="work-card-title">{displayTitle}</h3>
+          <p className="text-xs text-neutral-400 mt-1 line-clamp-1">
+            {isEn ? 'Beat-synced lyric typography & animation' : 'تایپوگرافی لیریک با بیت‌سینک دقیق و انیمیشن حرفه‌ای'}
+          </p>
 
           <div className="yt-card-links">
             <button

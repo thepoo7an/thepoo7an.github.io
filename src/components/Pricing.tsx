@@ -140,8 +140,8 @@ export const Pricing: React.FC = () => {
         </h2>
         <p className="lead rv d2">
           {isEn
-            ? "Transparent baseline rates. The exact final price is confirmed upfront based on track length and scope before kick-off, with no hidden surprises."
-            : "تعرفه‌ها نرخ پایه (شروع از) هستند؛ قیمت نهایی و قطعی پس از بررسی فایل صوتی و پیش از شروع پروژه شفاف اعلام می‌شود."}
+            ? "Transparent baseline rates. The exact final price is confirmed upfront after reviewing the file and agreement, remaining unchanged until delivery."
+            : "تعرفه‌ها نرخ پایه (شروع از) هستند؛ قیمت نهایی پس از بررسی فایل و توافق، قبل از شروع کار مشخص می‌شود و تا تحویل بدون تغییر خواهد بود."}
         </p>
       </div>
 
@@ -220,14 +220,14 @@ export const Pricing: React.FC = () => {
             <>
               • Online collaboration for clients across Iran and global creators.<br />
               • Direct order via website form, Instagram (@thepoo7an), or Telegram.<br />
-              • Rates indicate starting baseline figures; your exact final quote is confirmed upfront before project kick-off with zero hidden fees.<br />
+              • Rates indicate starting baseline figures; exact final price is confirmed upfront after reviewing the file and agreement, remaining unchanged until delivery.<br />
               • Cover artwork & identity: available standalone or bundled with reels.
             </>
           ) : (
             <>
               • همکاری به‌صورت آنلاین است؛ ویژه هنرمندان سراسر کشور و پروژه‌های بین‌المللی.<br />
               • ثبت سفارش مستقیم از طریق فرم سایت، دایرکت اینستاگرام یا تلگرام.<br />
-              • قیمت‌ها نرخ شروع هستند؛ قیمت نهایی پس از بررسی فایل صوتی پیش از شروع کار به صورت قطعی مشخص می‌شود و تغییری نخواهد داشت.<br />
+              • قیمت‌ها نرخ شروع هستند؛ قیمت نهایی پس از بررسی فایل و توافق، قبل از شروع کار مشخص می‌شود و تا تحویل بدون تغییر خواهد بود.<br />
               • طراحی کاور موزیک و پکیج‌های ماهانه با تخفیف ویژه همکاری تکرارشونده محاسبه می‌شوند.
             </>
           )}

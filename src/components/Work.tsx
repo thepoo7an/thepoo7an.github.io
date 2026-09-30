@@ -12,6 +12,7 @@ import { Shuffle, AlertCircle } from 'lucide-react';
 import {
   fetchShuffledInstagramReels,
 } from '../utils/instagram';
+import { getDisplayTitle } from '../data/titleOverrides';
 
 export const Work: React.FC = () => {
   const { isEn } = useLanguage();
@@ -76,13 +77,14 @@ export const Work: React.FC = () => {
 
   const handleOpenYouTubeLightbox = (ytData: YouTubeVideoData, triggerEl: HTMLButtonElement | null) => {
     lastActiveTriggerRef.current = triggerEl;
+    const title = getDisplayTitle(ytData.title, 'youtube');
     setActiveItem({
       id: `youtube-${ytData.videoId}`,
       category: 'reels',
       primarySrc: ytData.localThumbnailUrl || ytData.fallbackThumbnailUrl || ytData.maxresThumbnailUrl || ytData.thumbnailUrl,
       fallbacks: [ytData.fallbackThumbnailUrl, ytData.thumbnailUrl].filter(Boolean) as string[],
-      labelFa: ytData.title,
-      labelEn: ytData.title,
+      labelFa: title,
+      labelEn: title,
       specFa: 'یوتیوب شورتز • @thepoo7an',
       specEn: 'YouTube Shorts • @thepoo7an',
       isYouTube: true,
@@ -94,13 +96,14 @@ export const Work: React.FC = () => {
 
   const handleOpenTikTokLightbox = (ttData: TikTokVideo, triggerEl: HTMLButtonElement | null) => {
     lastActiveTriggerRef.current = triggerEl;
+    const title = getDisplayTitle(ttData.title || '', 'tiktok');
     setActiveItem({
       id: `tiktok-${ttData.id}`,
       category: 'reels',
       primarySrc: ttData.localThumbnailUrl || ttData.thumbnailUrl || '',
       fallbacks: [ttData.fallbackThumbnailUrl, ttData.cdnThumbnailUrl].filter(Boolean) as string[],
-      labelFa: ttData.title || 'ویدیوی تیک‌تاک',
-      labelEn: ttData.title || 'TikTok Video',
+      labelFa: title,
+      labelEn: title,
       specFa: 'تیک‌تاک • @thepoo7an',
       specEn: 'TikTok • @thepoo7an',
       isTikTok: true,
@@ -111,14 +114,15 @@ export const Work: React.FC = () => {
 
   const handleOpenInstagramLightbox = (igData: InstagramReel, triggerEl: HTMLButtonElement | null) => {
     lastActiveTriggerRef.current = triggerEl;
+    const title = getDisplayTitle(igData.title || '', 'instagram');
     setActiveItem({
       id: `instagram-${igData.id}`,
       category: 'reels',
       videoSrc: igData.localVideoUrl,
       primarySrc: igData.thumbnailUrl || '',
       fallbacks: igData.fallbackThumbnailUrl ? [igData.fallbackThumbnailUrl] : [],
-      labelFa: igData.title || 'ریلز اینستاگرام',
-      labelEn: igData.titleEn || igData.title || 'Instagram Reel',
+      labelFa: title,
+      labelEn: title,
       specFa: 'اینستاگرام • @thepoo7an',
       specEn: 'Instagram • @thepoo7an',
       isInstagram: true,

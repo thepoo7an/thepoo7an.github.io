@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Play, ExternalLink, Shuffle, Heart, Film } from 'lucide-react';
 import { TikTokData, TikTokVideo, INITIAL_TIKTOK_DATA, fetchLiveTikTokData } from '../data/tiktok';
 import { trackContactClick, trackWorkPreview } from '../utils/analytics';
+import { getDisplayTitle } from '../data/titleOverrides';
 
 interface TikTokWorkCardProps {
   key?: React.Key;
@@ -117,17 +118,19 @@ export const TikTokWorkCard: React.FC<TikTokWorkCardProps> = ({ isEn, onOpenLigh
     return null;
   }
 
+  const displayTitle = getDisplayTitle(currentVideo.title, 'tiktok');
+
   return (
     <article
       className="work-card rv in work-card-tiktok"
-      aria-label={isEn ? `Random TikTok Video: ${currentVideo.title}` : `ویدیوی تصادفی تیک‌تاک: ${currentVideo.title}`}
+      aria-label={isEn ? `Random TikTok Video: ${displayTitle}` : `ویدیوی تصادفی تیک‌تاک: ${displayTitle}`}
     >
       <div className="work-media-container tiktok-media-container" style={{ aspectRatio: '9/16' }}>
         {/* Video Thumbnail or Fallback Background */}
         {thumbSrc && !thumbError ? (
           <img
             src={thumbSrc}
-            alt={currentVideo.title}
+            alt={displayTitle}
             className={`work-card-thumb tiktok-thumb-img ${isShuffling ? 'shuffling' : ''}`}
             loading="lazy"
             decoding="async"
@@ -186,7 +189,7 @@ export const TikTokWorkCard: React.FC<TikTokWorkCardProps> = ({ isEn, onOpenLigh
             type="button"
             className="work-card-play-btn tiktok-play-btn"
             onClick={handleOpen}
-            aria-label={isEn ? `Play TikTok video: ${currentVideo.title}` : `پخش ویدیوی تیک‌تاک: ${currentVideo.title}`}
+            aria-label={isEn ? `Play TikTok video: ${displayTitle}` : `پخش ویدیوی تیک‌تاک: ${displayTitle}`}
           >
             <Play className="w-5 h-5 fill-current text-white" aria-hidden="true" />
           </button>
@@ -203,9 +206,12 @@ export const TikTokWorkCard: React.FC<TikTokWorkCardProps> = ({ isEn, onOpenLigh
             </span>
           </span>
 
-          <h3 className="work-card-title line-clamp-2" title={currentVideo.title}>
-            {currentVideo.title || (isEn ? 'TikTok Music Reel' : 'ریلز موزیک تیک‌تاک')}
+          <h3 className="work-card-title line-clamp-2" title={displayTitle}>
+            {displayTitle}
           </h3>
+          <p className="text-xs text-neutral-400 mt-1 line-clamp-1">
+            {isEn ? 'Beat-synced lyric typography & animation' : 'تایپوگرافی لیریک با بیت‌سینک دقیق و انیمیشن حرفه‌ای'}
+          </p>
 
           <div className="tiktok-card-links">
             <button
