@@ -7047,6 +7047,67 @@ html[data-theme="light"] .yt-watch-btn:hover {
   transform: translateY(-2px);
 }
 
+/* ==========================================================================
+   Harmony layer: loaded after index.css. UI/UX consistency only, no content changes.
+   ========================================================================== */
+:root {
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --focus-ring: var(--ring, var(--primary));
+}
+
+/* Anchor jumps never hide under the fixed nav */
+html {
+  scroll-padding-top: calc(var(--nav-h, 48px) + 16px);
+}
+
+/* One focus language for every interactive element, in both themes */
+:is(a, button, input, select, textarea, summary, [role="button"], [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid var(--focus-ring) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--focus-ring) 22%, transparent) !important;
+}
+
+/* Faster, cleaner taps on touch screens */
+:is(a, button, summary, [role="button"], label) {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Persian reading comfort (zero specificity: any explicit leading class still wins) */
+:where([dir="rtl"]) :where(p, li, dd, figcaption) {
+  line-height: 1.8;
+}
+:where(p, li) {
+  text-wrap: pretty;
+}
+:where(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+/* Prevent iOS zoom-on-focus in forms */
+@media (max-width: 767px) {
+  :is(input, select, textarea) {
+    font-size: max(16px, 1em);
+  }
+}
+
+/* Respect users who ask for less motion, site-wide safety net */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
 
 
 
