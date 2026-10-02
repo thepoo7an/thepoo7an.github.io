@@ -1,0 +1,199 @@
+/* ==========================================================================
+   THEPOO7AN Design System — Harmony Layer (Single Source of Truth)
+   Semantic Tokens: Color, Typography, Spacing, Radius, Shadow & Motion
+   ========================================================================== */
+
+:root {
+  /* Typography Tokens */
+  --font-sans-fa: 'Vazirmatn', Tahoma, sans-serif;
+  --font-sans-en: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --lh-body: 1.8;
+  --lh-heading: 1.3;
+  --lh-label: 1.4;
+
+  /* Radius Scale: ONLY 8, 12, 16, 24, 9999px are allowed */
+  --radius-sm: 8px;      /* Chip, Badge, Small indicator */
+  --radius-md: 12px;     /* Inputs, Small Buttons */
+  --radius-lg: 16px;     /* Cards, Media thumbnails */
+  --radius-xl: 24px;     /* Hero container, Lightbox, Large surfaces, Bottom Sheet */
+  --radius-full: 9999px; /* CTA, Standard Pill */
+
+  /* 4px Spacing Grid Scale: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;      /* Section gap (Mobile) */
+  --space-24: 96px;      /* Section gap (Desktop) */
+
+  /* Component Spacing */
+  --card-p-mobile: 20px;
+  --card-p-desktop: 24px;
+  --grid-gap-sm: 16px;
+  --grid-gap-lg: 24px;
+
+  /* Motion Scale: ONLY 160ms, 260ms, 500ms are allowed */
+  --duration-micro: 160ms;  /* Micro-interactions, icons, hover */
+  --duration-normal: 260ms; /* Standard toggles, reveals, cards */
+  --duration-enter: 500ms;  /* Modal / Sheet entrance */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Semantic Theme Tokens - Default Dark (#09090b canvas) */
+  --background: #09090b;
+  --foreground: #f4f4f5;
+  --card-bg: #111114;
+  --card-foreground: #f4f4f5;
+  --popover: #111114;
+  --popover-foreground: #f4f4f5;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #1f1f23;
+  --secondary-foreground: #fafafa;
+  --muted-bg: #18181b;
+  --muted-foreground: #a1a1aa;
+  --accent: #1f1f23;
+  --accent-foreground: #fafafa;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.16);
+  --ring: #3b82f6;
+
+  /* Elevation Shadows (Dark) */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.7), 0 4px 12px -3px rgba(0, 0, 0, 0.5);
+
+  /* Verified Social Brand Tokens */
+  --brand-telegram: #229ed9;
+  --brand-instagram-from: #833ab4;
+  --brand-instagram-via: #fd1d1d;
+  --brand-instagram-to: #fcb045;
+
+  color-scheme: dark;
+}
+
+/* Light Theme Overrides */
+html[data-theme="light"],
+[data-appearance="light"] {
+  --background: #ffffff;
+  --foreground: #09090b;
+  --card-bg: #ffffff;
+  --card-foreground: #09090b;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted-bg: #f4f4f5;
+  --muted-foreground: #52525b;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #2563eb;
+
+  /* Elevation Shadows (Light) */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.12), 0 4px 10px -3px rgba(0, 0, 0, 0.06);
+
+  color-scheme: light;
+}
+
+/* ================= Harmony Utility Classes ================= */
+
+/* Duration & Easing Utilities */
+.duration-micro {
+  transition-duration: var(--duration-micro) !important;
+}
+.duration-normal {
+  transition-duration: var(--duration-normal) !important;
+}
+.duration-enter {
+  transition-duration: var(--duration-enter) !important;
+}
+.ease-harmony {
+  transition-timing-function: var(--ease) !important;
+}
+
+/* Radius Utilities constrained to design system scale */
+.rounded-token-sm {
+  border-radius: var(--radius-sm) !important;
+}
+.rounded-token-md {
+  border-radius: var(--radius-md) !important;
+}
+.rounded-token-lg {
+  border-radius: var(--radius-lg) !important;
+}
+.rounded-token-xl {
+  border-radius: var(--radius-xl) !important;
+}
+.rounded-token-full {
+  border-radius: var(--radius-full) !important;
+}
+
+/* Shadows */
+.shadow-token-sm {
+  box-shadow: var(--shadow-sm) !important;
+}
+.shadow-token-md {
+  box-shadow: var(--shadow-md) !important;
+}
+.shadow-token-lg {
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* Brand Utilities (no raw hex in components) */
+.bg-telegram {
+  background-color: var(--brand-telegram) !important;
+}
+.text-telegram {
+  color: var(--brand-telegram) !important;
+}
+.bg-instagram-gradient {
+  background-image: linear-gradient(to right, var(--brand-instagram-from), var(--brand-instagram-via), var(--brand-instagram-to)) !important;
+}
+
+/* Cards & Surfaces conforming to semantic tokens */
+.harmony-card {
+  background-color: var(--card-bg);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-normal) var(--ease),
+              box-shadow var(--duration-normal) var(--ease),
+              transform var(--duration-normal) var(--ease);
+}
+
+.harmony-card:hover {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+  box-shadow: var(--shadow-md);
+}
+
+/* Focus Visible */
+:is(a, button, input, select, textarea, summary, [role="button"], [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid var(--ring) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ring) 25%, transparent) !important;
+}
+
+/* Reduced Motion Safety Net */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

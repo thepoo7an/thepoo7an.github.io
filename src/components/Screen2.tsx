@@ -47,6 +47,27 @@ export default function Screen2() {
   const [activePlatform, setActivePlatform] = useState<"reels" | "shorts" | "tiktok" | "canvas">("reels");
   const [showSafeZone, setShowSafeZone] = useState<boolean>(true);
 
+  // Mobile Redesign States (Hero Collapse, Carousels & Pipeline)
+  const [isMobileDemoExpanded, setIsMobileDemoExpanded] = useState(false);
+  const [activeWorkIndex, setActiveWorkIndex] = useState(0);
+  const [activePriceIndex, setActivePriceIndex] = useState(1);
+
+  const handlePortfolioScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.currentTarget;
+    const scrollLeft = Math.abs(target.scrollLeft);
+    const cardWidth = target.scrollWidth / 3;
+    const index = Math.round(scrollLeft / (cardWidth || 1));
+    setActiveWorkIndex(Math.min(2, Math.max(0, index)));
+  };
+
+  const handlePricingScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.currentTarget;
+    const scrollLeft = Math.abs(target.scrollLeft);
+    const cardWidth = target.scrollWidth / 3;
+    const index = Math.round(scrollLeft / (cardWidth || 1));
+    setActivePriceIndex(Math.min(2, Math.max(0, index)));
+  };
+
   // Auto-advance lyrics for interactive demo feel
   useEffect(() => {
     if (!isPlayingAudio) return;
@@ -141,7 +162,7 @@ export default function Screen2() {
 
   return (
     <div data-appearance={theme} className={theme}>
-      <div className="bg-canvas text-foreground w-full min-h-screen overflow-x-hidden transition-colors duration-300 relative selection:bg-white/20 selection:text-white">
+      <div className="bg-canvas text-foreground w-full min-h-screen overflow-x-clip transition-colors duration-[260ms] relative selection:bg-white/20 selection:text-white">
         
         {/* ================= BitChord Canvas & Ambient Background System ================= */}
         <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-50 overflow-hidden">
@@ -173,7 +194,7 @@ export default function Screen2() {
 
           {/* ================= Floating Glass Navbar ================= */}
           <nav
-            className="rounded-full bg-[#0d0d12]/90 backdrop-blur-xl border border-white/10 flex sticky z-40 top-3 px-3 sm:px-4 py-2 justify-between items-center gap-3 sm:gap-4 min-h-[56px] shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all"
+            className="rounded-full bg-card/90 backdrop-blur-xl border border-border flex sticky z-40 top-3 px-3 sm:px-4 py-2 justify-between items-center gap-3 sm:gap-4 min-h-[56px] shadow-token-md transition-all"
             aria-label={isEn ? "Main Navigation" : "ناوبری اصلی"}
           >
             {/* Brand Logo & Engine Indicator */}
@@ -303,14 +324,14 @@ export default function Screen2() {
             <div className="lg:hidden fixed inset-0 z-50 flex flex-col justify-end">
               {/* Tap-outside Backdrop */}
               <div
-                className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-300"
+                className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-[260ms]"
                 onClick={() => setIsMenuOpen(false)}
                 aria-hidden="true"
               />
 
               {/* Bottom Sheet Modal Container */}
               <div
-                className="relative bg-[#0e0e14] border-t border-white/15 rounded-t-3xl p-6 flex flex-col gap-4 shadow-[0_-10px_40px_rgba(0,0,0,0.85)] max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom duration-300 pb-[calc(24px+env(safe-area-inset-bottom,0px))]"
+                className="relative bg-card border-t border-border rounded-t-3xl p-6 flex flex-col gap-4 shadow-[0_-10px_40px_rgba(0,0,0,0.85)] max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom duration-500 pb-[calc(24px+env(safe-area-inset-bottom,0px))]"
                 role="dialog"
                 aria-modal="true"
                 aria-label={isEn ? "Navigation Menu" : "منوی ناوبری اصلی"}
@@ -348,7 +369,7 @@ export default function Screen2() {
                         key={item.href}
                         href={item.href}
                         onClick={() => setIsMenuOpen(false)}
-                        className="rounded-2xl px-4 min-h-[48px] flex items-center gap-3.5 text-zinc-200 hover:text-white hover:bg-white/10 active:scale-[0.98] transition-all font-medium text-base border border-transparent hover:border-white/10"
+                        className="rounded-xl px-4 min-h-[48px] flex items-center gap-3.5 text-zinc-200 hover:text-white hover:bg-white/10 active:scale-[0.98] transition-all font-medium text-base border border-transparent hover:border-white/10"
                       >
                         <Icon className="size-5 text-emerald-400 shrink-0" />
                         <span>{isEn ? item.labelEn : item.labelFa}</span>
@@ -373,7 +394,7 @@ export default function Screen2() {
                       href="https://t.me/thepoo7an"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-medium rounded-full bg-[#229ED9] text-white min-h-[44px] flex items-center justify-center gap-2 text-xs font-mono active:scale-95 transition-all shadow"
+                      className="font-medium rounded-full bg-telegram text-white min-h-[44px] flex items-center justify-center gap-2 text-xs font-mono active:scale-95 transition-all shadow"
                     >
                       <Send className="size-3.5" />
                       <span>Telegram</span>
@@ -382,7 +403,7 @@ export default function Screen2() {
                       href="https://www.instagram.com/thepoo7an"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-medium rounded-full bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white min-h-[44px] flex items-center justify-center gap-2 text-xs font-mono active:scale-95 transition-all shadow"
+                      className="font-medium rounded-full bg-instagram-gradient text-white min-h-[44px] flex items-center justify-center gap-2 text-xs font-mono active:scale-95 transition-all shadow"
                     >
                       <Camera className="size-3.5" />
                       <span>Instagram</span>
@@ -399,7 +420,7 @@ export default function Screen2() {
             {/* ================= 1. HERO SECTION (Signature Audio Visual Layout) ================= */}
             <section
               aria-label={isEn ? "Studio Introduction" : "معرفی استودیو"}
-              className="grid lg:grid-cols-12 pt-4 sm:pt-6 pb-2 items-center gap-8 lg:gap-14"
+              className="hero grid lg:grid-cols-12 pt-4 sm:pt-6 pb-2 items-center gap-8 lg:gap-14"
             >
               {/* Left Column: Headlines & CTAs */}
               <div className="flex flex-col lg:col-span-7 order-1 gap-5 sm:gap-6 min-w-0">
@@ -407,7 +428,7 @@ export default function Screen2() {
                 <div className="font-mono text-xs rounded-full bg-white/[0.06] text-zinc-300 border border-white/10 flex pt-1.5 pr-4 pb-1.5 pl-4 items-center gap-2.5 w-fit backdrop-blur-md shadow-sm">
                   <span
                     aria-hidden="true"
-                    className="rounded-full bg-emerald-400 size-2 shadow-[0_0_8px_#34d399] animate-pulse shrink-0"
+                    className="rounded-full bg-emerald-400 size-2 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse shrink-0"
                   />
                   <span>
                     {isEn
@@ -432,7 +453,7 @@ export default function Screen2() {
                 </h1>
 
                 {/* Subtitle - Harmonized Contrast */}
-                <p className="text-zinc-300 text-base sm:text-xl leading-relaxed max-w-xl">
+                <p className="sub text-zinc-300 text-base sm:text-xl leading-relaxed max-w-xl">
                   {isEn
                     ? "The dedicated video & kinetic typography studio for artists who care about every single frame. Bit-perfect beat sync, sub-frame animation, and lossless 1080p masters."
                     : "استودیوی تخصصی تایپوگرافی لیریک و ادیت ویدیویی ریتمیک برای آرتیست‌ها و آهنگسازانی که کیفیت فریم‌به‌فریم اثرشان اهمیت دارد."}
@@ -484,15 +505,31 @@ export default function Screen2() {
                     rel="noopener noreferrer"
                     className="font-medium text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-2 px-4 min-h-[48px] rounded-full border border-white/10 hover:border-white/20 transition-colors active:scale-95 bg-white/5"
                   >
-                    <Send className="size-3.5 text-[#229ED9]" />
+                    <Send className="size-3.5 text-telegram" />
                     <span>@thepoo7an</span>
                   </a>
                 </div>
               </div>
 
-              {/* Right Column: Interactive Studio Player Card */}
-              <div className="flex justify-center lg:justify-end lg:col-span-5 order-2">
-                <div className="w-full max-w-[340px] rounded-3xl bg-[#0e0e13] border border-white/15 p-4 sm:p-5 shadow-[0_20px_50px_rgba(0,0,0,0.85)] flex flex-col gap-4 relative group">
+              {/* Right Column: Interactive Studio Player Card (Collapsible on Mobile) */}
+              <div className="hero-demo-interactive flex flex-col items-center lg:items-end lg:justify-end lg:col-span-5 order-2 w-full">
+                {/* Mobile Collapsible Header / Toggle */}
+                <div className="lg:hidden w-full max-w-[340px] mx-auto">
+                  <button
+                    type="button"
+                    onClick={() => setIsMobileDemoExpanded(!isMobileDemoExpanded)}
+                    className="w-full flex items-center justify-between p-3.5 rounded-xl bg-card border border-border text-foreground font-semibold text-xs sm:text-sm shadow-token-sm hover:border-primary/40 active:scale-[0.98] transition-all min-h-[48px]"
+                    aria-expanded={isMobileDemoExpanded}
+                  >
+                    <span className="flex items-center gap-2">
+                      <Sparkles className="size-4 text-emerald-400 shrink-0" />
+                      <span>{isEn ? "Interactive Studio Preview & Waveform" : "پیش‌نمایش تعاملی استودیو و شکل‌موج"}</span>
+                    </span>
+                    <ChevronDown className={`size-4 text-muted-foreground transition-transform duration-[160ms] ${isMobileDemoExpanded ? "rotate-180" : ""}`} />
+                  </button>
+                </div>
+
+                <div className={`w-full max-w-[340px] rounded-2xl bg-card text-card-foreground border border-border p-4 sm:p-5 shadow-token-lg flex-col gap-4 relative group ${isMobileDemoExpanded ? "flex mt-3" : "hidden lg:flex"}`}>
                   {/* Floating Top Badge */}
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-mono font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
@@ -504,7 +541,7 @@ export default function Screen2() {
 
                   {/* Artwork & Video Trigger Preview (Real Asset) */}
                   <div
-                    className="rounded-2xl bg-black relative aspect-[9/14] overflow-hidden border border-white/10 group/thumb cursor-pointer"
+                    className="rounded-xl bg-black relative aspect-[9/14] overflow-hidden border border-white/10 group/thumb cursor-pointer"
                     onClick={() => openLightbox(featuredReels.lyric916)}
                     role="button"
                     tabIndex={0}
@@ -546,7 +583,7 @@ export default function Screen2() {
                   </div>
 
                   {/* Audio Engine Waveform Strip */}
-                  <div className="flex items-center justify-between bg-white/[0.04] border border-white/10 rounded-2xl p-3">
+                  <div className="flex items-center justify-between bg-white/[0.04] border border-white/10 rounded-xl p-3">
                     <button
                       type="button"
                       onClick={() => setIsPlayingAudio(!isPlayingAudio)}
@@ -600,52 +637,52 @@ export default function Screen2() {
               className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
             >
               {/* Stat 1 */}
-              <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col justify-between h-full gap-2 backdrop-blur-md">
-                <span className="font-mono text-2xl sm:text-4xl font-black text-white tracking-tight">100%</span>
+              <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col justify-between h-full gap-2 backdrop-blur-md">
+                <span className="font-mono text-2xl sm:text-4xl font-black text-foreground tracking-tight">100%</span>
                 <div>
-                  <span className="text-white font-semibold text-xs sm:text-sm block">
+                  <span className="text-foreground font-semibold text-xs sm:text-sm block">
                     {isEn ? "Beat-Perfect Sync" : "بیت‌سینک فریم‌به‌فریم"}
                   </span>
-                  <span className="text-zinc-400 text-[11px] sm:text-xs block mt-0.5">
+                  <span className="text-muted-foreground text-[11px] sm:text-xs block mt-0.5">
                     {isEn ? "Frame-accurate sub-frame timing" : "هماهنگی دقیق هر کلمه با کیک و اسنیر"}
                   </span>
                 </div>
               </div>
 
               {/* Stat 2 */}
-              <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col justify-between h-full gap-2 backdrop-blur-md">
-                <span className="font-mono text-2xl sm:text-4xl font-black text-white tracking-tight">≤ 7d</span>
+              <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col justify-between h-full gap-2 backdrop-blur-md">
+                <span className="font-mono text-2xl sm:text-4xl font-black text-foreground tracking-tight">≤ 7d</span>
                 <div>
-                  <span className="text-white font-semibold text-xs sm:text-sm block">
+                  <span className="text-foreground font-semibold text-xs sm:text-sm block">
                     {isEn ? "Standard Turnaround" : "تحویل حداکثر ۷ روزه"}
                   </span>
-                  <span className="text-zinc-400 text-[11px] sm:text-xs block mt-0.5">
+                  <span className="text-muted-foreground text-[11px] sm:text-xs block mt-0.5">
                     {isEn ? "Expedited delivery options ready" : "امکان تحویل فوری برای تاریخ پخش"}
                   </span>
                 </div>
               </div>
 
               {/* Stat 3 */}
-              <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col justify-between h-full gap-2 backdrop-blur-md">
-                <span className="font-mono text-2xl sm:text-4xl font-black text-white tracking-tight">1080p60</span>
+              <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col justify-between h-full gap-2 backdrop-blur-md">
+                <span className="font-mono text-2xl sm:text-4xl font-black text-foreground tracking-tight">1080p60</span>
                 <div>
-                  <span className="text-white font-semibold text-xs sm:text-sm block">
+                  <span className="text-foreground font-semibold text-xs sm:text-sm block">
                     {isEn ? "Lossless Master Output" : "خروجی بدون فشرده‌سازی"}
                   </span>
-                  <span className="text-zinc-400 text-[11px] sm:text-xs block mt-0.5">
+                  <span className="text-muted-foreground text-[11px] sm:text-xs block mt-0.5">
                     {isEn ? "Highest bitrate for Reels & Shorts" : "بدون افت کیفیت حین آپلود اینستاگرام"}
                   </span>
                 </div>
               </div>
 
               {/* Stat 4 */}
-              <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col justify-between h-full gap-2 backdrop-blur-md">
-                <span className="font-mono text-2xl sm:text-4xl font-black text-white tracking-tight">24h</span>
+              <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col justify-between h-full gap-2 backdrop-blur-md">
+                <span className="font-mono text-2xl sm:text-4xl font-black text-foreground tracking-tight">24h</span>
                 <div>
-                  <span className="text-white font-semibold text-xs sm:text-sm block">
+                  <span className="text-foreground font-semibold text-xs sm:text-sm block">
                     {isEn ? "Response Window" : "پاسخ‌گویی تا ۲۴ ساعت"}
                   </span>
-                  <span className="text-zinc-400 text-[11px] sm:text-xs block mt-0.5">
+                  <span className="text-muted-foreground text-[11px] sm:text-xs block mt-0.5">
                     {isEn ? "Direct messaging on Telegram" : "بررسی فوری فایل و ارائه برآورد زمان"}
                   </span>
                 </div>
@@ -673,13 +710,13 @@ export default function Screen2() {
               <div className="grid lg:grid-cols-2 gap-5 sm:gap-6">
 
                 {/* Card 1: Pipeline Comparison (Conventional vs THEPOO7AN) */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col gap-5 justify-between h-full">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col gap-5 justify-between h-full">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                      <h3 className="font-bold text-base sm:text-lg text-white">
+                      <h3 className="font-bold text-base sm:text-lg text-foreground">
                         {isEn ? "Auto-Upgrade Video Pipeline" : "خط تولید ارتقایافته بدون افت کیفیت"}
                       </h3>
-                      <p className="text-zinc-400 text-xs mt-0.5">
+                      <p className="text-muted-foreground text-xs mt-0.5">
                         {isEn ? "Sub-frame precision vs standard generic edit" : "مقایسه ادیت معمولی با پایپ‌لاین THEPOO7AN"}
                       </p>
                     </div>
@@ -711,8 +748,8 @@ export default function Screen2() {
                   </div>
 
                   {/* Visualizer Box */}
-                  <div className="rounded-2xl bg-[#060609] border border-white/10 p-4 sm:p-5 flex flex-col gap-3 font-mono text-xs">
-                    <div className="flex items-center justify-between text-zinc-400 border-b border-white/10 pb-2">
+                  <div className="rounded-xl bg-muted/70 text-foreground border border-border p-4 sm:p-5 flex flex-col gap-3 font-mono text-xs">
+                    <div className="flex items-center justify-between text-muted-foreground border-b border-border pb-2">
                       <span className="truncate">{pipelineMode === "thepoo7an" ? "THEPOO7AN Float32 ProRes Pipeline" : "Standard Mobile App Export"}</span>
                       <span className={pipelineMode === "thepoo7an" ? "text-emerald-400 font-bold shrink-0" : "text-amber-400 font-bold shrink-0"}>
                         {pipelineMode === "thepoo7an" ? "1080p60 · Lossless" : "720p · Compressed"}
@@ -721,21 +758,21 @@ export default function Screen2() {
 
                     <div className="flex flex-col gap-2.5 py-1">
                       <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5">
-                        <span className="text-zinc-400">{isEn ? "Audio Sync Jitter" : "خطای هماهنگی صدا با تصویر"}:</span>
-                        <span className="text-white font-bold">{pipelineMode === "thepoo7an" ? "0 ms (Sub-frame locked)" : "± 85 ms (Drifting)"}</span>
+                        <span className="text-muted-foreground">{isEn ? "Audio Sync Jitter" : "خطای هماهنگی صدا با تصویر"}:</span>
+                        <span className="text-foreground font-bold">{pipelineMode === "thepoo7an" ? "0 ms (Sub-frame locked)" : "± 85 ms (Drifting)"}</span>
                       </div>
                       <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5">
-                        <span className="text-zinc-400">{isEn ? "Typography Rendering" : "رندرینگ فونت و بردارها"}:</span>
-                        <span className="text-white font-bold">{pipelineMode === "thepoo7an" ? "Vector Sharp Anti-aliased" : "Pixelated Raster"}</span>
+                        <span className="text-muted-foreground">{isEn ? "Typography Rendering" : "رندرینگ فونت و بردارها"}:</span>
+                        <span className="text-foreground font-bold">{pipelineMode === "thepoo7an" ? "Vector Sharp Anti-aliased" : "Pixelated Raster"}</span>
                       </div>
                       <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5">
-                        <span className="text-zinc-400">{isEn ? "Instagram Compression Protection" : "محافظت در برابر فشرده‌سازی اینستاگرام"}:</span>
-                        <span className="text-white font-bold">{pipelineMode === "thepoo7an" ? "Calibrated Bitrate Target" : "Severe Artefacts"}</span>
+                        <span className="text-muted-foreground">{isEn ? "Instagram Compression Protection" : "محافظت در برابر فشرده‌سازی اینستاگرام"}:</span>
+                        <span className="text-foreground font-bold">{pipelineMode === "thepoo7an" ? "Calibrated Bitrate Target" : "Severe Artefacts"}</span>
                       </div>
                     </div>
 
                     {/* Progress Bar comparison */}
-                    <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-border h-2.5 rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all duration-500 ${
                           pipelineMode === "thepoo7an" ? "w-full bg-emerald-400" : "w-1/2 bg-amber-400"
@@ -746,13 +783,13 @@ export default function Screen2() {
                 </div>
 
                 {/* Card 2: Character-Synced Typography */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col gap-5 justify-between h-full">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col gap-5 justify-between h-full">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-bold text-base sm:text-lg text-white">
+                      <h3 className="font-bold text-base sm:text-lg text-foreground">
                         {isEn ? "Word-Synced Kinetic Lyrics" : "تایپوگرافی هماهنگ کاراکتر‌به‌کاراکتر"}
                       </h3>
-                      <p className="text-zinc-400 text-xs mt-0.5">
+                      <p className="text-muted-foreground text-xs mt-0.5">
                         {isEn ? "Sub-syllable highlighting with bloom transitions" : "حرکت پیوسته نور روی حروف و کلمات همراه با ضرب‌آهنگ"}
                       </p>
                     </div>
@@ -762,7 +799,7 @@ export default function Screen2() {
                   </div>
 
                   {/* Interactive Lyrics Box */}
-                  <div className="rounded-2xl bg-[#060609] border border-white/10 p-4 sm:p-5 flex flex-col gap-2 font-mono">
+                  <div className="rounded-xl bg-muted/70 text-foreground border border-border p-4 sm:p-5 flex flex-col gap-2 font-mono">
                     {[
                       { en: "Hold the line a little longer", fa: "صدای بیت توی اتاق می‌پیچه" },
                       { en: "Every echo coming back stronger", fa: "فرکانس بالا میره، بیس عمیق‌تر می‌شه" },
@@ -777,8 +814,8 @@ export default function Screen2() {
                           onClick={() => setActiveLyricIndex(idx)}
                           className={`text-start w-full min-h-[48px] px-3.5 py-2.5 rounded-xl text-xs sm:text-sm transition-all flex items-center justify-between active:scale-[0.98] ${
                             isActive
-                              ? "bg-white/15 text-white font-bold border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.15)]"
-                              : "text-zinc-400 hover:text-white"
+                              ? "bg-primary text-primary-foreground font-bold border border-primary/40 shadow-token-sm"
+                              : "text-muted-foreground hover:text-foreground hover:bg-white/5"
                           }`}
                         >
                           <span className="truncate">{isEn ? line.en : line.fa}</span>
@@ -792,23 +829,23 @@ export default function Screen2() {
                 </div>
 
                 {/* Card 3: Beat-Match & Tempo Grid Slider */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col gap-5 justify-between h-full">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col gap-5 justify-between h-full">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-bold text-base sm:text-lg text-white">
+                      <h3 className="font-bold text-base sm:text-lg text-foreground">
                         {isEn ? "Beat-Grid & Tempo Alignment" : "تنظیم ضرب‌آهنگ و بیت‌گرید"}
                       </h3>
-                      <p className="text-zinc-400 text-xs mt-0.5">
+                      <p className="text-muted-foreground text-xs mt-0.5">
                         {isEn ? "Adjust tempo to preview cut frequency & transition speed" : "اسلایدر یا دکمه‌های +/- را لمس کنید"}
                       </p>
                     </div>
-                    <span className="font-mono text-sm sm:text-base font-bold text-white bg-white/10 px-3 py-1 rounded-full border border-white/10 shrink-0">
+                    <span className="font-mono text-sm sm:text-base font-bold text-foreground bg-secondary px-3 py-1 rounded-full border border-border shrink-0">
                       {bpm} BPM
                     </span>
                   </div>
 
                   {/* BPM Touch Slider & +/- Buttons */}
-                  <div className="flex flex-col gap-3.5 bg-[#060609] border border-white/10 rounded-2xl p-4">
+                  <div className="flex flex-col gap-3.5 bg-muted/70 text-foreground border border-border rounded-xl p-4">
                     <div className="flex items-center justify-between text-xs text-zinc-400 font-mono">
                       <span>90 BPM (Trap / Slow)</span>
                       <span>160 BPM (Fast Drill)</span>
@@ -886,25 +923,25 @@ export default function Screen2() {
                 </div>
 
                 {/* Card 4: Platform Ecosystem Export */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col gap-5 justify-between h-full">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col gap-5 justify-between h-full">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                      <h3 className="font-bold text-base sm:text-lg text-white">
+                      <h3 className="font-bold text-base sm:text-lg text-foreground">
                         {isEn ? "Social Ecosystem Presets" : "خروجی بهینه متناسب با هر پلتفرم"}
                       </h3>
-                      <p className="text-zinc-400 text-xs mt-0.5">
+                      <p className="text-muted-foreground text-xs mt-0.5">
                         {isEn ? "Zero UI clipping on Reels, TikTok & Shorts" : "بدون پوشیده شدن متن توسط دکمه‌های لایک و کپشن"}
                       </p>
                     </div>
                     {/* Platform Tabs (44px target) */}
-                    <div className="flex flex-wrap gap-1 bg-white/10 p-1 rounded-full text-xs font-mono w-fit shrink-0">
+                    <div className="flex flex-wrap gap-1 bg-secondary p-1 rounded-full text-xs font-mono w-fit shrink-0 border border-border">
                       {(["reels", "shorts", "tiktok", "canvas"] as const).map((p) => (
                         <button
                           key={p}
                           type="button"
                           onClick={() => setActivePlatform(p)}
                           className={`px-3.5 py-2 min-h-[44px] rounded-full uppercase transition-colors flex items-center justify-center active:scale-95 ${
-                            activePlatform === p ? "bg-white text-black font-bold" : "text-zinc-300 hover:text-white"
+                            activePlatform === p ? "bg-primary text-primary-foreground font-bold shadow-token-sm" : "text-muted-foreground hover:text-foreground"
                           }`}
                         >
                           {p}
@@ -914,7 +951,7 @@ export default function Screen2() {
                   </div>
 
                   {/* Specs Card */}
-                  <div className="bg-[#060609] border border-white/10 rounded-2xl p-4 flex flex-col gap-3 font-mono text-xs">
+                  <div className="bg-muted/70 text-foreground border border-border rounded-xl p-4 flex flex-col gap-3 font-mono text-xs">
                     <div className="flex justify-between items-center text-zinc-400 border-b border-white/10 pb-2">
                       <span>{activePlatform.toUpperCase()} Safe-Zone Protocol</span>
                       <button
@@ -980,13 +1017,16 @@ export default function Screen2() {
               </div>
 
               {/* 3 Work Cards with Equal Heights & Horizontally Aligned Buttons */}
-              <div className="grid md:grid-cols-3 gap-5 sm:gap-6 items-stretch">
+              <div
+                className="work-grid grid md:grid-cols-3 gap-5 sm:gap-6 items-stretch"
+                onScroll={handlePortfolioScroll}
+              >
 
                 {/* Card 1: Top Booker Aflix (YouTube Shorts) */}
-                <article className="rounded-3xl bg-[#0e0e13] border border-white/10 p-4 sm:p-5 flex flex-col justify-between h-full group hover:border-white/25 transition-all shadow-lg">
+                <article className="rounded-2xl bg-card text-card-foreground border border-border p-4 sm:p-5 flex flex-col justify-between h-full group hover:border-primary/40 transition-all shadow-token-md">
                   <div>
                     <div
-                      className="rounded-2xl bg-black aspect-[4/3] overflow-hidden relative group/img cursor-pointer"
+                      className="rounded-xl bg-black aspect-[4/3] overflow-hidden relative group/img cursor-pointer"
                       onClick={() => openLightbox(featuredReels.topbooker)}
                       role="button"
                       tabIndex={0}
@@ -1022,10 +1062,10 @@ export default function Screen2() {
                         {isEn ? "Top Booker Aflix" : "تاپ بوکر افلیکس"}
                       </h3>
                       <div className="flex flex-wrap gap-2 text-xs font-mono text-zinc-400">
-                        <span className="bg-white/5 px-2.5 py-1 rounded-md border border-white/10">
+                        <span className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
                           {isEn ? "Turnaround: 3 days" : "زمان اجرا: ۳ روز"}
                         </span>
-                        <span className="bg-white/5 px-2.5 py-1 rounded-md border border-white/10">
+                        <span className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
                           {isEn ? "Edit + VFX" : "ادیت و افکت تصویری"}
                         </span>
                       </div>
@@ -1050,10 +1090,10 @@ export default function Screen2() {
                 </article>
 
                 {/* Card 2: Lyric Reel 9:16 (Instagram Reel DbgAe6cNsdr) */}
-                <article className="rounded-3xl bg-[#0e0e13] border border-white/10 p-4 sm:p-5 flex flex-col justify-between h-full group hover:border-white/25 transition-all shadow-lg">
+                <article className="rounded-2xl bg-card text-card-foreground border border-border p-4 sm:p-5 flex flex-col justify-between h-full group hover:border-primary/40 transition-all shadow-token-md">
                   <div>
                     <div
-                      className="rounded-2xl bg-black aspect-[4/3] overflow-hidden relative group/img cursor-pointer"
+                      className="rounded-xl bg-black aspect-[4/3] overflow-hidden relative group/img cursor-pointer"
                       onClick={() => openLightbox(featuredReels.lyric916)}
                       role="button"
                       tabIndex={0}
@@ -1092,10 +1132,10 @@ export default function Screen2() {
                         Lyric Reel · 9:16
                       </h3>
                       <div className="flex flex-wrap gap-2 text-xs font-mono text-zinc-400">
-                        <span className="bg-white/5 px-2.5 py-1 rounded-md border border-white/10">
+                        <span className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
                           {isEn ? "Turnaround: 2 days" : "زمان اجرا: ۲ روز"}
                         </span>
-                        <span className="bg-white/5 px-2.5 py-1 rounded-md border border-white/10">
+                        <span className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
                           تایپوگرافی لیریک
                         </span>
                       </div>
@@ -1120,10 +1160,10 @@ export default function Screen2() {
                 </article>
 
                 {/* Card 3: Dorc (Instagram Reel Dap1kn2yfAl) */}
-                <article className="rounded-3xl bg-[#0e0e13] border border-white/10 p-4 sm:p-5 flex flex-col justify-between h-full group hover:border-white/25 transition-all shadow-lg">
+                <article className="rounded-2xl bg-card text-card-foreground border border-border p-4 sm:p-5 flex flex-col justify-between h-full group hover:border-primary/40 transition-all shadow-token-md">
                   <div>
                     <div
-                      className="rounded-2xl bg-black aspect-[4/3] overflow-hidden relative group/img cursor-pointer"
+                      className="rounded-xl bg-black aspect-[4/3] overflow-hidden relative group/img cursor-pointer"
                       onClick={() => openLightbox(featuredReels.dorc)}
                       role="button"
                       tabIndex={0}
@@ -1162,10 +1202,10 @@ export default function Screen2() {
                         Dorc
                       </h3>
                       <div className="flex flex-wrap gap-2 text-xs font-mono text-zinc-400">
-                        <span className="bg-white/5 px-2.5 py-1 rounded-md border border-white/10">
+                        <span className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
                           {isEn ? "Turnaround: 2 days" : "زمان اجرا: ۲ روز"}
                         </span>
-                        <span className="bg-white/5 px-2.5 py-1 rounded-md border border-white/10">
+                        <span className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
                           {isEn ? "Video Edit" : "ادیت ویدیو"}
                         </span>
                       </div>
@@ -1190,6 +1230,13 @@ export default function Screen2() {
                 </article>
 
               </div>
+
+              {/* Scroll progress dots indicator for mobile carousel */}
+              <div className="carousel-dots md:hidden" aria-hidden="true">
+                {[0, 1, 2].map((i) => (
+                  <span key={i} className={activeWorkIndex === i ? "active" : ""} />
+                ))}
+              </div>
             </section>
 
             {/* ================= 5. STUDIO SERVICES (Uniform Grid & Padding) ================= */}
@@ -1210,13 +1257,13 @@ export default function Screen2() {
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 items-stretch">
                 {/* Service 1 */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col justify-between h-full gap-4 hover:border-white/20 transition-all">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col justify-between h-full gap-4 hover:border-primary/40 transition-all shadow-token-sm">
                   <div className="flex flex-col gap-3">
-                    <span className="font-mono font-black text-xl text-zinc-400">01</span>
-                    <h3 className="font-bold text-lg text-white">
+                    <span className="font-mono font-black text-xl text-muted-foreground">01</span>
+                    <h3 className="font-bold text-lg text-foreground">
                       {isEn ? "Lyric Typography" : "تایپوگرافی لیریک موزیک"}
                     </h3>
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-muted-foreground text-sm leading-relaxed">
                       {isEn
                         ? "Kinetic typography, micro-animations, and precise syllable-to-beat synchronization."
                         : "تایپوگرافی متحرک ریتمیک، انیمیشن فریم‌به‌فریم کلمات و بیت‌سینک دقیق با ضرب‌آهنگ."}
@@ -1225,13 +1272,13 @@ export default function Screen2() {
                 </div>
 
                 {/* Service 2 */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col justify-between h-full gap-4 hover:border-white/20 transition-all">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col justify-between h-full gap-4 hover:border-primary/40 transition-all shadow-token-sm">
                   <div className="flex flex-col gap-3">
-                    <span className="font-mono font-black text-xl text-zinc-400">02</span>
-                    <h3 className="font-bold text-lg text-white">
+                    <span className="font-mono font-black text-xl text-muted-foreground">02</span>
+                    <h3 className="font-bold text-lg text-foreground">
                       {isEn ? "Video Edit + Lyric" : "ادیت ویدیو و ریلز"}
                     </h3>
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-muted-foreground text-sm leading-relaxed">
                       {isEn
                         ? "Color grading, dynamic cuts, transitions, sound sync, and typography overlay."
                         : "اصلاح رنگ، کات‌های ریتمیک، افکت‌های بصری متناسب با مود ترک و خروجی باکیفیت ۹:۱۶."}
@@ -1240,13 +1287,13 @@ export default function Screen2() {
                 </div>
 
                 {/* Service 3 */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col justify-between h-full gap-4 hover:border-white/20 transition-all">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col justify-between h-full gap-4 hover:border-primary/40 transition-all shadow-token-sm">
                   <div className="flex flex-col gap-3">
-                    <span className="font-mono font-black text-xl text-zinc-400">03</span>
-                    <h3 className="font-bold text-lg text-white">
+                    <span className="font-mono font-black text-xl text-muted-foreground">03</span>
+                    <h3 className="font-bold text-lg text-foreground">
                       {isEn ? "Music Cover Artwork" : "طراحی کاور موزیک"}
                     </h3>
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-muted-foreground text-sm leading-relaxed">
                       {isEn
                         ? "High-res square artwork (3000x3000px) ready for Spotify, Apple Music, and Soundcloud."
                         : "طراحی پوستر و آرت‌ورک مربعی با استاندارد پلتفرم‌های اسپاتیفای و اپل موزیک."}
@@ -1255,13 +1302,13 @@ export default function Screen2() {
                 </div>
 
                 {/* Service 4 */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col justify-between h-full gap-4 hover:border-white/20 transition-all">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col justify-between h-full gap-4 hover:border-primary/40 transition-all shadow-token-sm">
                   <div className="flex flex-col gap-3">
-                    <span className="font-mono font-black text-xl text-zinc-400">04</span>
-                    <h3 className="font-bold text-lg text-white">
+                    <span className="font-mono font-black text-xl text-muted-foreground">04</span>
+                    <h3 className="font-bold text-lg text-foreground">
                       {isEn ? "Monthly Content Growth" : "پکیج ماهانه تولید محتوا"}
                     </h3>
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-muted-foreground text-sm leading-relaxed">
                       {isEn
                         ? "Consistent weekly reel production calendar ensuring sustainable artist growth."
                         : "۴ تا ۸ ریلز در ماه با تقویم تحویل منظم هفتگی و پشتیبانی مستمر جهت رشد پایدار پیج."}
@@ -1287,30 +1334,33 @@ export default function Screen2() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-5 sm:gap-6 items-stretch">
+              <div
+                className="price-grid grid md:grid-cols-3 gap-5 sm:gap-6 items-stretch"
+                onScroll={handlePricingScroll}
+              >
 
                 {/* Package 1: Basic Lyric */}
-                <article className="rounded-3xl bg-[#0e0e13] border border-white/10 p-6 sm:p-7 flex flex-col justify-between h-full gap-5 hover:border-white/20 transition-all shadow-lg">
+                <article className="rounded-2xl bg-card text-card-foreground border border-border p-6 sm:p-7 flex flex-col justify-between h-full gap-5 hover:border-primary/40 transition-all shadow-token-md">
                   <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-1">
-                      <h3 className="font-bold text-xl text-white">
+                      <h3 className="font-bold text-xl text-foreground">
                         {isEn ? "Basic Lyric Typography" : "تایپوگرافی لیریک پایه"}
                       </h3>
-                      <span className="text-xs font-mono text-zinc-400">
+                      <span className="text-xs font-mono text-muted-foreground">
                         {isEn ? "Single 15-20s video reel" : "یک ویدیوی ۱۵ تا ۲۰ ثانیه‌ای"}
                       </span>
                     </div>
 
-                    <div className="py-2 border-y border-white/10 flex flex-col gap-1">
-                      <strong className="text-2xl sm:text-3xl text-white font-mono font-black">
+                    <div className="py-2 border-y border-border flex flex-col gap-1">
+                      <strong className="text-2xl sm:text-3xl text-foreground font-mono font-black">
                         {isEn ? "From 150,000 Tomans" : "از ۱۵۰٬۰۰۰ تومان"}
                       </strong>
-                      <span className="text-xs font-mono text-zinc-400">
+                      <span className="text-xs font-mono text-muted-foreground">
                         {isEn ? "Turnaround: 1 business day" : "تحویل معمولاً ۱ روز کاری (۱۰ تا ۲۳)"}
                       </span>
                     </div>
 
-                    <ul className="text-sm leading-7 text-zinc-300 flex flex-col gap-2 list-none p-0">
+                    <ul className="text-sm leading-7 text-muted-foreground flex flex-col gap-2 list-none p-0">
                       <li className="flex items-center gap-2">
                         <Check className="size-4 text-emerald-400 shrink-0" />
                         <span>{isEn ? "1 kinetic lyric video" : "تایپوگرافی روی ویدیو یا فوتیج"}</span>
@@ -1328,30 +1378,30 @@ export default function Screen2() {
 
                   <a
                     href="./order.html?package=lyric"
-                    className="font-semibold rounded-full bg-white/10 hover:bg-white/20 text-white text-sm outline-none px-6 min-h-[48px] flex items-center justify-center transition-all border border-white/10 active:scale-95"
+                    className="font-semibold rounded-full bg-secondary hover:bg-secondary/80 text-foreground text-sm outline-none px-6 min-h-[48px] flex items-center justify-center transition-all border border-border active:scale-95"
                   >
                     {isEn ? "Get Project Estimate" : "دریافت برآورد پروژه"}
                   </a>
                 </article>
 
                 {/* Package 2: Video Edit + Lyric (Most Popular) - Symmetrical Box Sizing */}
-                <article className="rounded-3xl bg-[#121218] border border-white/25 ring-1 ring-white/20 p-6 sm:p-7 flex flex-col justify-between h-full gap-5 relative shadow-[0_15px_40px_rgba(255,255,255,0.08)]">
-                  <span className="font-mono text-xs font-bold rounded-full bg-white text-black px-3.5 py-1 absolute -top-3.5 start-6 shadow-md">
+                <article className="rounded-2xl bg-secondary text-secondary-foreground border-2 border-primary/50 ring-1 ring-primary/25 p-6 sm:p-7 flex flex-col justify-between h-full gap-5 relative shadow-token-lg">
+                  <span className="font-mono text-xs font-bold rounded-full bg-primary text-primary-foreground px-3.5 py-1 absolute -top-3.5 start-6 shadow-token-sm">
                     {isEn ? "Most Popular" : "محبوب‌ترین"}
                   </span>
 
                   <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-1">
-                      <h3 className="font-bold text-xl text-white">
+                      <h3 className="font-bold text-xl text-foreground">
                         {isEn ? "Video Edit + Lyric" : "ادیت ویدیو + لیریک"}
                       </h3>
-                      <span className="text-xs font-mono text-zinc-400">
+                      <span className="text-xs font-mono text-muted-foreground">
                         {isEn ? "Full visual dynamic production" : "ترکیب کامل ویدیو، افکت و متن"}
                       </span>
                     </div>
 
-                    <div className="py-2 border-y border-white/10 flex flex-col gap-1">
-                      <strong className="text-2xl sm:text-3xl text-white font-mono font-black">
+                    <div className="py-2 border-y border-border flex flex-col gap-1">
+                      <strong className="text-2xl sm:text-3xl text-foreground font-mono font-black">
                         {isEn ? "From 300,000 Tomans" : "از ۳۰۰٬۰۰۰ تومان"}
                       </strong>
                       <span className="text-xs font-mono text-emerald-400 font-semibold">
@@ -1359,7 +1409,7 @@ export default function Screen2() {
                       </span>
                     </div>
 
-                    <ul className="text-sm leading-7 text-zinc-200 flex flex-col gap-2 list-none p-0">
+                    <ul className="text-sm leading-7 text-foreground/90 flex flex-col gap-2 list-none p-0">
                       <li className="flex items-center gap-2">
                         <Check className="size-4 text-emerald-400 shrink-0" />
                         <span>{isEn ? "Dynamic editing + kinetic typography" : "ادیت ویدیو + تایپوگرافی متحرک"}</span>
@@ -1377,34 +1427,34 @@ export default function Screen2() {
 
                   <a
                     href="./order.html?package=video-lyric"
-                    className="font-semibold rounded-full bg-white text-black hover:bg-white/90 text-sm outline-none px-6 min-h-[48px] flex items-center justify-center transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] active:scale-95"
+                    className="font-semibold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 text-sm outline-none px-6 min-h-[48px] flex items-center justify-center transition-all shadow-token-md active:scale-95"
                   >
                     {isEn ? "Get Project Estimate" : "دریافت برآورد پروژه"}
                   </a>
                 </article>
 
                 {/* Package 3: Monthly 4 Reels */}
-                <article className="rounded-3xl bg-[#0e0e13] border border-white/10 p-6 sm:p-7 flex flex-col justify-between h-full gap-5 hover:border-white/20 transition-all shadow-lg">
+                <article className="rounded-2xl bg-card text-card-foreground border border-border p-6 sm:p-7 flex flex-col justify-between h-full gap-5 hover:border-primary/40 transition-all shadow-token-md">
                   <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-1">
-                      <h3 className="font-bold text-xl text-white">
+                      <h3 className="font-bold text-xl text-foreground">
                         {isEn ? "Monthly 4 Reels Package" : "پکیج ماهانه ۴ ریلز"}
                       </h3>
-                      <span className="text-xs font-mono text-zinc-400">
+                      <span className="text-xs font-mono text-muted-foreground">
                         {isEn ? "Dedicated weekly release slot" : "اولویت اختصاصی انتشار هفتگی"}
                       </span>
                     </div>
 
-                    <div className="py-2 border-y border-white/10 flex flex-col gap-1">
-                      <strong className="text-2xl sm:text-3xl text-white font-mono font-black">
+                    <div className="py-2 border-y border-border flex flex-col gap-1">
+                      <strong className="text-2xl sm:text-3xl text-foreground font-mono font-black">
                         {isEn ? "From 1,000,000 Tomans" : "از ۱٬۰۰۰٬۰۰۰ تومان"}
                       </strong>
-                      <span className="text-xs font-mono text-zinc-400">
+                      <span className="text-xs font-mono text-muted-foreground">
                         {isEn ? "Scheduled weekly release calendar" : "اولویت رندرینگ و تحویل هفتگی"}
                       </span>
                     </div>
 
-                    <ul className="text-sm leading-7 text-zinc-300 flex flex-col gap-2 list-none p-0">
+                    <ul className="text-sm leading-7 text-muted-foreground flex flex-col gap-2 list-none p-0">
                       <li className="flex items-center gap-2">
                         <Check className="size-4 text-emerald-400 shrink-0" />
                         <span>{isEn ? "4 high-end video outputs per month" : "۴ خروجی ویدیوی کامل در ماه"}</span>
@@ -1429,6 +1479,13 @@ export default function Screen2() {
                 </article>
 
               </div>
+
+              {/* Scroll progress dots indicator for mobile pricing carousel */}
+              <div className="carousel-dots md:hidden" aria-hidden="true">
+                {[0, 1, 2].map((i) => (
+                  <span key={i} className={activePriceIndex === i ? "active" : ""} />
+                ))}
+              </div>
             </section>
 
             {/* ================= 7. PRODUCTION WORKFLOW (Three steps) ================= */}
@@ -1449,13 +1506,13 @@ export default function Screen2() {
 
               <div className="grid md:grid-cols-3 gap-5 sm:gap-6 items-stretch">
                 {/* Step 1 */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-6 flex flex-col justify-between h-full gap-3">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-6 flex flex-col justify-between h-full gap-3 shadow-token-sm">
                   <div className="flex flex-col gap-3">
-                    <span className="font-mono font-black text-2xl text-zinc-400">01</span>
-                    <h3 className="font-bold text-lg text-white">
+                    <span className="font-mono font-black text-2xl text-muted-foreground">01</span>
+                    <h3 className="font-bold text-lg text-foreground">
                       {isEn ? "Send Track & Brief" : "گام ۱: ارسال فایل و بریف"}
                     </h3>
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-muted-foreground text-sm leading-relaxed">
                       {isEn
                         ? "Send your audio file, highlight the lyric timestamps, and align style preferences directly on Telegram."
                         : "ارسال فایل صوتی، مشخص کردن تایم‌کد لیریک، و هماهنگی سلیقه و سبک بصری در تلگرام یا دایرکت."}
@@ -1464,13 +1521,13 @@ export default function Screen2() {
                 </div>
 
                 {/* Step 2 */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-6 flex flex-col justify-between h-full gap-3">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-6 flex flex-col justify-between h-full gap-3 shadow-token-sm">
                   <div className="flex flex-col gap-3">
-                    <span className="font-mono font-black text-2xl text-zinc-400">02</span>
-                    <h3 className="font-bold text-lg text-white">
+                    <span className="font-mono font-black text-2xl text-muted-foreground">02</span>
+                    <h3 className="font-bold text-lg text-foreground">
                       {isEn ? "Design & Beat-Sync" : "گام ۲: طراحی و بیت‌سینک"}
                     </h3>
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-muted-foreground text-sm leading-relaxed">
                       {isEn
                         ? "Custom typography font pairing, kinetic character animation, and frame-accurate beat alignment."
                         : "انتخاب فونت و زبان بصری متناسب با موزیک، ساخت انیمیشن حروف و بیت‌سینک دقیق متن با ریتم آهنگ."}
@@ -1479,13 +1536,13 @@ export default function Screen2() {
                 </div>
 
                 {/* Step 3 */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-6 flex flex-col justify-between h-full gap-3">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-6 flex flex-col justify-between h-full gap-3 shadow-token-sm">
                   <div className="flex flex-col gap-3">
                     <span className="font-mono font-black text-2xl text-emerald-400">03</span>
-                    <h3 className="font-bold text-lg text-white">
+                    <h3 className="font-bold text-lg text-foreground">
                       {isEn ? "Lossless 1080p Master" : "گام ۳: تحویل فایل نهایی"}
                     </h3>
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-muted-foreground text-sm leading-relaxed">
                       {isEn
                         ? "Direct uncompressed 9:16 export without watermarks, calibrated for instant upload on Instagram & Shorts."
                         : "خروجی استاندارد ۹:۱۶ اینستاگرام با کیفیت ۱۰۸۰p، بدون واترمارک و آماده انتشار فوری."}
@@ -1513,17 +1570,17 @@ export default function Screen2() {
 
               <div className="flex flex-col gap-3 sm:gap-4">
                 {/* Release 1 */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-token-sm">
                   <div className="flex flex-col gap-1.5">
                     <div className="flex items-center gap-2.5">
                       <span className="font-mono text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
                         v2026.3 · Latest
                       </span>
-                      <h3 className="font-bold text-base text-white">
+                      <h3 className="font-bold text-base text-foreground">
                         {isEn ? "Lyric Reel 9:16 Master" : "نمونه ریلز لیریک ۹:۱۶ اینستاگرام"}
                       </h3>
                     </div>
-                    <p className="text-zinc-300 text-xs sm:text-sm">
+                    <p className="text-muted-foreground text-xs sm:text-sm">
                       {isEn
                         ? "Float32 audio pipeline, sub-syllable lyric highlight bloom, uncompressed vertical master."
                         : "تایپوگرافی کاراکتربه‌کاراکتر، بیت‌سینک فریم‌به‌فریم و رندرینگ با رزولوشن ۱۰۸۰p."}
@@ -1532,25 +1589,25 @@ export default function Screen2() {
                   <button
                     type="button"
                     onClick={() => openLightbox(featuredReels.lyric916)}
-                    className="font-semibold text-xs font-mono text-white bg-white/10 hover:bg-white/20 px-4 min-h-[44px] rounded-full border border-white/15 flex items-center gap-2 shrink-0 transition-colors active:scale-95"
+                    className="font-semibold text-xs font-mono text-foreground bg-secondary hover:bg-secondary/80 px-4 min-h-[44px] rounded-full border border-border flex items-center gap-2 shrink-0 transition-colors active:scale-95"
                   >
-                    <Play className="size-3 fill-white" />
+                    <Play className="size-3 fill-current" />
                     <span>{isEn ? "Watch Master" : "مشاهده ویدیو"}</span>
                   </button>
                 </div>
 
                 {/* Release 2 */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-token-sm">
                   <div className="flex flex-col gap-1.5">
                     <div className="flex items-center gap-2.5">
-                      <span className="font-mono text-xs font-bold text-zinc-300 bg-white/10 px-2.5 py-0.5 rounded-full border border-white/10">
+                      <span className="font-mono text-xs font-bold text-muted-foreground bg-muted/60 px-2.5 py-0.5 rounded-full border border-border">
                         v2026.2
                       </span>
-                      <h3 className="font-bold text-base text-white">
+                      <h3 className="font-bold text-base text-foreground">
                         {isEn ? "Dorc Dynamic Video Edit" : "نمونه ویدیویی دورک"}
                       </h3>
                     </div>
-                    <p className="text-zinc-300 text-xs sm:text-sm">
+                    <p className="text-muted-foreground text-xs sm:text-sm">
                       {isEn
                         ? "Atmospheric color grading, bass-triggered glitch transitions, sound design overlay."
                         : "اصلاح رنگ سینمایی متناسب با مود موزیک و کات‌های ضرب‌آهنگ."}
@@ -1559,25 +1616,25 @@ export default function Screen2() {
                   <button
                     type="button"
                     onClick={() => openLightbox(featuredReels.dorc)}
-                    className="font-semibold text-xs font-mono text-white bg-white/10 hover:bg-white/20 px-4 min-h-[44px] rounded-full border border-white/15 flex items-center gap-2 shrink-0 transition-colors active:scale-95"
+                    className="font-semibold text-xs font-mono text-foreground bg-secondary hover:bg-secondary/80 px-4 min-h-[44px] rounded-full border border-border flex items-center gap-2 shrink-0 transition-colors active:scale-95"
                   >
-                    <Play className="size-3 fill-white" />
+                    <Play className="size-3 fill-current" />
                     <span>{isEn ? "Watch Master" : "مشاهده ویدیو"}</span>
                   </button>
                 </div>
 
                 {/* Release 3 */}
-                <div className="rounded-3xl bg-[#0e0e13] border border-white/10 p-5 sm:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div className="rounded-2xl bg-card text-card-foreground border border-border p-5 sm:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-token-sm">
                   <div className="flex flex-col gap-1.5">
                     <div className="flex items-center gap-2.5">
-                      <span className="font-mono text-xs font-bold text-zinc-300 bg-white/10 px-2.5 py-0.5 rounded-full border border-white/10">
+                      <span className="font-mono text-xs font-bold text-muted-foreground bg-muted/60 px-2.5 py-0.5 rounded-full border border-border">
                         v2026.1
                       </span>
-                      <h3 className="font-bold text-base text-white">
+                      <h3 className="font-bold text-base text-foreground">
                         {isEn ? "Top Booker Aflix Campaign" : "تاپ بوکر افلیکس (YouTube Shorts)"}
                       </h3>
                     </div>
-                    <p className="text-zinc-300 text-xs sm:text-sm">
+                    <p className="text-muted-foreground text-xs sm:text-sm">
                       {isEn
                         ? "High-tempo YouTube Shorts release edit with custom kinetic transitions."
                         : "ادیت پرانرژی برای کمپین شورتز یوتیوب."}
@@ -1586,9 +1643,9 @@ export default function Screen2() {
                   <button
                     type="button"
                     onClick={() => openLightbox(featuredReels.topbooker)}
-                    className="font-semibold text-xs font-mono text-white bg-white/10 hover:bg-white/20 px-4 min-h-[44px] rounded-full border border-white/15 flex items-center gap-2 shrink-0 transition-colors active:scale-95"
+                    className="font-semibold text-xs font-mono text-foreground bg-secondary hover:bg-secondary/80 px-4 min-h-[44px] rounded-full border border-border flex items-center gap-2 shrink-0 transition-colors active:scale-95"
                   >
-                    <Play className="size-3 fill-white" />
+                    <Play className="size-3 fill-current" />
                     <span>{isEn ? "Watch Master" : "مشاهده ویدیو"}</span>
                   </button>
                 </div>
@@ -1617,12 +1674,12 @@ export default function Screen2() {
                   return (
                     <div
                       key={faq.id}
-                      className="rounded-3xl bg-[#0e0e13] border border-white/10 overflow-hidden transition-colors"
+                      className="rounded-2xl bg-card text-card-foreground border border-border overflow-hidden transition-colors shadow-token-sm"
                     >
                       <button
                         type="button"
                         onClick={() => setOpenFaqId(isOpen ? null : faq.id)}
-                        className="w-full flex items-center justify-between p-5 sm:p-6 text-start font-medium text-white outline-none min-h-[56px] hover:bg-white/5 transition-colors active:scale-[0.99]"
+                        className="w-full flex items-center justify-between p-5 sm:p-6 text-start font-medium text-foreground outline-none min-h-[56px] hover:bg-white/5 transition-colors active:scale-[0.99]"
                         aria-expanded={isOpen}
                       >
                         <span className="text-sm sm:text-base font-semibold">
@@ -1630,13 +1687,13 @@ export default function Screen2() {
                         </span>
                         <ChevronDown
                           aria-hidden="true"
-                          className={`size-5 text-zinc-400 transition-transform duration-200 shrink-0 ${
+                          className={`size-5 text-muted-foreground transition-transform duration-[160ms] shrink-0 ${
                             isOpen ? "rotate-180" : ""
                           }`}
                         />
                       </button>
                       {isOpen && (
-                        <div className="px-5 sm:px-6 pb-6 pt-1 text-zinc-300 text-start text-sm sm:text-[15px] leading-7 border-t border-white/10 animate-in fade-in duration-200">
+                        <div className="px-5 sm:px-6 pb-6 pt-1 text-muted-foreground text-start text-sm sm:text-[15px] leading-7 border-t border-border animate-in fade-in duration-[260ms]">
                           {isEn ? faq.aEn : faq.aFa}
                         </div>
                       )}
@@ -1649,7 +1706,7 @@ export default function Screen2() {
             {/* ================= 10. FOOTER & DIRECT CONTACT BANNER (Fixed Alignment) ================= */}
             <footer
               id="contact"
-              className="rounded-3xl bg-[#0e0e13]/90 border border-white/10 p-6 sm:p-12 flex flex-col gap-8 sm:gap-10 mt-6 backdrop-blur-2xl"
+              className="rounded-3xl bg-card/90 text-card-foreground border border-border p-6 sm:p-12 flex flex-col gap-8 sm:gap-10 mt-6 backdrop-blur-2xl shadow-token-lg"
               aria-label={isEn ? "Footer and Contact" : "ارتباط و پاورقی"}
             >
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 sm:gap-8">
@@ -1658,12 +1715,12 @@ export default function Screen2() {
                     <Sparkles className="size-3.5" />
                     <span>{isEn ? "Start Your Release Today" : "شروع پروژه جدید"}</span>
                   </span>
-                  <h3 className="font-bold text-2xl sm:text-3xl text-white tracking-tight [text-wrap:balance]">
+                  <h3 className="font-bold text-2xl sm:text-3xl text-foreground tracking-tight [text-wrap:balance]">
                     {isEn
                       ? "Ready to give your music the visual presence it deserves?"
                       : "آهنگ جدید در دست انتشار دارید؟ بیایید با هم بسازیمش."}
                   </h3>
-                  <p className="text-zinc-300 text-sm sm:text-base leading-relaxed">
+                  <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
                     {isEn
                       ? "Get in touch directly on Telegram or Instagram for quotes, portfolio consults, or custom projects."
                       : "برای برآورد هزینه، مشاهده نمونه‌های بیشتر یا شروع کار، در تلگرام یا دایرکت پیام دهید."}
@@ -1675,7 +1732,7 @@ export default function Screen2() {
                     href="https://t.me/thepoo7an"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-semibold rounded-full bg-[#229ED9] text-white px-6 min-h-[48px] flex items-center justify-center gap-2.5 hover:opacity-90 active:scale-95 transition-all shadow-lg flex-1 sm:flex-initial"
+                    className="font-semibold rounded-full bg-telegram text-white px-6 min-h-[48px] flex items-center justify-center gap-2.5 hover:opacity-90 active:scale-95 transition-all shadow-lg flex-1 sm:flex-initial"
                   >
                     <Send className="size-4" />
                     <span>{isEn ? "Telegram (@thepoo7an)" : "تلگرام (@thepoo7an)"}</span>
@@ -1684,7 +1741,7 @@ export default function Screen2() {
                     href="https://www.instagram.com/thepoo7an"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-semibold rounded-full bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white px-6 min-h-[48px] flex items-center justify-center gap-2.5 hover:opacity-90 active:scale-95 transition-all shadow-lg flex-1 sm:flex-initial"
+                    className="font-semibold rounded-full bg-instagram-gradient text-white px-6 min-h-[48px] flex items-center justify-center gap-2.5 hover:opacity-90 active:scale-95 transition-all shadow-lg flex-1 sm:flex-initial"
                   >
                     <Camera className="size-4" />
                     <span>Instagram</span>
@@ -1719,7 +1776,7 @@ export default function Screen2() {
 
         {/* ================= Mobile Sticky Bottom Action Bar (Safe-Area Optimized) ================= */}
         <div
-          className={`lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0d0d12]/95 backdrop-blur-2xl border-t border-white/15 px-3 py-2.5 pb-[calc(10px+env(safe-area-inset-bottom,0px))] transition-transform duration-300 shadow-[0_-8px_30px_rgba(0,0,0,0.85)] ${
+          className={`sticky-mobile-cta lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-card/95 backdrop-blur-2xl border-t border-border px-3 py-2.5 pb-[calc(10px+env(safe-area-inset-bottom,0px))] transition-transform duration-[260ms] shadow-[0_-8px_30px_rgba(0,0,0,0.85)] ${
             isScrolled ? "translate-y-0" : "translate-y-full"
           }`}
           role="region"
@@ -1737,7 +1794,7 @@ export default function Screen2() {
               href="https://t.me/thepoo7an"
               target="_blank"
               rel="noopener noreferrer"
-              className="min-h-[48px] px-4 rounded-full bg-[#229ED9] text-white flex items-center justify-center gap-1.5 text-xs font-mono font-medium active:scale-95 transition-all shrink-0 shadow"
+              className="min-h-[48px] px-4 rounded-full bg-telegram text-white flex items-center justify-center gap-1.5 text-xs font-mono font-medium active:scale-95 transition-all shrink-0 shadow"
               aria-label={isEn ? "Telegram direct" : "تلگرام مستقیم"}
             >
               <Send className="size-4" />

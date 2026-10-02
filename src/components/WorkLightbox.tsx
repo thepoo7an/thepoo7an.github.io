@@ -97,7 +97,7 @@ export const WorkLightbox: React.FC<WorkLightboxProps> = ({
                 playsInline
                 autoPlay
                 className="work-lightbox-video"
-                style={{ width: '100%', height: '100%', objectFit: 'contain', backgroundColor: '#000' }}
+                style={{ width: '100%', height: '100%', objectFit: 'contain', backgroundColor: 'var(--background)' }}
               />
               {/* Direct Play Notice */}
               <div 

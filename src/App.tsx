@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import Screen2 from './components/Screen2';
+import MobileTabBar from './components/MobileTabBar';
 import { initAnalytics, trackSectionView } from './utils/analytics';
 
 export const AppContent: React.FC = () => {
@@ -18,7 +19,12 @@ export const AppContent: React.FC = () => {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  return <Screen2 />;
+  return (
+    <>
+      <Screen2 />
+      <MobileTabBar />
+    </>
+  );
 };
 
 export const App: React.FC = () => {

@@ -3,6 +3,7 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary';
 import './index.css';
+import './harmony.css';
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
