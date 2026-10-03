@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import { useTheme } from "../context/ThemeContext";
-import { WorkItem } from "../data/works";
+import { WorkItem, FEATURED_REELS } from "../data/works";
 import { WorkLightbox } from "./WorkLightbox";
 import { FAQS } from "./FAQ";
 
@@ -110,45 +110,8 @@ export default function Screen2() {
     };
   }, [isMenuOpen]);
 
-  // Featured Work Items for Lightbox playback (Verified authentic assets)
-  const featuredReels: Record<string, WorkItem> = {
-    lyric916: {
-      id: "instagram-DbgAe6cNsdr",
-      category: "reels",
-      videoSrc: "/videos/portfolio/DbgAe6cNsdr.mp4",
-      primarySrc: "https://thepoo7an.github.io/images/portfolio/instagram/DbgAe6cNsdr.webp",
-      fallbacks: [],
-      labelFa: "نمونه لیریک ریل ۹:۱۶",
-      labelEn: "Lyric reel · 9:16",
-      isInstagram: true,
-      instagramId: "DbgAe6cNsdr",
-      instagramUrl: "https://www.instagram.com/reel/DbgAe6cNsdr/",
-    },
-    dorc: {
-      id: "instagram-Dap1kn2yfAl",
-      category: "reels",
-      videoSrc: "/videos/portfolio/Dap1kn2yfAl.mp4",
-      primarySrc: "https://thepoo7an.github.io/images/portfolio/instagram/Dap1kn2yfAl.webp",
-      fallbacks: [],
-      labelFa: "نمونه ویدیویی دورک",
-      labelEn: "Dorc Video Sample",
-      isInstagram: true,
-      instagramId: "Dap1kn2yfAl",
-      instagramUrl: "https://www.instagram.com/reel/Dap1kn2yfAl/",
-    },
-    topbooker: {
-      id: "youtube-Eh0NDneIYqA",
-      category: "reels",
-      primarySrc: "https://thepoo7an.github.io/images/portfolio/youtube/Eh0NDneIYqA.webp",
-      fallbacks: [],
-      labelFa: "تاپ بوکر افلیکس",
-      labelEn: "Top Booker Aflix",
-      isYouTube: true,
-      youtubeId: "Eh0NDneIYqA",
-      youtubeUrl: "https://www.youtube.com/shorts/Eh0NDneIYqA",
-      youtubeEmbedUrl: "https://www.youtube-nocookie.com/embed/Eh0NDneIYqA",
-    },
-  };
+  // Featured Work Items for Lightbox playback (sourced from works.ts)
+  const featuredReels = FEATURED_REELS;
 
   const openLightbox = (item: WorkItem) => {
     setActiveLightboxItem(item);
@@ -554,7 +517,7 @@ export default function Screen2() {
                     aria-label={isEn ? "Open full reel preview in lightbox" : "مشاهده ریل در لایت‌باکس"}
                   >
                     <img
-                      src="https://thepoo7an.github.io/images/portfolio/instagram/DbgAe6cNsdr.webp"
+                      src="./images/portfolio/instagram/DbgAe6cNsdr.webp"
                       alt={isEn ? "Lyric reel typography 9:16 sample" : "نمونه لیریک ریل تایپوگرافی ۹:۱۶"}
                       width="340"
                       height="530"
@@ -1041,7 +1004,7 @@ export default function Screen2() {
                       <img
                         loading="lazy"
                         decoding="async"
-                        src="https://thepoo7an.github.io/images/portfolio/youtube/Eh0NDneIYqA.webp"
+                        src="./images/portfolio/youtube/Eh0NDneIYqA.webp"
                         alt={isEn ? "Top Booker Aflix" : "تاپ بوکر افلیکس"}
                         width="600"
                         height="450"
@@ -1108,7 +1071,7 @@ export default function Screen2() {
                       <img
                         loading="lazy"
                         decoding="async"
-                        src="https://thepoo7an.github.io/images/portfolio/instagram/DbgAe6cNsdr.webp"
+                        src="./images/portfolio/instagram/DbgAe6cNsdr.webp"
                         alt={isEn ? "Lyric reel 9:16 sample" : "نمونه لیریک ریل ۹:۱۶"}
                         width="600"
                         height="450"
@@ -1178,7 +1141,7 @@ export default function Screen2() {
                       <img
                         loading="lazy"
                         decoding="async"
-                        src="https://thepoo7an.github.io/images/portfolio/instagram/Dap1kn2yfAl.webp"
+                        src="./images/portfolio/instagram/Dap1kn2yfAl.webp"
                         alt={isEn ? "Dorc video sample" : "نمونه ویدیویی دورک"}
                         width="600"
                         height="450"
