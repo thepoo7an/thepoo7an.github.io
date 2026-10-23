@@ -2,15 +2,15 @@
   "username": "thepoo7an",
   "nickname": "thepoo7an",
   "profileUrl": "https://www.tiktok.com/@thepoo7an",
-  "bio": "🎬 ادیتور ویدیو | 🎵 تایپوگرافی | موزیک | 📩 همکاری: @thepoo7an",
+  "bio": "🎬 ادیتور ویدیو\n🎵 تایپوگرافی | موزیک\n📩 همکاری: @thepoo7an\nInstagram: @thepoo7an",
   "verified": false,
   "stats": {
-    "followers": 1411,
-    "likes": 59900,
-    "videos": 91,
-    "formattedFollowers": "1.4K",
-    "formattedLikes": "59.9K",
-    "formattedVideos": "91"
+    "followers": 2136,
+    "likes": 90700,
+    "videos": 109,
+    "formattedFollowers": "2.1K",
+    "formattedLikes": "90.7K",
+    "formattedVideos": "109"
   },
   "videos": [
     {
@@ -210,18 +210,11 @@
       "thumbnailUrl": "https://p19-common-sign.tiktokcdn-us.com/tos-useast5-p-0068-tx/o0AgAQKAGHfQqAY89AMfLrffrsOMRJX5I5gO7B~tplv-tiktokx-origin.image?dr=9636&x-expires=1792461600&x-signature=ynWKcQo5%2BIioO9lE0SnZE5Hqdic%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast5"
     },
     {
-      "id": "7688049049047436557",
-      "url": "https://www.tiktok.com/@thepoo7an/video/7688049049047436557",
-      "title": "Video #6557",
+      "id": "7663583011870395661",
+      "url": "https://www.tiktok.com/@thepoo7an/video/7663583011870395661",
+      "title": "Video #5661",
       "authorName": "thepoo7an",
       "thumbnailUrl": ""
-    },
-    {
-      "id": "7686174973911747854",
-      "url": "https://www.tiktok.com/@thepoo7an/video/7686174973911747854",
-      "title": "#فوریو #بیگ_شگی ",
-      "authorName": "thepoo7an",
-      "thumbnailUrl": "https://p19-common-sign.tiktokcdn-us.com/tos-useast5-p-0068-tx/oYf4AlXCW1FxEwiHxnBiLChBBrA6VIIqKwJAAB~tplv-tiktokx-origin.image?dr=9636&x-expires=1792461600&x-signature=DEyPzb7MtVKk45Va8SW0Ye067vE%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast5"
     },
     {
       "id": "7692405166192004365",
@@ -236,7 +229,21 @@
       "title": "Video #0046",
       "authorName": "thepoo7an",
       "thumbnailUrl": ""
+    },
+    {
+      "id": "7686174973911747854",
+      "url": "https://www.tiktok.com/@thepoo7an/video/7686174973911747854",
+      "title": "#فوریو #بیگ_شگی ",
+      "authorName": "thepoo7an",
+      "thumbnailUrl": "https://p19-common-sign.tiktokcdn-us.com/tos-useast5-p-0068-tx/oYf4AlXCW1FxEwiHxnBiLChBBrA6VIIqKwJAAB~tplv-tiktokx-origin.image?dr=9636&x-expires=1792461600&x-signature=DEyPzb7MtVKk45Va8SW0Ye067vE%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast5"
+    },
+    {
+      "id": "7688049049047436557",
+      "url": "https://www.tiktok.com/@thepoo7an/video/7688049049047436557",
+      "title": "Video #6557",
+      "authorName": "thepoo7an",
+      "thumbnailUrl": ""
     }
   ],
-  "lastUpdated": "2026-10-23T16:22:38.819Z"
+  "lastUpdated": "2026-10-23T20:55:42.289Z"
 }
