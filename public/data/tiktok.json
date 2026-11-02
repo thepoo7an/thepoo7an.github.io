@@ -5,11 +5,11 @@
   "bio": "🎬 ادیتور ویدیو\n🎵 تایپوگرافی | موزیک\n📩 همکاری: @thepoo7an\nInstagram: @thepoo7an",
   "verified": false,
   "stats": {
-    "followers": 2192,
-    "likes": 92900,
+    "followers": 2194,
+    "likes": 93000,
     "videos": 114,
     "formattedFollowers": "2.2K",
-    "formattedLikes": "92.9K",
+    "formattedLikes": "93.0K",
     "formattedVideos": "114"
   },
   "videos": [
@@ -203,6 +203,13 @@
       "thumbnailUrl": ""
     },
     {
+      "id": "7700974524975566094",
+      "url": "https://www.tiktok.com/@thepoo7an/video/7700974524975566094",
+      "title": "Video #6094",
+      "authorName": "thepoo7an",
+      "thumbnailUrl": ""
+    },
+    {
       "id": "7661261587969248526",
       "url": "https://www.tiktok.com/@thepoo7an/video/7661261587969248526",
       "title": "Video #8526",
@@ -210,9 +217,9 @@
       "thumbnailUrl": ""
     },
     {
-      "id": "7700974524975566094",
-      "url": "https://www.tiktok.com/@thepoo7an/video/7700974524975566094",
-      "title": "Video #6094",
+      "id": "7699744045781814541",
+      "url": "https://www.tiktok.com/@thepoo7an/video/7699744045781814541",
+      "title": "Video #4541",
       "authorName": "thepoo7an",
       "thumbnailUrl": ""
     },
@@ -222,13 +229,6 @@
       "title": "#فوریو #مهیار ",
       "authorName": "thepoo7an",
       "thumbnailUrl": "https://p19-common-sign.tiktokcdn-us.com/tos-useast5-p-0068-tx/o0AgAQKAGHfQqAY89AMfLrffrsOMRJX5I5gO7B~tplv-tiktokx-origin.image?dr=9636&x-expires=1792461600&x-signature=ynWKcQo5%2BIioO9lE0SnZE5Hqdic%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast5"
-    },
-    {
-      "id": "7699744045781814541",
-      "url": "https://www.tiktok.com/@thepoo7an/video/7699744045781814541",
-      "title": "Video #4541",
-      "authorName": "thepoo7an",
-      "thumbnailUrl": ""
     },
     {
       "id": "7692405166192004365",
@@ -245,5 +245,5 @@
       "thumbnailUrl": "https://p19-common-sign.tiktokcdn-us.com/tos-useast5-p-0068-tx/oYf4AlXCW1FxEwiHxnBiLChBBrA6VIIqKwJAAB~tplv-tiktokx-origin.image?dr=9636&x-expires=1792461600&x-signature=DEyPzb7MtVKk45Va8SW0Ye067vE%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast5"
     }
   ],
-  "lastUpdated": "2026-11-01T21:37:55.474Z"
+  "lastUpdated": "2026-11-02T14:38:57.511Z"
 }
