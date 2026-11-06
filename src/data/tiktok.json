@@ -6,10 +6,10 @@
   "verified": false,
   "stats": {
     "followers": 2211,
-    "likes": 93400,
+    "likes": 93500,
     "videos": 115,
     "formattedFollowers": "2.2K",
-    "formattedLikes": "93.4K",
+    "formattedLikes": "93.5K",
     "formattedVideos": "115"
   },
   "videos": [
@@ -217,18 +217,18 @@
       "thumbnailUrl": ""
     },
     {
-      "id": "7691964206903479566",
-      "url": "https://www.tiktok.com/@thepoo7an/video/7691964206903479566",
-      "title": "Video #9566",
-      "authorName": "thepoo7an",
-      "thumbnailUrl": ""
-    },
-    {
       "id": "7686174973911747854",
       "url": "https://www.tiktok.com/@thepoo7an/video/7686174973911747854",
       "title": "#فوریو #بیگ_شگی ",
       "authorName": "thepoo7an",
       "thumbnailUrl": "https://p19-common-sign.tiktokcdn-us.com/tos-useast5-p-0068-tx/oYf4AlXCW1FxEwiHxnBiLChBBrA6VIIqKwJAAB~tplv-tiktokx-origin.image?dr=9636&x-expires=1792461600&x-signature=DEyPzb7MtVKk45Va8SW0Ye067vE%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast5"
+    },
+    {
+      "id": "7691964206903479566",
+      "url": "https://www.tiktok.com/@thepoo7an/video/7691964206903479566",
+      "title": "Video #9566",
+      "authorName": "thepoo7an",
+      "thumbnailUrl": ""
     },
     {
       "id": "7692405166192004365",
@@ -245,5 +245,5 @@
       "thumbnailUrl": ""
     }
   ],
-  "lastUpdated": "2026-11-05T23:12:43.241Z"
+  "lastUpdated": "2026-11-06T04:53:35.421Z"
 }
