@@ -25,7 +25,7 @@
   ],
   "type": "module",
   "scripts": {
-    "dev": "vite --port=3000 --host=0.0.0.0",
+    "dev": "vite",
     "build": "vite build && node scripts/prerender.js",
     "test": "node scripts/smoke-test.js",
     "preview": "vite preview",

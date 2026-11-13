@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Film } from 'lucide-react';
+import { X, Film, ExternalLink } from 'lucide-react';
 import { WorkItem } from '../data/works';
 
 export interface WorkLightboxProps {
@@ -19,12 +19,10 @@ export const WorkLightbox: React.FC<WorkLightboxProps> = ({
 }) => {
   const [preferEmbed, setPreferEmbed] = useState(false);
 
-  // Reset to local video player whenever active item changes
   useEffect(() => {
     setPreferEmbed(false);
   }, [activeItem?.id]);
 
-  // Accessibility: Close lightbox on Escape key
   useEffect(() => {
     if (!activeItem) return;
     const handleKeyDown = (e: globalThis.KeyboardEvent) => {
@@ -36,7 +34,6 @@ export const WorkLightbox: React.FC<WorkLightboxProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeItem, onClose]);
 
-  // Lock background scroll when lightbox is active
   useEffect(() => {
     if (activeItem) {
       document.body.style.overflow = 'hidden';
@@ -48,7 +45,6 @@ export const WorkLightbox: React.FC<WorkLightboxProps> = ({
     };
   }, [activeItem]);
 
-  // Auto-focus close button when modal mounts
   useEffect(() => {
     if (activeItem && closeBtnRef.current) {
       closeBtnRef.current.focus();
@@ -59,168 +55,152 @@ export const WorkLightbox: React.FC<WorkLightboxProps> = ({
 
   const hasLocalVideo = Boolean(activeItem.videoSrc);
   const showLocalVideo = hasLocalVideo && !preferEmbed;
+  const platformName =
+    activeItem.platform === 'instagram'
+      ? 'Instagram'
+      : activeItem.platform === 'youtube'
+        ? 'YouTube'
+        : 'TikTok';
 
   return (
     <div
       ref={lightboxModalRef}
-      className="work-lightbox"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/92 backdrop-blur-2xl p-4 sm:p-6 animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-label={isEn ? activeItem.labelEn : activeItem.labelFa}
       onClick={onClose}
     >
-      <button
-        ref={closeBtnRef}
-        type="button"
-        className="work-lightbox-close"
-        onClick={onClose}
-        aria-label={isEn ? 'Close preview' : 'بستن پیش‌نمایش'}
-      >
-        <X className="w-5 h-5" />
-      </button>
-
+      {/* Top Bar: Title + Close */}
       <div
-        className="work-lightbox-content"
+        className="w-full max-w-[420px] flex items-center justify-between gap-4 mb-3"
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
       >
-        <div className="work-lightbox-frame">
-          {showLocalVideo ? (
-            <div className="relative w-full h-full flex items-center justify-center bg-black">
-              <video
-                key={activeItem.videoSrc}
-                src={activeItem.videoSrc}
-                poster={
-                  activeItem.primarySrc ||
-                  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 16'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231d1d1f'/%3E%3Cstop offset='1' stop-color='%230b0b0c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3Cpath d='M6 5 L10 8 L6 11 Z' fill='%23f5f5f7' opacity='0.5'/%3E%3C/svg%3E"
-                }
-                controls
-                playsInline
-                autoPlay
-                className="work-lightbox-video"
-                style={{ width: '100%', height: '100%', objectFit: 'contain', backgroundColor: 'var(--background)' }}
-              />
-              {/* Direct Play Notice */}
-              <div 
-                className="absolute top-3 left-3 bg-black/75 backdrop-blur-md border border-emerald-500/30 text-emerald-300 text-[11px] px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-lg pointer-events-none select-none"
-                style={{ zIndex: 10 }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>{isEn ? 'Direct Play (No VPN Needed)' : 'پخش مستقیم محلی (بدون نیاز به فیلترشکن)'}</span>
-              </div>
-            </div>
-          ) : activeItem.isInstagram ? (
-            <iframe
-              src={activeItem.instagramEmbedUrl || `https://www.instagram.com/reel/${activeItem.instagramId}/embed/`}
-              title={isEn ? activeItem.labelEn : activeItem.labelFa}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="work-lightbox-video"
-              style={{ border: 0, width: '100%', height: '100%' }}
-            />
-          ) : activeItem.isTikTok ? (
-            <iframe
-              src={`https://www.tiktok.com/embed/v2/${activeItem.tiktokId}`}
-              title={isEn ? activeItem.labelEn : activeItem.labelFa}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="work-lightbox-video"
-              style={{ border: 0, width: '100%', height: '100%' }}
-            />
-          ) : activeItem.isYouTube ? (
-            <iframe
-              src={`${activeItem.youtubeEmbedUrl || `https://www.youtube-nocookie.com/embed/${activeItem.youtubeId}`}?autoplay=1&rel=0&modestbranding=1`}
-              title={isEn ? activeItem.labelEn : activeItem.labelFa}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="work-lightbox-video"
-              style={{ border: 0, width: '100%', height: '100%' }}
-            />
-          ) : (
-            <img
-              src={activeItem.primarySrc}
-              alt={isEn ? activeItem.labelEn : activeItem.labelFa}
-              width={360}
-              height={640}
-              className="work-lightbox-img"
-            />
-          )}
+        <div className="min-w-0">
+          <p className="text-xs text-zinc-400 truncate">
+            {platformName}
+            {hasLocalVideo
+              ? isEn
+                ? ' · Direct Master'
+                : ' · پخش مستقیم بدون VPN'
+              : ''}
+          </p>
+          <h3 className="text-sm sm:text-base font-bold text-white truncate">
+            {isEn ? activeItem.labelEn : activeItem.labelFa}
+          </h3>
         </div>
 
-        {/* Lightbox Control Bar */}
-        {activeItem.isInstagram ? (
-          <div className="work-lightbox-bar">
-            {hasLocalVideo && (
-              <button
-                type="button"
-                className="work-lightbox-btn"
-                onClick={() => setPreferEmbed(!preferEmbed)}
-                title={preferEmbed ? (isEn ? 'Switch to Local Video' : 'پخش بدون فیلترشکن') : (isEn ? 'Switch to Instagram Embed' : 'امبد اصلی اینستاگرام')}
-              >
-                <Film className="w-3.5 h-3.5 text-zinc-400" />
-                <span style={{ fontSize: '12px' }}>
-                  {preferEmbed 
-                    ? (isEn ? 'Local Player (No VPN)' : 'پخش مستقیم (بدون VPN)')
-                    : (isEn ? 'Official Embed' : 'امبد اینستاگرام')}
-                </span>
-              </button>
-            )}
-            <a
-              href={activeItem.instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="work-lightbox-btn ig-direct-lightbox-btn"
-              title={isEn ? 'Watch on Instagram' : 'مشاهده در اینستاگرام'}
-              aria-label={isEn ? 'Watch on Instagram' : 'مشاهده در اینستاگرام'}
-            >
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-              </svg>
-              <span style={{ fontSize: '13px', fontWeight: 600 }}>
-                {isEn ? 'Watch on Instagram' : 'مشاهده در اینستاگرام'}
-              </span>
-            </a>
-          </div>
-        ) : activeItem.isTikTok ? (
-          <div className="work-lightbox-bar">
-            <a
-              href={activeItem.tiktokUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="work-lightbox-btn tiktok-direct-lightbox-btn"
-              title={isEn ? 'Watch on TikTok' : 'مشاهده در تیک‌تاک'}
-              aria-label={isEn ? 'Watch on TikTok' : 'مشاهده در تیک‌تاک'}
-            >
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.49 6.31 6.31 0 0 0 1.86-4.49V8.71a8.29 8.29 0 0 0 4.91 1.6V6.86a4.83 4.83 0 0 1-1-.17z" />
-              </svg>
-              <span style={{ fontSize: '13px', fontWeight: 600 }}>
-                {isEn ? 'Watch on TikTok' : 'مشاهده در تیک‌تاک'}
-              </span>
-            </a>
-          </div>
-        ) : activeItem.isYouTube ? (
-          <div className="work-lightbox-bar">
-            <a
-              href={activeItem.youtubeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="work-lightbox-btn yt-direct-lightbox-btn"
-              title={isEn ? 'Watch on YouTube' : 'مشاهده مستقیم در یوتیوب'}
-              aria-label={isEn ? 'Watch on YouTube' : 'مشاهده مستقیم در یوتیوب'}
-            >
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-              </svg>
-              <span style={{ fontSize: '13px', fontWeight: 600 }}>
-                {isEn ? 'Watch on YouTube Shorts' : 'مشاهده در یوتیوب شورتز'}
-              </span>
-            </a>
-          </div>
-        ) : null}
+        <button
+          ref={closeBtnRef}
+          type="button"
+          className="size-11 min-h-[44px] min-w-[44px] shrink-0 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center transition-colors active:scale-95"
+          onClick={onClose}
+          aria-label={isEn ? 'Close preview' : 'بستن پیش‌نمایش'}
+        >
+          <X className="size-5" aria-hidden="true" />
+        </button>
+      </div>
 
-        <p className="work-lightbox-caption">
-          {isEn ? activeItem.labelEn : activeItem.labelFa}
-        </p>
+      {/* Cinema 9:16 Stage */}
+      <div
+        className="relative h-[min(70vh,620px)] max-w-full aspect-[9/16] rounded-2xl border border-white/15 overflow-hidden bg-black shadow-2xl"
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+      >
+        {showLocalVideo ? (
+          <video
+            key={activeItem.videoSrc}
+            src={activeItem.videoSrc}
+            poster={activeItem.primarySrc}
+            controls
+            playsInline
+            autoPlay
+            className="size-full object-contain bg-black block"
+          />
+        ) : activeItem.isInstagram ? (
+          <iframe
+            src={
+              activeItem.instagramEmbedUrl ||
+              `https://www.instagram.com/reel/${activeItem.instagramId}/embed/`
+            }
+            title={isEn ? activeItem.labelEn : activeItem.labelFa}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="size-full border-0 block"
+          />
+        ) : activeItem.isTikTok ? (
+          <iframe
+            src={`https://www.tiktok.com/embed/v2/${activeItem.tiktokId}`}
+            title={isEn ? activeItem.labelEn : activeItem.labelFa}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="size-full border-0 block"
+          />
+        ) : activeItem.isYouTube ? (
+          <iframe
+            src={`${
+              activeItem.youtubeEmbedUrl ||
+              `https://www.youtube-nocookie.com/embed/${activeItem.youtubeId}`
+            }?autoplay=1&rel=0&modestbranding=1`}
+            title={isEn ? activeItem.labelEn : activeItem.labelFa}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="size-full border-0 block"
+          />
+        ) : (
+          <img
+            src={activeItem.primarySrc}
+            alt={isEn ? activeItem.labelEn : activeItem.labelFa}
+            referrerPolicy="no-referrer"
+            className="size-full object-contain bg-black block"
+          />
+        )}
+      </div>
+
+      {/* Bottom Controls Bar */}
+      <div
+        className="mt-4 flex flex-wrap items-center justify-center gap-2.5"
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+      >
+        {activeItem.isInstagram && hasLocalVideo && (
+          <button
+            type="button"
+            className="min-h-[44px] px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white text-xs font-medium inline-flex items-center gap-2 transition-colors active:scale-95 whitespace-nowrap"
+            onClick={() => setPreferEmbed(!preferEmbed)}
+          >
+            <Film className="size-4 text-zinc-300" aria-hidden="true" />
+            <span>
+              {preferEmbed
+                ? isEn
+                  ? 'Local Direct Player'
+                  : 'پخش مستقیم محلی'
+                : isEn
+                  ? 'Official Embed'
+                  : 'امبد اینستاگرام'}
+            </span>
+          </button>
+        )}
+
+        {(activeItem.externalUrl ||
+          activeItem.instagramUrl ||
+          activeItem.tiktokUrl ||
+          activeItem.youtubeUrl) && (
+          <a
+            href={
+              activeItem.externalUrl ||
+              activeItem.instagramUrl ||
+              activeItem.tiktokUrl ||
+              activeItem.youtubeUrl
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="min-h-[44px] px-5 py-2 rounded-xl bg-white text-black hover:bg-zinc-200 text-xs font-semibold inline-flex items-center gap-2 transition-colors active:scale-95 whitespace-nowrap"
+          >
+            <span>
+              {isEn ? `Open on ${platformName}` : `مشاهده در ${platformName}`}
+            </span>
+            <ExternalLink className="size-3.5" aria-hidden="true" />
+          </a>
+        )}
       </div>
     </div>
   );
