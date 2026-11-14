@@ -5,11 +5,11 @@
   "bio": "🎬 ادیتور ویدیو\n🎵 تایپوگرافی | موزیک\n📩 همکاری: @thepoo7an\nInstagram: @thepoo7an",
   "verified": false,
   "stats": {
-    "followers": 2267,
-    "likes": 96300,
+    "followers": 2270,
+    "likes": 96400,
     "videos": 120,
     "formattedFollowers": "2.3K",
-    "formattedLikes": "96.3K",
+    "formattedLikes": "96.4K",
     "formattedVideos": "120"
   },
   "videos": [
@@ -182,13 +182,6 @@
       "thumbnailUrl": ""
     },
     {
-      "id": "7707649502613687566",
-      "url": "https://www.tiktok.com/@thepoo7an/video/7707649502613687566",
-      "title": "Video #7566",
-      "authorName": "thepoo7an",
-      "thumbnailUrl": ""
-    },
-    {
       "id": "7699913496716152078",
       "url": "https://www.tiktok.com/@thepoo7an/video/7699913496716152078",
       "title": "Video #2078",
@@ -196,9 +189,9 @@
       "thumbnailUrl": ""
     },
     {
-      "id": "7692405166192004365",
-      "url": "https://www.tiktok.com/@thepoo7an/video/7692405166192004365",
-      "title": "Video #4365",
+      "id": "7707649502613687566",
+      "url": "https://www.tiktok.com/@thepoo7an/video/7707649502613687566",
+      "title": "Video #7566",
       "authorName": "thepoo7an",
       "thumbnailUrl": ""
     },
@@ -217,5 +210,5 @@
       "thumbnailUrl": ""
     }
   ],
-  "lastUpdated": "2026-11-14T12:54:00.498Z"
+  "lastUpdated": "2026-11-14T21:55:32.649Z"
 }
