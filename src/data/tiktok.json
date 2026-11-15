@@ -5,11 +5,11 @@
   "bio": "🎬 ادیتور ویدیو\n🎵 تایپوگرافی | موزیک\n📩 همکاری: @thepoo7an\nInstagram: @thepoo7an",
   "verified": false,
   "stats": {
-    "followers": 2270,
-    "likes": 96400,
+    "followers": 2273,
+    "likes": 96500,
     "videos": 120,
     "formattedFollowers": "2.3K",
-    "formattedLikes": "96.4K",
+    "formattedLikes": "96.5K",
     "formattedVideos": "120"
   },
   "videos": [
@@ -189,6 +189,13 @@
       "thumbnailUrl": ""
     },
     {
+      "id": "7692405166192004365",
+      "url": "https://www.tiktok.com/@thepoo7an/video/7692405166192004365",
+      "title": "Video #4365",
+      "authorName": "thepoo7an",
+      "thumbnailUrl": ""
+    },
+    {
       "id": "7707649502613687566",
       "url": "https://www.tiktok.com/@thepoo7an/video/7707649502613687566",
       "title": "Video #7566",
@@ -210,5 +217,5 @@
       "thumbnailUrl": ""
     }
   ],
-  "lastUpdated": "2026-11-14T21:55:32.649Z"
+  "lastUpdated": "2026-11-15T13:22:43.165Z"
 }
