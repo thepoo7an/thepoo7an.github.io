@@ -106,7 +106,7 @@ export function FaqAndFooterSection({
 
           <div className="flex flex-wrap items-center gap-3 shrink-0 w-full md:w-auto">
             <a
-              href="./order.html"
+              href={isEn ? "./order.html?lang=en" : "./order.html"}
               className="font-semibold rounded-xl bg-primary text-primary-foreground px-6 min-h-[48px] inline-flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all text-sm w-full sm:w-auto whitespace-nowrap"
             >
               <span>

@@ -13,12 +13,10 @@ const KNOWN_VIDEO_IDS = [
   '7699913496716152078',
   '7689125250100940046',
   '7686174973911747854',
-  '7683796098250558753',
   '7681986482227236109',
   '7680462691407858957',
   '7677497326079970573',
   '7676520579058502926',
-  '7676109656242081056',
   '7674317130715761934',
   '7670966647280241934',
   '7670836090843991310',
@@ -175,7 +173,13 @@ async function fetchTikTokVideos() {
     const results = await Promise.all(
       chunk.map((id) => fetchVideoDetail(id, existingMap.get(id)))
     );
-    videos.push(...results);
+    for (const v of results) {
+      const isOwner = (v.authorName || '').toLowerCase() === USERNAME.toLowerCase();
+      const isEmptyPlaceholder = /^Video #\d+$/i.test(v.title || '') && !v.thumbnailUrl && !(v.createTime > 0);
+      if (isOwner && !isEmptyPlaceholder) {
+        videos.push(v);
+      }
+    }
   }
 
   return videos.sort((a, b) => {
@@ -278,22 +282,31 @@ async function ensureLocalTikTokThumb(video) {
 
   const rawVideos = await fetchTikTokVideos();
   const rawLatest = rawVideos[0] || null;
-  const rawMostViewed =
-    [...rawVideos].sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0))[0] || null;
+  const topViewedSorted = [...rawVideos].sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0));
+  const rawMostViewed = topViewedSorted[0] || null;
 
-  const [latestVideo, mostViewedVideo] = await Promise.all([
-    rawLatest ? ensureLocalTikTokThumb(rawLatest) : Promise.resolve(null),
-    rawMostViewed ? ensureLocalTikTokThumb(rawMostViewed) : Promise.resolve(null),
-  ]);
+  // Cache local WebP thumbnails for latest, mostViewed, recent, and top-performing videos
+  const cacheTargetsMap = new Map();
+  for (const candidate of [rawLatest, rawMostViewed, ...rawVideos.slice(0, 6), ...topViewedSorted.slice(0, 6)]) {
+    if (candidate && candidate.id && !cacheTargetsMap.has(candidate.id)) {
+      cacheTargetsMap.set(candidate.id, candidate);
+    }
+  }
+  const cachedTargets = await Promise.all(
+    Array.from(cacheTargetsMap.values()).map((video) => ensureLocalTikTokThumb(video))
+  );
+  const cachedById = new Map(cachedTargets.map((v) => [v.id, v]));
+
+  const latestVideo = rawLatest ? (cachedById.get(rawLatest.id) || rawLatest) : null;
+  const mostViewedVideo = rawMostViewed ? (cachedById.get(rawMostViewed.id) || rawMostViewed) : null;
 
   const videos = rawVideos.map((v) => {
-    if (latestVideo && v.id === latestVideo.id && latestVideo.localThumbnailUrl) {
-      return { ...v, localThumbnailUrl: latestVideo.localThumbnailUrl };
+    const cached = cachedById.get(v.id);
+    if (cached && cached.localThumbnailUrl) {
+      return { ...v, localThumbnailUrl: cached.localThumbnailUrl };
     }
-    if (mostViewedVideo && v.id === mostViewedVideo.id && mostViewedVideo.localThumbnailUrl) {
-      return { ...v, localThumbnailUrl: mostViewedVideo.localThumbnailUrl };
-    }
-    return v;
+    const existingLocal = resolveLocalThumb(v.id);
+    return existingLocal ? { ...v, localThumbnailUrl: existingLocal } : v;
   });
 
   console.log(`Loaded ${videos.length} videos for @${USERNAME}`, {

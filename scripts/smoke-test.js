@@ -113,7 +113,7 @@ if (!htmlContent.includes('آخرین آپلود') || !htmlContent.includes('پ�
 }
 console.log('✅ PASS: All 3 platform highlight cards & roles confirmed');
 
-// Test 6: Pricing & theme-color consistency across index.html & order.html
+// Test 6: Pricing, theme-color, service CTA & owner-feed integrity across dist HTML
 if (htmlContent.includes('۴۹۰٬۰۰۰') || htmlContent.includes('4900000 IRR')) {
   console.error('❌ FAIL: dist/index.html contains stale 490,000 Toman pricing');
   process.exit(1);
@@ -124,16 +124,36 @@ for (const priceToken of ['۱۵۰٬۰۰۰', '۳۰۰٬۰۰۰', '۱٬۰۰۰٬۰۰�
     process.exit(1);
   }
 }
+if (!htmlContent.includes('order.html?plan=cover')) {
+  console.error('❌ FAIL: dist/index.html missing direct order CTA for Cover Artwork service');
+  process.exit(1);
+}
+if (htmlContent.includes('7683796098250558753') || htmlContent.includes('mahan021_07')) {
+  console.error('❌ FAIL: dist/index.html contains non-owner TikTok video entry');
+  process.exit(1);
+}
 const orderHtmlContent = fs.readFileSync(orderHtmlPath, 'utf8');
-if (!htmlContent.includes('content="#050506"') || !orderHtmlContent.includes('content="#050506"')) {
-  console.error('❌ FAIL: meta[name="theme-color"] default #050506 missing in dist HTML');
+if (orderHtmlContent.includes('۴۹۰٬۰۰۰')) {
+  console.error('❌ FAIL: dist/order.html contains stale 490,000 Toman pricing');
+  process.exit(1);
+}
+const notFoundPath = path.join(distDir, '404.html');
+const notFoundContent = fs.existsSync(notFoundPath) ? fs.readFileSync(notFoundPath, 'utf8') : '';
+if (!htmlContent.includes('content="#050506"') || !orderHtmlContent.includes('content="#050506"') || !notFoundContent.includes('content="#050506"')) {
+  console.error('❌ FAIL: meta[name="theme-color"] default #050506 missing in dist HTML (index/order/404)');
+  process.exit(1);
+}
+const manifestPath = path.join(distDir, 'manifest.webmanifest');
+const manifestContent = fs.existsSync(manifestPath) ? fs.readFileSync(manifestPath, 'utf8') : '';
+if (!manifestContent.includes('#050506')) {
+  console.error('❌ FAIL: dist/manifest.webmanifest missing Obsidian #050506 theme/background color');
   process.exit(1);
 }
 if (/font-size:\s*(?:10\.5|11|11\.5)px/i.test(orderHtmlContent)) {
   console.error('❌ FAIL: dist/order.html still contains sub-12px CSS font-size rules');
   process.exit(1);
 }
-console.log('✅ PASS: Pricing schema sync, theme-color, and >=12px order typography verified');
+console.log('✅ PASS: Pricing schema sync, service CTAs, owner integrity, theme-color & >=12px order typography verified');
 
 // Test 7: Verify local MP4 portfolio videos exist and have faststart (moov before mdat)
 const videosDir = path.join(distDir, 'videos', 'portfolio');

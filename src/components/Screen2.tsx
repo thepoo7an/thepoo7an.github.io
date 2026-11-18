@@ -314,7 +314,7 @@ export default function Screen2() {
               </button>
 
               <a
-                href="./order.html"
+                href={isEn ? "./order.html?lang=en" : "./order.html"}
                 className="hidden sm:inline-flex items-center justify-center min-h-[40px] px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-semibold hover:opacity-90 transition-opacity active:scale-95 whitespace-nowrap shrink-0"
               >
                 {isEn ? "Get Project Estimate" : "دریافت برآورد پروژه"}
@@ -442,7 +442,7 @@ export default function Screen2() {
 
               <div className="pt-3 border-t border-border flex flex-col gap-2.5">
                 <a
-                  href="./order.html"
+                  href={isEn ? "./order.html?lang=en" : "./order.html"}
                   onClick={() => setIsMenuOpen(false)}
                   className="font-semibold rounded-xl bg-primary text-primary-foreground text-center min-h-[48px] px-6 flex items-center justify-center active:scale-95 transition-all text-sm gap-2"
                 >
@@ -542,7 +542,7 @@ export default function Screen2() {
                 {/* Primary & Secondary Actions */}
                 <div className="flex flex-wrap items-center gap-3 pt-1">
                   <a
-                    href="./order.html"
+                    href={isEn ? "./order.html?lang=en" : "./order.html"}
                     className="inline-flex items-center justify-center gap-2 min-h-[48px] px-7 py-3 rounded-xl bg-primary text-primary-foreground text-sm sm:text-base font-semibold hover:opacity-90 transition-all active:scale-95 shadow-token-md whitespace-nowrap"
                   >
                     <span>

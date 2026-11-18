@@ -45,7 +45,7 @@ export const MobileTabBar: React.FC = () => {
       </a>
 
       <a
-        href="./order.html"
+        href={isEn ? './order.html?lang=en' : './order.html'}
         className="flex flex-col items-center justify-center gap-1 min-h-[48px] rounded-xl bg-primary text-primary-foreground text-xs font-bold shadow-token-sm transition-transform active:scale-95 mx-0.5"
       >
         <PenLine className="size-[18px]" aria-hidden="true" />

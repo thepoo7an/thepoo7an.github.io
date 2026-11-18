@@ -98,7 +98,7 @@ export function PricingSection({
           </div>
 
           <a
-            href="./order.html?plan=lyric"
+            href={isEn ? "./order.html?plan=lyric&lang=en" : "./order.html?plan=lyric"}
             className="font-semibold rounded-xl bg-secondary hover:bg-accent text-secondary-foreground text-sm px-6 min-h-[48px] flex items-center justify-center transition-colors border border-border active:scale-95 whitespace-nowrap"
           >
             {isEn ? "Select Lyric Package" : "سفارش تایپوگرافی لیریک"}
@@ -171,7 +171,7 @@ export function PricingSection({
           </div>
 
           <a
-            href="./order.html?plan=video"
+            href={isEn ? "./order.html?plan=video&lang=en" : "./order.html?plan=video"}
             className="font-semibold rounded-xl bg-primary text-primary-foreground hover:opacity-90 text-sm px-6 min-h-[48px] flex items-center justify-center transition-all active:scale-95 whitespace-nowrap"
           >
             {isEn ? "Select Video + Lyric" : "سفارش ادیت و لیریک"}
@@ -241,7 +241,7 @@ export function PricingSection({
           </div>
 
           <a
-            href="./order.html?plan=monthly"
+            href={isEn ? "./order.html?plan=monthly&lang=en" : "./order.html?plan=monthly"}
             className="font-semibold rounded-xl bg-secondary hover:bg-accent text-secondary-foreground text-sm px-6 min-h-[48px] flex items-center justify-center transition-colors border border-border active:scale-95 whitespace-nowrap"
           >
             {isEn ? "Select Monthly Plan" : "سفارش پکیج ماهانه"}

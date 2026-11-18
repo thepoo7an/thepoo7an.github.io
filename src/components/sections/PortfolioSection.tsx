@@ -459,9 +459,10 @@ export function PortfolioSection({
 
       {/* Mobile Carousel Indicator Dots */}
       <div className="carousel-dots md:hidden" aria-hidden="true">
-        {filteredWorks.slice(0, 6).map((_, i) => (
-          <span key={i} className={activeWorkIndex === i ? "active" : ""} />
-        ))}
+        {filteredWorks.slice(0, 6).map((_, i, arr) => {
+          const clampedActive = Math.min(arr.length - 1, activeWorkIndex);
+          return <span key={i} className={clampedActive === i ? "active" : ""} />;
+        })}
       </div>
     </section>
   );

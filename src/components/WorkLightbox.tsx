@@ -168,7 +168,7 @@ export const WorkLightbox: React.FC<WorkLightboxProps> = ({
         : '';
 
   const itemTitle = isEn ? activeItem.labelEn : activeItem.labelFa;
-  const orderSimilarHref = `./order.html?style=${encodeURIComponent(itemTitle)}`;
+  const orderSimilarHref = `./order.html?style=${encodeURIComponent(itemTitle)}${isEn ? '&lang=en' : ''}`;
 
   const PrevIcon = isEn ? ChevronLeft : ChevronRight;
   const NextIcon = isEn ? ChevronRight : ChevronLeft;

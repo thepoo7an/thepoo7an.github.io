@@ -1,3 +1,5 @@
+import { ArrowLeft, ArrowRight } from "lucide-react";
+
 export interface ServicesAndWorkflowSectionProps {
   isEn: boolean;
 }
@@ -5,39 +7,51 @@ export interface ServicesAndWorkflowSectionProps {
 const SERVICES = [
   {
     num: "01",
+    plan: "lyric",
     titleFa: "تایپوگرافی لیریک موزیک",
     titleEn: "Lyric Typography",
     descFa:
       "تایپوگرافی متحرک ریتمیک، انیمیشن فریم‌به‌فریم کلمات و بیت‌سینک دقیق با ضرب‌آهنگ و وکال.",
     descEn:
       "Kinetic typography, custom font direction, and exact syllable-to-beat synchronization.",
+    ctaFa: "سفارش تایپوگرافی",
+    ctaEn: "Order Lyric Typography",
   },
   {
     num: "02",
+    plan: "video",
     titleFa: "ادیت ویدیو و ریلز",
     titleEn: "Video Edit + Lyric",
     descFa:
       "اصلاح رنگ سینمایی، کات‌های ریتمیک، افکت‌های بصری متناسب با مود ترک و خروجی عمودی ۹:۱۶.",
     descEn:
       "Color grading, rhythmic cuts, visual transitions, and vertical 9:16 mastering.",
+    ctaFa: "سفارش ادیت + لیریک",
+    ctaEn: "Order Video + Lyric",
   },
   {
     num: "03",
+    plan: "cover",
     titleFa: "طراحی کاور موزیک",
     titleEn: "Music Cover Artwork",
     descFa:
       "طراحی پوستر و آرت‌ورک مربعی ۳۰۰۰×۳۰۰۰ با استاندارد پلتفرم‌های اسپاتیفای و اپل موزیک.",
     descEn:
       "High-resolution 3000x3000px artwork calibrated for Spotify, Apple Music, and SoundCloud.",
+    ctaFa: "سفارش طراحی کاور",
+    ctaEn: "Order Cover Artwork",
   },
   {
     num: "04",
+    plan: "monthly",
     titleFa: "پکیج ماهانه تولید محتوا",
     titleEn: "Monthly Content Growth",
     descFa:
       "۴ ریلز در ماه با تقویم تحویل منظم هفتگی و اولویت رندرینگ برای انتشار پیوسته آرتیست.",
     descEn:
       "Consistent weekly reel production calendar ensuring steady release momentum.",
+    ctaFa: "سفارش پکیج ماهانه",
+    ctaEn: "Order Monthly Package",
   },
 ] as const;
 
@@ -74,6 +88,8 @@ const WORKFLOW_STEPS = [
 export function ServicesAndWorkflowSection({
   isEn,
 }: ServicesAndWorkflowSectionProps) {
+  const ArrowIcon = isEn ? ArrowRight : ArrowLeft;
+
   return (
     <>
       {/* ================= 4. STUDIO SERVICES (2x2 Architectural Grid) ================= */}
@@ -113,6 +129,16 @@ export function ServicesAndWorkflowSection({
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {isEn ? svc.descEn : svc.descFa}
                 </p>
+              </div>
+
+              <div className="pt-1">
+                <a
+                  href={`./order.html?plan=${svc.plan}${isEn ? "&lang=en" : ""}`}
+                  className="min-h-[44px] inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-primary hover:underline underline-offset-4 active:scale-95 transition-transform"
+                >
+                  <span>{isEn ? svc.ctaEn : svc.ctaFa}</span>
+                  <ArrowIcon className="size-3.5" aria-hidden="true" />
+                </a>
               </div>
             </div>
           ))}

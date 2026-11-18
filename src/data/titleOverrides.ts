@@ -1,92 +1,236 @@
 // src/data/titleOverrides.ts
-// Manual overrides for synced portfolio items to prevent artist promotion
-// Maps platform-specific IDs or titles to professional Persian descriptions
+// Manual curated bilingual overrides for synced portfolio items
+// Maps platform-specific titles/captions to clean Persian & English editorial titles
 
-export const TITLE_OVERRIDES: Record<string, string> = {
+export interface BilingualTitle {
+  fa: string;
+  en: string;
+}
+
+export const BILINGUAL_TITLE_OVERRIDES: Record<string, BilingualTitle> = {
   // TikTok items
-  '#فوریو #سجادشاهی #سجاد_شاهی': 'تایپوگرافی لیریک — سبک دارک سینمایی',
-  '#سجادشاهی #فوریووو #fyp #foryou #fypシ': 'تایپوگرافی لیریک — سبک دارک سینمایی',
-  '#فوریو #حسین_تی_ام #tiem': 'تایپوگرافی لیریک — ریتمیک و مدرن',
-  '#فوریو #بیگ_شگی': 'ادیت ویدیو + تایپوگرافی لیریک',
-  'big shaggy': 'ادیت ویدیو + تایپوگرافی لیریک',
-  '#فوریو #شایان_یو': 'تایپوگرافی لیریک — سبک احساسی و ترپ',
-  '#فوریو #پوری #گادپوری': 'تایپوگرافی لیریک — سبک رپ و اکشن',
-  '#فوریو #مهیار': 'تایپوگرافی لیریک — استایل مینیمال',
-  '#فوریو #دورچی': 'تایپوگرافی لیریک — تمپوی ملایم',
-  '#دورچی #ادیت #تایپوگرافی #دلتنگی #fyp': 'تایپوگرافی لیریک — تمپوی ملایم',
-  '💔#دورچی #ادیت #fyp #فوریووو #دپ': 'تایپوگرافی لیریک — تمپوی ملایم',
-  'وِلت نکردم. #dorcci #foru #فوریو': 'تایپوگرافی لیریک — تمپوی ملایم',
-  'وِلت نکردم. #dorcci #foru #فوریو ': 'تایپوگرافی لیریک — تمپوی ملایم',
-  'نمیخواستم بِکشِ قفس دورم! #ادیت #تایپوگرافی #hoodadk4': 'تایپوگرافی لیریک و موشن',
-  'نمیخواستم بِکشِ قفس دورم! #ادیت #تایپوگرافی #hoodadk4 ': 'تایپوگرافی لیریک و موشن',
-  'خراب کردی... #شایان_اشراقی #فوریو': 'تایپوگرافی لیریک موزیک',
-  'خراب کردی... #شایان_اشراقی #فوریو ': 'تایپوگرافی لیریک موزیک',
-  '#fyp #فوریووو #دپ #fypシ #دلتنگی': 'تایپوگرافی لیریک — سبک احساسی',
-  '#فوریو': 'تایپوگرافی لیریک موزیک',
-  '#فوریو ': 'تایپوگرافی لیریک موزیک',
-  '❤️‍🩹🩸': 'تایپوگرافی لیریک موزیک',
-  'Tiem🤘🏻': 'تایپوگرافی لیریک — ریتمیک',
-  '..❤️‍🩹 #کیارش': 'تایپوگرافی لیریک — سبک دارک',
-  '..❤️‍🩹 #کیارش ': 'تایپوگرافی لیریک — سبک دارک',
-  '🩻 #دورچی #فوریو #dorcci #foru': 'تایپوگرافی لیریک موزیک',
-  '🩻 #دورچی #فوریو #dorcci #foru ': 'تایپوگرافی لیریک موزیک',
-  '#capcut #ucl #arsenal #realmadrid #fyp': 'ادیت ویدیو و ریتم‌سینک',
-  '#capcut #ucl #arsenal #realmadrid #fyp ': 'ادیت ویدیو و ریتم‌سینک',
-  '#CapCut #messi #goat #barcelona #fyp': 'ادیت ویدیو و ریتم‌سینک',
-  '#CapCut #messi #goat #barcelona #fyp ': 'ادیت ویدیو و ریتم‌سینک',
-  'ایران تسلیت. #iran': 'تایپوگرافی ویدیویی',
-  'ایران تسلیت. #iran ': 'تایپوگرافی ویدیویی',
+  '#فوریو #سجادشاهی #سجاد_شاهی': {
+    fa: 'تایپوگرافی لیریک — سبک دارک سینمایی',
+    en: 'Dark Cinematic Lyric Typography',
+  },
+  '#سجادشاهی #فوریووو #fyp #foryou #fypシ': {
+    fa: 'تایپوگرافی لیریک — سبک دارک سینمایی',
+    en: 'Dark Cinematic Lyric Typography',
+  },
+  '#فوریو #حسین_تی_ام #tiem': {
+    fa: 'تایپوگرافی لیریک — ریتمیک و مدرن',
+    en: 'Rhythmic Modern Lyric Typography',
+  },
+  '#فوریو #بیگ_شگی': {
+    fa: 'ادیت ویدیو + تایپوگرافی لیریک',
+    en: 'Video Edit + Lyric Typography',
+  },
+  'big shaggy': {
+    fa: 'ادیت ویدیو + تایپوگرافی لیریک',
+    en: 'Video Edit + Lyric Typography',
+  },
+  '#فوریو #شایان_یو': {
+    fa: 'تایپوگرافی لیریک — سبک احساسی و ترپ',
+    en: 'Melodic & Trap Lyric Typography',
+  },
+  '#فوریو #پوری #گادپوری': {
+    fa: 'تایپوگرافی لیریک — سبک رپ و اکشن',
+    en: 'High-Tempo Rap Lyric Typography',
+  },
+  '#فوریو #مهیار': {
+    fa: 'تایپوگرافی لیریک — استایل مینیمال',
+    en: 'Minimal Lyric Typography Style',
+  },
+  '#فوریو #دورچی': {
+    fa: 'تایپوگرافی لیریک — تمپوی ملایم',
+    en: 'Mid-Tempo Lyric Typography • Dorcci',
+  },
+  '#دورچی #ادیت #تایپوگرافی #دلتنگی #fyp': {
+    fa: 'تایپوگرافی لیریک — تمپوی ملایم',
+    en: 'Mid-Tempo Lyric Typography • Dorcci',
+  },
+  '💔#دورچی #ادیت #fyp #فوریووو #دپ': {
+    fa: 'تایپوگرافی لیریک — تمپوی ملایم',
+    en: 'Atmospheric Lyric Typography • Dorcci',
+  },
+  'وِلت نکردم. #dorcci #foru #فوریو': {
+    fa: 'تایپوگرافی لیریک — تمپوی ملایم',
+    en: 'Lyric Typography • Dorcci',
+  },
+  'نمیخواستم بِکشِ قفس دورم! #ادیت #تایپوگرافی #hoodadk4': {
+    fa: 'تایپوگرافی لیریک و موشن',
+    en: 'Lyric Typography & Motion • Hoodadk4',
+  },
+  'خراب کردی... #شایان_اشراقی #فوریو': {
+    fa: 'تایپوگرافی لیریک موزیک',
+    en: 'Lyric Typography • Shayan Eshraghi',
+  },
+  '#fyp #فوریووو #دپ #fypシ #دلتنگی': {
+    fa: 'تایپوگرافی لیریک — سبک احساسی',
+    en: 'Atmospheric Melodic Lyric Edit',
+  },
+  '#فوریو': {
+    fa: 'تایپوگرافی لیریک موزیک',
+    en: 'Music Lyric Typography Reel',
+  },
+  '❤️‍🩹🩸': {
+    fa: 'تایپوگرافی لیریک موزیک',
+    en: 'Music Lyric Typography',
+  },
+  'Tiem🤘🏻': {
+    fa: 'تایپوگرافی لیریک — ریتمیک',
+    en: 'Rhythmic Lyric Typography • Tiem',
+  },
+  '..❤️‍🩹 #کیارش': {
+    fa: 'تایپوگرافی لیریک — سبک دارک',
+    en: 'Dark Lyric Typography • Kiarash',
+  },
+  '🩻 #دورچی #فوریو #dorcci #foru': {
+    fa: 'تایپوگرافی لیریک موزیک',
+    en: 'Lyric Typography • Dorcci',
+  },
+  '#capcut #ucl #arsenal #realmadrid #fyp': {
+    fa: 'ادیت ویدیو و ریتم‌سینک',
+    en: 'Video Edit & Beat-Sync',
+  },
+  '#CapCut #messi #goat #barcelona #fyp': {
+    fa: 'ادیت ویدیو و ریتم‌سینک',
+    en: 'Video Edit & Beat-Sync',
+  },
+  'ایران تسلیت. #iran': {
+    fa: 'تایپوگرافی ویدیویی',
+    en: 'Editorial Video Typography',
+  },
 
   // Instagram items
-  'موزیک ریلز • Tiem': 'تایپوگرافی لیریک — ریتمیک و مدرن',
-  'ادیت ریلز • Hossein Tiem': 'تایپوگرافی لیریک — ریتمیک و مدرن',
-  'تایپوگرافی لیریک • Dorcci': 'تایپوگرافی لیریک — تمپوی ملایم',
-  'موزیک ویدیو و لیریک • Yxngzi': 'موزیک ویدیو و تایپوگرافی لیریک',
-  'تایپوگرافی موزیک • Elnnaazi': 'تایپوگرافی لیریک موزیک',
-  'تایپوگرافی سینمایی | موزیک ریلز': 'تایپوگرافی سینمایی | موزیک ریلز',
+  'موزیک ریلز • Tiem': {
+    fa: 'تایپوگرافی لیریک — ریتمیک و مدرن',
+    en: 'Music Reel • Tiem',
+  },
+  'ادیت ریلز • Hossein Tiem': {
+    fa: 'تایپوگرافی لیریک — ریتمیک و مدرن',
+    en: 'Reel Edit • Hossein Tiem',
+  },
+  'تایپوگرافی لیریک • Dorcci': {
+    fa: 'تایپوگرافی لیریک — تمپوی ملایم',
+    en: 'Lyric Typography • Dorcci',
+  },
+  'موزیک ویدیو و لیریک • Yxngzi': {
+    fa: 'موزیک ویدیو و تایپوگرافی لیریک',
+    en: 'Music Video & Lyric • Yxngzi',
+  },
+  'تایپوگرافی موزیک • Elnnaazi': {
+    fa: 'تایپوگرافی لیریک موزیک',
+    en: 'Music Typography • Elnnaazi',
+  },
+  'تایپوگرافی سینمایی | موزیک ریلز': {
+    fa: 'تایپوگرافی سینمایی | موزیک ریلز',
+    en: 'Cinematic Music Reel Typography',
+  },
 
   // YouTube items
-  '#فوریو #مهیاد #mahyad': 'تایپوگرافی لیریک — سبک ریتمیک',
-  '#فوریو #samilone #سمی_لون': 'موزیک ریلز و تایپوگرافی • سمی لون',
-  '#ادیت #تایپو #تایپوگرافی #هیپهاپولوژیست #مامان #مادر': 'تایپوگرافی لیریک و ادیت سینمایی • هیپهاپولوژیست',
-  'ترند این روزا✨#تایپوگرافی #ادیت #ترند': 'تایپوگرافی لیریک — ترند ریتمیک',
-  '❤️‍🩹🩸#مهیار #ادیت #تایپوگرافی': 'تایپوگرافی احساسی لیریک • مهیار',
-  '#فوریو #متین_فتاحی': 'تایپوگرافی لیریک • متین فتاحی',
-  '#فوریو #vayne': 'تایپوگرافی لیریک و موشن • Vayne',
-  'Antwort auf @𝑨𝑹𝑰𝒀𝑨 #گمشو_برو_فوریو #وایرال_ویدیو #تیک_تاک': 'تایپوگرافی لیریک و ادیت ریتمیک',
+  '#فوریو #مهیاد #mahyad': {
+    fa: 'تایپوگرافی لیریک — سبک ریتمیک',
+    en: 'Rhythmic Lyric Typography • Mahyad',
+  },
+  '#فوریو #samilone #سمی_لون': {
+    fa: 'موزیک ریلز و تایپوگرافی • سمی لون',
+    en: 'Music Reel & Typography • Samilone',
+  },
+  '#ادیت #تایپو #تایپوگرافی #هیپهاپولوژیست #مامان #مادر': {
+    fa: 'تایپوگرافی لیریک و ادیت سینمایی • هیپهاپولوژیست',
+    en: 'Lyric Typography & Cinematic Edit • Hiphopologist',
+  },
+  'ترند این روزا✨#تایپوگرافی #ادیت #ترند': {
+    fa: 'تایپوگرافی لیریک — ترند ریتمیک',
+    en: 'Trending Rhythmic Lyric Typography',
+  },
+  '❤️‍🩹🩸#مهیار #ادیت #تایپوگرافی': {
+    fa: 'تایپوگرافی احساسی لیریک • مهیار',
+    en: 'Emotional Lyric Typography • Mahyar',
+  },
+  '#فوریو #متین_فتاحی': {
+    fa: 'تایپوگرافی لیریک • متین فتاحی',
+    en: 'Lyric Typography • Matin Fattahi',
+  },
+  '#فوریو #vayne': {
+    fa: 'تایپوگرافی لیریک و موشن • Vayne',
+    en: 'Lyric Typography & Motion • Vayne',
+  },
+  '#فوریو #سجاد_شاهی': {
+    fa: 'تایپوگرافی لیریک — سبک دارک سینمایی',
+    en: 'Dark Cinematic Lyric Typography',
+  },
+  '#فوریو #مسین': {
+    fa: 'تایپوگرافی لیریک و ادیت ریتمیک',
+    en: 'Rhythmic Lyric Typography • Messin',
+  },
+  '#ادیت #تایپوگرافی #دورچی': {
+    fa: 'تایپوگرافی لیریک • دورچی',
+    en: 'Lyric Typography • Dorcci',
+  },
+  '#ادیت #تایپوگرافی': {
+    fa: 'تایپوگرافی و ادیت ریتمیک موزیک',
+    en: 'Rhythmic Music Edit & Typography',
+  },
+  'قفلیع شایانو شنیدین؟؟✨ #شایان_یو #shayanyo': {
+    fa: 'تایپوگرافی لیریک • شایان یو',
+    en: 'Melodic Trap Lyric Edit • Shayan Yo',
+  },
 };
 
-// Helper function to get display title
-export function getDisplayTitle(rawTitle: string, platform: string): string {
+export const TITLE_OVERRIDES: Record<string, string> = Object.fromEntries(
+  Object.entries(BILINGUAL_TITLE_OVERRIDES).map(([key, val]) => [key, val.fa])
+);
+
+const PLATFORM_FALLBACKS: Record<string, BilingualTitle> = {
+  youtube: {
+    fa: 'ویدیو یوتیوب — تایپوگرافی لیریک',
+    en: 'YouTube Shorts — Lyric Typography',
+  },
+  instagram: {
+    fa: 'ریلز اینستاگرام — تایپوگرافی لیریک',
+    en: 'Instagram Reel — Lyric Typography',
+  },
+  tiktok: {
+    fa: 'ویدیو تیک‌تاک — تایپوگرافی لیریک',
+    en: 'TikTok Release — Lyric Typography',
+  },
+};
+
+const DEFAULT_FALLBACK: BilingualTitle = {
+  fa: 'تایپوگرافی لیریک موزیک',
+  en: 'Music Lyric Typography',
+};
+
+function hasPersianScript(text: string): boolean {
+  return /[\u0600-\u06FF]/.test(text);
+}
+
+export function getBilingualDisplayTitle(rawTitle: string, platform: string): BilingualTitle {
+  const platformFallback = PLATFORM_FALLBACKS[platform] || DEFAULT_FALLBACK;
   if (!rawTitle) {
-    const fallbacks: Record<string, string> = {
-      'youtube': 'ویدیو یوتیوب — تایپوگرافی لیریک',
-      'instagram': 'ریلز اینستاگرام — تایپوگرافی لیریک',
-      'tiktok': 'ویدیو تیک‌تاک — تایپوگرافی لیریک',
-    };
-    return fallbacks[platform] || 'تایپوگرافی لیریک موزیک';
+    return platformFallback;
   }
 
   const trimmed = rawTitle.trim();
-
-  if (TITLE_OVERRIDES[rawTitle]) {
-    return TITLE_OVERRIDES[rawTitle];
-  }
-  if (TITLE_OVERRIDES[trimmed]) {
-    return TITLE_OVERRIDES[trimmed];
+  const matched = BILINGUAL_TITLE_OVERRIDES[rawTitle] || BILINGUAL_TITLE_OVERRIDES[trimmed];
+  if (matched) {
+    return matched;
   }
 
-  // Strip trailing hashtags if natural title text exists before hashtags
   const cleanText = trimmed.replace(/#\S+/g, '').trim();
   if (cleanText.length >= 4 && !/^Video #\d+$/i.test(cleanText)) {
-    return cleanText;
+    return {
+      fa: cleanText,
+      // Avoid leaking raw Persian caption strings into English UI when no EN override exists
+      en: hasPersianScript(cleanText) ? platformFallback.en : cleanText,
+    };
   }
 
-  const fallbacks: Record<string, string> = {
-    'youtube': 'ویدیو یوتیوب — تایپوگرافی لیریک',
-    'instagram': 'ریلز اینستاگرام — تایپوگرافی لیریک',
-    'tiktok': 'ویدیو تیک‌تاک — تایپوگرافی لیریک',
-  };
+  return platformFallback;
+}
 
-  return fallbacks[platform] || 'تایپوگرافی لیریک موزیک';
+export function getDisplayTitle(rawTitle: string, platform: string): string {
+  return getBilingualDisplayTitle(rawTitle, platform).fa;
 }

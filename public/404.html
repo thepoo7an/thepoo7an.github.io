@@ -14,27 +14,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>۴۰۴ - صفحه یافت نشد | THEPOO7AN</title>
   <meta name="robots" content="noindex, follow">
-  <meta name="theme-color" content="#000000">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23000'/%3E%3Cpath d='M32 12l4.6 15.4L52 32l-15.4 4.6L32 52l-4.6-15.4L12 32l15.4-4.6z' fill='%23f5f5f7'/%3E%3C/svg%3E">
-  
+  <meta id="metaTheme" name="theme-color" content="#050506">
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="./icons/icon-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png">
+
   <link rel="stylesheet" href="./fonts/fonts.css">
+
+  <script>
+    (function() {
+      var root = document.documentElement;
+      var t = null;
+      var lang = null;
+      try {
+        t = localStorage.getItem('tp7-theme') || localStorage.getItem('app_theme');
+        lang = localStorage.getItem('app_lang');
+      } catch (e) {}
+      if (!t) {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      root.setAttribute('data-theme', t);
+      if (lang === 'en') {
+        root.setAttribute('lang', 'en');
+        root.setAttribute('dir', 'ltr');
+      }
+      var metaTheme = document.getElementById('metaTheme');
+      if (metaTheme) {
+        metaTheme.setAttribute('content', t === 'light' ? '#fafafa' : '#050506');
+      }
+    })();
+  </script>
 
   <style>
     :root {
-      --bg: #000000;
-      --bg-soft: #0b0b0c;
-      --card: #1d1d1f;
-      --txt: #f5f5f7;
-      --muted: #86868b;
-      --line: rgba(255, 255, 255, 0.14);
-      --btn: #0071e3;
-      --btn-txt: #ffffff;
-      --link: #2997ff;
-      --focus-ring: #2997ff;
-      --chrome-text: linear-gradient(100deg, #86868b 0%, #f5f5f7 30%, #6e6e73 50%, #ffffff 70%, #86868b 100%);
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
       --fa: 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif;
-      --en: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --en: 'Unbounded', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #050506;
+      --card: #0c0c0f;
+      --txt: #f4f4f5;
+      --muted: #a1a1aa;
+      --line: rgba(255, 255, 255, 0.11);
+      --btn: #2563eb;
+      --btn-txt: #ffffff;
+      --link: #3b82f6;
+      --chrome-text: linear-gradient(110deg, #f4f4f5 0%, #93c5fd 50%, #f4f4f5 100%);
+      color-scheme: dark;
+    }
+
+    html[data-theme="light"] {
+      --bg: #fafafa;
+      --card: #ffffff;
+      --txt: #09090b;
+      --muted: #52525b;
+      --line: rgba(9, 9, 11, 0.11);
+      --btn: #2563eb;
+      --btn-txt: #ffffff;
+      --link: #2563eb;
+      --chrome-text: linear-gradient(110deg, #09090b 0%, #2563eb 50%, #09090b 100%);
+      color-scheme: light;
     }
 
     * {
@@ -52,6 +92,11 @@
       overflow-x: hidden;
       display: flex;
       flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html[dir="ltr"] body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     .container {
@@ -72,22 +117,18 @@
       align-items: center;
       gap: 8px;
       font-family: var(--en);
-      font-weight: 600;
-      font-size: 15px;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.02em;
       color: var(--txt);
       text-decoration: none;
-    }
-
-    .brand i {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--chrome-text);
-      display: inline-block;
+      min-height: 44px;
+      padding: 0 8px;
     }
 
     .error-code {
-      font-size: clamp(96px, 18vw, 170px);
+      font-family: var(--en);
+      font-size: clamp(92px, 18vw, 168px);
       font-weight: 800;
       line-height: 1;
       letter-spacing: -0.04em;
@@ -101,17 +142,25 @@
 
     .title {
       font-size: clamp(20px, 3.8vw, 28px);
-      font-weight: 700;
+      font-weight: 800;
       color: var(--txt);
       margin-bottom: 8px;
+      text-wrap: balance;
     }
 
     .subtitle {
-      font-family: var(--en);
       font-size: clamp(14px, 2.2vw, 16px);
       color: var(--muted);
       margin-bottom: 32px;
-      letter-spacing: 0.02em;
+      max-width: 440px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
     }
 
     .home-btn {
@@ -120,28 +169,51 @@
       justify-content: center;
       gap: 8px;
       min-height: 48px;
-      padding: 12px 32px;
-      border-radius: 999px;
+      padding: 12px 28px;
+      border-radius: 12px;
       background: var(--btn);
       color: var(--btn-txt);
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 700;
       text-decoration: none;
-      box-shadow: 0 4px 18px rgba(0, 113, 227, 0.35);
-      transition: transform 0.2s ease, filter 0.2s ease;
+      transition: opacity 0.2s ease, transform 0.2s ease;
     }
 
     .home-btn:hover {
-      filter: brightness(1.12);
-      transform: scale(1.02);
+      opacity: 0.92;
     }
 
     .home-btn:active {
       transform: scale(0.98);
     }
 
-    .home-btn:focus-visible {
-      outline: 2px solid var(--focus-ring);
+    .secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      color: var(--txt);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .secondary-btn:hover {
+      border-color: var(--txt);
+    }
+
+    .secondary-btn:active {
+      transform: scale(0.98);
+    }
+
+    a:focus-visible {
+      outline: 2px solid var(--link);
       outline-offset: 3px;
     }
 
@@ -153,6 +225,10 @@
       stroke-width: 2.2;
       stroke-linecap: round;
       stroke-linejoin: round;
+    }
+
+    html[dir="ltr"] .home-btn svg {
+      transform: scaleX(-1);
     }
 
     footer {
@@ -167,10 +243,8 @@
   <!-- GitHub Pages SPA redirect script -->
   <script>
     (function() {
-      // User site lives at root domain (https://thepoo7an.github.io/)
       var pathSegmentsToKeep = 0;
       var l = window.location;
-      // Only perform SPA redirect if there is an actual routing path requested
       var pathParts = l.pathname.split('/').filter(Boolean);
       if (pathParts.length > pathSegmentsToKeep) {
         l.replace(
@@ -186,22 +260,38 @@
 </head>
 <body>
   <div class="container">
-    <a class="brand" href="./"><i aria-hidden="true"></i><span>thepoo7an</span></a>
-    
-    <div class="error-code" aria-hidden="true">۴۰۴</div>
-    <h1 class="title">صفحه مورد نظر پیدا نشد</h1>
-    <p class="subtitle">Page not found</p>
-    
-    <a href="./" class="home-btn">
-      بازگشت به صفحه اصلی
-      <svg viewBox="0 0 24 24">
-        <path d="M19 12H5M11 6l-6 6 6 6"/>
-      </svg>
-    </a>
+    <a class="brand" href="./" dir="ltr"><span>THEPOO7AN</span></a>
+
+    <div class="error-code" id="errorCode" aria-hidden="true">404</div>
+    <h1 class="title" id="errorTitle">صفحه مورد نظر پیدا نشد</h1>
+    <p class="subtitle" id="errorSub">آدرس واردشده وجود ندارد یا تغییر کرده است.</p>
+
+    <div class="actions">
+      <a href="./" class="home-btn" id="homeBtn">
+        <span id="homeLabel">بازگشت به صفحه اصلی</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 12H5M11 6l-6 6 6 6"/>
+        </svg>
+      </a>
+      <a href="./order.html" class="secondary-btn" id="orderBtn">دریافت برآورد پروژه</a>
+    </div>
   </div>
 
-  <footer>
-    © ۱۴۰۵ — تمام حقوق برای پیج thepoo7an محفوظ است.
+  <footer id="footerText">
+    © 2026 THEPOO7AN (پویان کریمی) · تمام حقوق محفوظ است.
   </footer>
+
+  <script>
+    (function() {
+      if (document.documentElement.getAttribute('lang') === 'en') {
+        document.title = '404 - Page Not Found | THEPOO7AN';
+        document.getElementById('errorTitle').textContent = 'Page Not Found';
+        document.getElementById('errorSub').textContent = 'The requested URL does not exist or has been moved.';
+        document.getElementById('homeLabel').textContent = 'Back to Portfolio';
+        document.getElementById('orderBtn').textContent = 'Get Project Estimate';
+        document.getElementById('footerText').textContent = '© 2026 THEPOO7AN (Pooyan Karimi) · All rights reserved.';
+      }
+    })();
+  </script>
 </body>
 </html>

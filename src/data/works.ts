@@ -1,7 +1,7 @@
 import { INITIAL_INSTAGRAM_DATA, type InstagramData, type InstagramReel } from './instagram';
 import { INITIAL_YOUTUBE_DATA, type YouTubeVideoData, type YouTubeVideoEntry } from './youtube';
 import { INITIAL_TIKTOK_DATA, type TikTokData, type TikTokVideo } from './tiktok';
-import { getDisplayTitle } from './titleOverrides';
+import { getBilingualDisplayTitle } from './titleOverrides';
 
 export interface WorkItem {
   id: string;
@@ -268,6 +268,36 @@ export const RAW_WORK_ITEMS: WorkItem[] = [
     externalUrl: 'https://www.tiktok.com/@thepoo7an/video/7705018203021315341',
   },
   {
+    id: 'tiktok-7699913496716152078',
+    category: 'reels',
+    platform: 'tiktok',
+    primarySrc: './images/portfolio/tiktok/7699913496716152078.webp',
+    fallbacks: [],
+    labelFa: 'تایپوگرافی لیریک • متین فتاحی',
+    labelEn: 'Lyric Typography • Matin Fattahi',
+    specFa: 'تایپوگرافی لیریک و تدوین ریتمیک',
+    specEn: 'TikTok Lyric Motion',
+    isTikTok: true,
+    tiktokId: '7699913496716152078',
+    tiktokUrl: 'https://www.tiktok.com/@thepoo7an/video/7699913496716152078',
+    externalUrl: 'https://www.tiktok.com/@thepoo7an/video/7699913496716152078',
+  },
+  {
+    id: 'tiktok-7677497326079970573',
+    category: 'reels',
+    platform: 'tiktok',
+    primarySrc: './images/portfolio/tiktok/7677497326079970573.webp',
+    fallbacks: [],
+    labelFa: 'ادیت ویدیو + تایپوگرافی لیریک • بیگ شگی',
+    labelEn: 'Video Edit + Lyric Typography • Big Shaggy',
+    specFa: 'ادیت ریتمیک پربازدید در تیک‌تاک',
+    specEn: 'High-View TikTok Release',
+    isTikTok: true,
+    tiktokId: '7677497326079970573',
+    tiktokUrl: 'https://www.tiktok.com/@thepoo7an/video/7677497326079970573',
+    externalUrl: 'https://www.tiktok.com/@thepoo7an/video/7677497326079970573',
+  },
+  {
     id: 'tiktok-7549569804462476558',
     category: 'reels',
     platform: 'tiktok',
@@ -383,6 +413,7 @@ export function instagramReelToWorkItem(
   role?: 'latest' | 'most-viewed'
 ): WorkItem {
   const existing = STATIC_ITEM_BY_ID.get(`instagram-${reel.code}`);
+  const bilingual = getBilingualDisplayTitle(reel.title || reel.caption, 'instagram');
   return normalizeWorkItem({
     ...(existing || {}),
     id: `instagram-${reel.code}`,
@@ -394,8 +425,8 @@ export function instagramReelToWorkItem(
       reel.fallbackThumbnailUrl || '',
       ...(existing?.fallbacks || []),
     ].filter(Boolean),
-    labelFa: reel.title || existing?.labelFa || getDisplayTitle(reel.caption, 'instagram'),
-    labelEn: reel.titleEn || existing?.labelEn || 'Instagram Reel Production',
+    labelFa: reel.title || existing?.labelFa || bilingual.fa,
+    labelEn: reel.titleEn || existing?.labelEn || bilingual.en,
     specFa: existing?.specFa || 'تایپوگرافی لیریک و ادیت موزیک',
     specEn: existing?.specEn || 'Kinetic Typography & Music Edit',
     publishedAt: reel.publishedAt || existing?.publishedAt,
@@ -415,7 +446,7 @@ export function youtubeEntryToWorkItem(
   role?: 'latest' | 'most-viewed'
 ): WorkItem {
   const existing = STATIC_ITEM_BY_ID.get(`youtube-${entry.videoId}`);
-  const displayFa = getDisplayTitle(entry.title, 'youtube');
+  const bilingual = getBilingualDisplayTitle(entry.title, 'youtube');
   return normalizeWorkItem({
     ...(existing || {}),
     id: `youtube-${entry.videoId}`,
@@ -427,8 +458,8 @@ export function youtubeEntryToWorkItem(
       entry.maxresThumbnailUrl || '',
       ...(existing?.fallbacks || []),
     ].filter(Boolean),
-    labelFa: displayFa,
-    labelEn: existing?.labelEn || (entry.title?.replace(/#\S+/g, '').trim() || 'YouTube Shorts Release'),
+    labelFa: existing?.labelFa || bilingual.fa,
+    labelEn: existing?.labelEn || bilingual.en,
     specFa:
       role === 'most-viewed'
         ? 'پربازدیدترین ویدیو در فید یوتیوب'
@@ -457,7 +488,9 @@ export function tiktokVideoToWorkItem(
   role?: 'latest' | 'most-viewed'
 ): WorkItem {
   const existing = STATIC_ITEM_BY_ID.get(`tiktok-${video.id}`);
-  const displayFa = existing?.labelFa || getDisplayTitle(video.title, 'tiktok');
+  const bilingual = getBilingualDisplayTitle(video.title, 'tiktok');
+  const displayFa = existing?.labelFa || bilingual.fa;
+  const displayEn = existing?.labelEn || bilingual.en;
   const publishedAt =
     video.publishedAt ||
     (video.createTime ? new Date(video.createTime * 1000).toISOString() : undefined);
@@ -478,13 +511,7 @@ export function tiktokVideoToWorkItem(
       ...(existing?.fallbacks || []),
     ].filter(Boolean),
     labelFa: displayFa,
-    labelEn:
-      existing?.labelEn ||
-      (role === 'most-viewed'
-        ? 'Most-Viewed TikTok Release'
-        : role === 'latest'
-          ? 'Latest Uploaded TikTok Reel'
-          : 'TikTok Lyric Motion'),
+    labelEn: displayEn,
     specFa:
       role === 'most-viewed'
         ? 'پربازدیدترین ویدیو در تیک‌تاک'
@@ -560,7 +587,8 @@ export function buildPlatformHighlights(
   const latestYt = ytByLatest[0] || youtubeData;
   const mostViewedYt = ytByViews[0] || youtubeData.mostViewed || youtubeData;
 
-  // 3. TikTok Latest & Most-Viewed
+  // 3. TikTok Latest & Most-Viewed (only verified @thepoo7an owner videos)
+  const ttOwner = (tiktokData.username || 'thepoo7an').toLowerCase();
   const ttPool: TikTokVideo[] = [];
   const ttSeen = new Set<string>();
   for (const candidate of [
@@ -568,7 +596,12 @@ export function buildPlatformHighlights(
     tiktokData.mostViewedVideo,
     ...(tiktokData.videos || []),
   ]) {
-    if (candidate && candidate.id && !ttSeen.has(candidate.id)) {
+    if (
+      candidate &&
+      candidate.id &&
+      !ttSeen.has(candidate.id) &&
+      (!candidate.authorName || candidate.authorName.toLowerCase() === ttOwner)
+    ) {
       ttSeen.add(candidate.id);
       ttPool.push(candidate);
     }
@@ -653,8 +686,14 @@ export function buildMergedWorkItems(
     const ytMeta = ytStatsById.get(baseItem.id);
     const ttMeta = ttStatsById.get(baseItem.id);
 
+    const fallbackExtra = [
+      ttMeta?.thumbnailUrl || '',
+      ytMeta?.thumbnailUrl || '',
+    ].filter((url) => Boolean(url) && !baseItem.fallbacks.includes(url));
+
     merged.push({
       ...baseItem,
+      fallbacks: fallbackExtra.length > 0 ? [...baseItem.fallbacks, ...fallbackExtra] : baseItem.fallbacks,
       viewCount: ytMeta?.viewCount ?? ttMeta?.viewCount ?? baseItem.viewCount,
       publishedAt:
         ytMeta?.publishedAt ??
