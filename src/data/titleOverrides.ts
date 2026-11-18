@@ -47,6 +47,13 @@ export const TITLE_OVERRIDES: Record<string, string> = {
 
   // YouTube items
   '#فوریو #مهیاد #mahyad': 'تایپوگرافی لیریک — سبک ریتمیک',
+  '#فوریو #samilone #سمی_لون': 'موزیک ریلز و تایپوگرافی • سمی لون',
+  '#ادیت #تایپو #تایپوگرافی #هیپهاپولوژیست #مامان #مادر': 'تایپوگرافی لیریک و ادیت سینمایی • هیپهاپولوژیست',
+  'ترند این روزا✨#تایپوگرافی #ادیت #ترند': 'تایپوگرافی لیریک — ترند ریتمیک',
+  '❤️‍🩹🩸#مهیار #ادیت #تایپوگرافی': 'تایپوگرافی احساسی لیریک • مهیار',
+  '#فوریو #متین_فتاحی': 'تایپوگرافی لیریک • متین فتاحی',
+  '#فوریو #vayne': 'تایپوگرافی لیریک و موشن • Vayne',
+  'Antwort auf @𝑨𝑹𝑰𝒀𝑨 #گمشو_برو_فوریو #وایرال_ویدیو #تیک_تاک': 'تایپوگرافی لیریک و ادیت ریتمیک',
 };
 
 // Helper function to get display title
@@ -55,14 +62,13 @@ export function getDisplayTitle(rawTitle: string, platform: string): string {
     const fallbacks: Record<string, string> = {
       'youtube': 'ویدیو یوتیوب — تایپوگرافی لیریک',
       'instagram': 'ریلز اینستاگرام — تایپوگرافی لیریک',
-      'tiktok': 'ویدیو تیکتاک — تایپوگرافی لیریک',
+      'tiktok': 'ویدیو تیک‌تاک — تایپوگرافی لیریک',
     };
     return fallbacks[platform] || 'تایپوگرافی لیریک موزیک';
   }
 
   const trimmed = rawTitle.trim();
 
-  // First try exact match
   if (TITLE_OVERRIDES[rawTitle]) {
     return TITLE_OVERRIDES[rawTitle];
   }
@@ -70,21 +76,16 @@ export function getDisplayTitle(rawTitle: string, platform: string): string {
     return TITLE_OVERRIDES[trimmed];
   }
 
-  // If the title starts with hashtags like # or contains purely hashtags, don't show raw platform tags
-  if (trimmed.startsWith('#')) {
-    const fallbacks: Record<string, string> = {
-      'youtube': 'ویدیو یوتیوب — تایپوگرافی لیریک',
-      'instagram': 'ریلز اینستاگرام — تایپوگرافی لیریک',
-      'tiktok': 'ویدیو تیکتاک — تایپوگرافی لیریک',
-    };
-    return fallbacks[platform] || 'تایپوگرافی لیریک موزیک';
+  // Strip trailing hashtags if natural title text exists before hashtags
+  const cleanText = trimmed.replace(/#\S+/g, '').trim();
+  if (cleanText.length >= 4 && !/^Video #\d+$/i.test(cleanText)) {
+    return cleanText;
   }
 
-  // Fallback: generic professional titles by platform
   const fallbacks: Record<string, string> = {
     'youtube': 'ویدیو یوتیوب — تایپوگرافی لیریک',
     'instagram': 'ریلز اینستاگرام — تایپوگرافی لیریک',
-    'tiktok': 'ویدیو تیکتاک — تایپوگرافی لیریک',
+    'tiktok': 'ویدیو تیک‌تاک — تایپوگرافی لیریک',
   };
 
   return fallbacks[platform] || 'تایپوگرافی لیریک موزیک';

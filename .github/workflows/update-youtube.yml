@@ -29,15 +29,22 @@ jobs:
         continue-on-error: true
         run: node scripts/fetch-tiktok.js
 
+      - name: Sync Instagram reels metadata
+        continue-on-error: true
+        env:
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+        run: node scripts/fetch-instagram.js
+
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/latest-youtube.json public/data/latest-youtube.json src/data/tiktok.json public/data/tiktok.json
+          git add src/data/latest-youtube.json public/data/latest-youtube.json src/data/tiktok.json public/data/tiktok.json src/data/instagram.json public/data/instagram.json public/images/portfolio/tiktok public/images/portfolio/youtube
           if ! git diff --staged --quiet; then
             echo "Changes detected in media feeds. Validating JSON integrity..."
-            node -e "const fs = require('fs'); JSON.parse(fs.readFileSync('src/data/latest-youtube.json')); JSON.parse(fs.readFileSync('src/data/tiktok.json'));"
-            git commit -m "chore(media): auto-sync YouTube & TikTok releases [skip ci]"
+            node -e "const fs = require('fs'); JSON.parse(fs.readFileSync('src/data/latest-youtube.json')); JSON.parse(fs.readFileSync('src/data/tiktok.json')); JSON.parse(fs.readFileSync('src/data/instagram.json'));"
+            git commit -m "chore(media): auto-sync multi-platform releases [skip ci]"
             git push
           else
             echo "No new media updates detected. Already up to date."

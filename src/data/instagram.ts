@@ -3,6 +3,7 @@ import initialInstagramData from './instagram.json';
 export interface InstagramReel {
   id: string;
   code: string;
+  mediaId?: string;
   title: string;
   titleEn: string;
   caption: string;
@@ -12,16 +13,21 @@ export interface InstagramReel {
   fallbackThumbnailUrl?: string;
   cdnThumbnailUrl?: string;
   localVideoUrl?: string;
+  publishedAt?: string;
+  viewCount?: number;
+  likeCount?: number;
 }
 
 export interface InstagramData {
   username: string;
   profileUrl: string;
+  latestReelId?: string;
+  mostViewedReelId?: string;
   reels: InstagramReel[];
   lastUpdated: string;
 }
 
-export const INITIAL_INSTAGRAM_DATA: InstagramData = initialInstagramData;
+export const INITIAL_INSTAGRAM_DATA: InstagramData = initialInstagramData as InstagramData;
 
 /**
  * Attempts to revalidate and fetch newest Instagram cached metadata from static JSON.

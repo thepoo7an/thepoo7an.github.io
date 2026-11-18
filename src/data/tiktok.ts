@@ -9,6 +9,10 @@ export interface TikTokVideo {
   localThumbnailUrl?: string;
   fallbackThumbnailUrl?: string;
   cdnThumbnailUrl?: string;
+  createTime?: number;
+  publishedAt?: string;
+  viewCount?: number;
+  likeCount?: number;
 }
 
 export interface TikTokData {
@@ -25,6 +29,8 @@ export interface TikTokData {
     formattedLikes: string;
     formattedVideos: string;
   };
+  latestVideo?: TikTokVideo;
+  mostViewedVideo?: TikTokVideo;
   videos?: TikTokVideo[];
   featuredVideo?: {
     id: string;
@@ -35,7 +41,7 @@ export interface TikTokData {
   lastUpdated: string;
 }
 
-export const INITIAL_TIKTOK_DATA: TikTokData = initialTikTokData;
+export const INITIAL_TIKTOK_DATA: TikTokData = initialTikTokData as TikTokData;
 
 /**
  * Attempts to revalidate and fetch newest TikTok cached stats from the static JSON.

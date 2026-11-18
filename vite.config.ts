@@ -13,6 +13,16 @@ export default defineConfig(() => {
           main: path.resolve(__dirname, 'index.html'),
           order: path.resolve(__dirname, 'order.html'),
         },
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
+              return 'react-vendor';
+            }
+            if (id.includes('node_modules/lucide-react/')) {
+              return 'icons-vendor';
+            }
+          },
+        },
       },
     },
     resolve: {

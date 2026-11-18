@@ -14,8 +14,8 @@ export const FAQS: FAQItem[] = [
     id: 'faq-1',
     qFa: 'هزینه لیریک ویدیو از چقدر است؟',
     qEn: 'How much does a lyric video cost?',
-    aFa: 'تایپوگرافی لیریک از ۱۵۰٬۰۰۰ تومان، ادیت ویدیو + لیریک از ۳۰۰٬۰۰۰ تومان، پروژه ویژه از ۴۹۰٬۰۰۰ تومان. قیمت نهایی پس از بررسی فایل و توافق، قبل از شروع کار مشخص می‌شود و تا تحویل بدون تغییر خواهد بود.',
-    aEn: 'Lyric typography starts from 150,000 Tomans, Video Edit + Lyric from 300,000 Tomans, and Special Projects from 490,000 Tomans. The exact final price is agreed upon and confirmed after reviewing the file prior to project kick-off, remaining unchanged until delivery.',
+    aFa: 'تایپوگرافی لیریک پایه از ۱۵۰٬۰۰۰ تومان، ادیت ویدیو + لیریک از ۳۰۰٬۰۰۰ تومان و پکیج ماهانه ۴ ریلز از ۱٬۰۰۰٬۰۰۰ تومان. قیمت نهایی پس از بررسی فایل و توافق، قبل از شروع کار مشخص می‌شود و تا تحویل بدون تغییر خواهد بود.',
+    aEn: 'Basic lyric typography starts from 150,000 Tomans, Video Edit + Lyric from 300,000 Tomans, and the Monthly 4 Reels Package from 1,000,000 Tomans. The exact final price is agreed upon and confirmed after reviewing the file prior to project kick-off, remaining unchanged until delivery.',
   },
   {
     id: 'faq-2',

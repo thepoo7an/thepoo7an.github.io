@@ -1,9 +1,6 @@
 import initialYouTubeData from './latest-youtube.json';
 
-export interface YouTubeVideoData {
-  channelId: string;
-  channelTitle: string;
-  channelUrl: string;
+export interface YouTubeVideoEntry {
   videoId: string;
   title: string;
   url: string;
@@ -14,10 +11,20 @@ export interface YouTubeVideoData {
   fallbackThumbnailUrl?: string;
   maxresThumbnailUrl?: string;
   publishedAt: string;
+  updatedAt?: string;
+  viewCount?: number;
+}
+
+export interface YouTubeVideoData extends YouTubeVideoEntry {
+  channelId: string;
+  channelTitle: string;
+  channelUrl: string;
+  mostViewed?: YouTubeVideoEntry;
+  videos?: YouTubeVideoEntry[];
   lastUpdated: string;
 }
 
-export const INITIAL_YOUTUBE_DATA: YouTubeVideoData = initialYouTubeData;
+export const INITIAL_YOUTUBE_DATA: YouTubeVideoData = initialYouTubeData as YouTubeVideoData;
 
 /**
  * Attempts to revalidate and fetch the newest YouTube short in the background.

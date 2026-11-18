@@ -14,7 +14,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ثبت سفارش | thepoo7an</title>
 <meta name="description" content="فرم ثبت سفارش تایپوگرافی موزیک، لیریک ویدیو و ادیت سینمایی — پویان کریمی (@thepoo7an)">
-<meta id="metaTheme" name="theme-color" content="#000000">
+<meta id="metaTheme" name="theme-color" content="#050506">
 <link rel="canonical" href="https://thepoo7an.github.io/order.html">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fa_IR">
@@ -163,7 +163,7 @@ html[data-theme="light"] #themeBtn .moon{display:block}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .field{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
 .field label{font-size:13px;font-weight:700}
-.field label .opt{font-size:11px;font-weight:500;color:var(--muted)}
+.field label .opt{font-size:12px;font-weight:500;color:var(--muted)}
 .field input,.field select,.field textarea{
   width:100%;background:var(--input-bg);border:1px solid var(--line);border-radius:12px;
   padding:12px 16px;font-family:var(--fa);font-size:15px;color:var(--txt);
@@ -176,7 +176,7 @@ html[data-theme="light"] #themeBtn .moon{display:block}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--link);box-shadow:0 0 0 4px var(--focus-ring)}
 .field input[dir="ltr"]{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;text-align:left}
 .field .hint-row{display:flex;justify-content:space-between;align-items:center}
-.field .count{font-size:11px;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+.field .count{font-size:12px;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
 .field .err{display:none;font-size:12px;color:var(--err);font-weight:500}
 .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--err);box-shadow:0 0 0 4px rgba(239,68,68,.14)}
 .field.invalid .err{display:block}
@@ -231,7 +231,7 @@ html[data-theme="light"] #themeBtn .moon{display:block}
 
 /* ---------- Footer ---------- */
 footer{border-top:1px solid var(--line);padding:26px 22px;text-align:center;color:var(--muted);font-size:12.5px}
-footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
+footer .ltr{display:block;margin-top:6px;font-size:12px;letter-spacing:.08em}
 
 /* ---------- Reveal ---------- */
 .rv{opacity:0;transform:translateY(16px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
@@ -254,10 +254,20 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
 .estimate-timing{font-size:12px;color:var(--muted);font-weight:600}
 .estimate-details{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 14px;background:var(--card);border-radius:10px;border:1px solid var(--line)}
 .estimate-item{display:flex;flex-direction:column;gap:3px}
-.estimate-lbl{font-size:11.5px;color:var(--muted)}
+.estimate-lbl{font-size:12px;color:var(--muted)}
 .estimate-val{font-size:13.5px;font-weight:700;color:var(--txt)}
 .estimate-price{color:var(--link);font-variant-numeric:tabular-nums}
 .estimate-hint{font-size:12px;color:var(--muted);line-height:1.6;margin:0}
+.ig-paste-notice{display:none;margin-top:16px;padding:16px 18px;border-radius:14px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.28);flex-direction:column;gap:10px}
+.ig-paste-notice.visible{display:flex}
+.ig-paste-title{font-size:13.5px;font-weight:700;color:var(--txt);margin:0}
+.ig-paste-desc{font-size:12.5px;color:var(--muted);line-height:1.7;margin:0}
+.ig-paste-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.ig-copy-btn,.ig-open-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:10px;font-size:12.5px;font-weight:600;cursor:pointer;text-decoration:none;transition:opacity .15s ease,background .15s ease}
+.ig-copy-btn{background:var(--card);color:var(--txt);border:1px solid var(--line)}
+.ig-copy-btn:hover{border-color:var(--link)}
+.ig-open-link{background:var(--link);color:#fff;border:1px solid transparent}
+.ig-open-link:hover{opacity:.92}
 @media(max-width:540px){.estimate-details{grid-template-columns:1fr;gap:8px}}
 
 /* ---------- Responsive ---------- */
@@ -299,7 +309,7 @@ footer .ltr{display:block;margin-top:6px;font-size:10.5px;letter-spacing:.08em}
     height: 44px; 
   }
   .back-link { 
-    font-size: 11.5px; 
+    font-size: 12px; 
   }
   .page-head { 
     padding-top: 32px; 
@@ -530,6 +540,15 @@ html {
           <svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
           بریف پروژه به طور خودکار به آیدی تلگرام <b class="ltr">@thepoo7an</b> هدایت می‌شود؛ در صورت تمایل می‌توانید از دایرکت اینستاگرام نیز استفاده کنید.
         </p>
+
+        <div class="ig-paste-notice" id="igPasteNotice" role="status" aria-live="polite">
+          <p class="ig-paste-title" id="igPasteTitle">متن سفارش آماده است و در حافظه کپی شد</p>
+          <p class="ig-paste-desc">اینستاگرام متن پیش‌فرض را به‌صورت خودکار در کادر چت قرار نمی‌دهد؛ پس از باز شدن دایرکت <b class="ltr">@thepoo7an</b>، کافی است متن را Paste (جای‌گذاری) و ارسال کنید.</p>
+          <div class="ig-paste-actions">
+            <button type="button" class="ig-copy-btn" id="igCopyAgainBtn">کپی مجدد متن سفارش</button>
+            <a href="https://ig.me/m/thepoo7an" target="_blank" rel="noopener noreferrer" class="ig-open-link">باز کردن دایرکت اینستاگرام</a>
+          </div>
+        </div>
       </div>
     </form>
 
@@ -642,7 +661,7 @@ html {
 
   /* Theme */
   var metaTheme = document.getElementById('metaTheme');
-  function syncMeta(){ metaTheme.setAttribute('content', rootEl.getAttribute('data-theme')==='light' ? '#fbfbfd' : '#000000'); }
+  function syncMeta(){ if(metaTheme){ metaTheme.setAttribute('content', rootEl.getAttribute('data-theme')==='light' ? '#fafafa' : '#050506'); } }
   syncMeta();
   document.getElementById('themeBtn').addEventListener('click', function(){
     var next = rootEl.getAttribute('data-theme')==='light' ? 'dark' : 'light';
@@ -869,6 +888,19 @@ html {
   /* Submit handler helper */
   var isSubmitting = false;
   var lastSubmitTime = 0;
+  var lastPreparedOrderMsg = '';
+  var igPasteNoticeEl = document.getElementById('igPasteNotice');
+  var igPasteTitleEl = document.getElementById('igPasteTitle');
+  var igCopyAgainBtn = document.getElementById('igCopyAgainBtn');
+
+  if (igCopyAgainBtn) {
+    igCopyAgainBtn.addEventListener('click', async function() {
+      if (!lastPreparedOrderMsg) return;
+      var ok = await copyToClipboard(lastPreparedOrderMsg);
+      showToast(ok ? 'متن سفارش دوباره کپی شد؛ در دایرکت اینستاگرام Paste کنید.' : 'لطفاً متن سفارش را از کادر پیام کپی کنید.');
+    });
+  }
+
   async function handleOrderSubmit(targetPlatform) {
     if (isSubmitting) return;
 
@@ -924,6 +956,7 @@ html {
       return;
     }
 
+    lastPreparedOrderMsg = msg;
     isSubmitting = true;
     var submitTgBtn = document.getElementById('submitTgBtn');
     var submitIgBtn = document.getElementById('submitIgBtn');
@@ -958,6 +991,7 @@ html {
       }
 
       if (targetPlatform === 'tg') {
+        if (igPasteNoticeEl) igPasteNoticeEl.classList.remove('visible');
         showToast(copied ? 'متن سفارش کپی شد؛ در حال باز کردن تلگرام @thepoo7an…' : 'در حال باز کردن تلگرام…');
         var encodedMsg = encodeURIComponent(msg);
         var tgWebUrl = 'https://t.me/thepoo7an?text=' + encodedMsg;
@@ -976,8 +1010,16 @@ html {
           }
         }
       } else {
-        showToast(copied ? 'متن سفارش کپی شد؛ در حال باز کردن دایرکت اینستاگرام…' : 'در حال باز کردن دایرکت اینستاگرام…');
-        var igUrl = 'https://ig.me/m/thepoo7an?text=' + encodeURIComponent(msg);
+        if (igPasteNoticeEl) {
+          igPasteNoticeEl.classList.add('visible');
+        }
+        if (igPasteTitleEl) {
+          igPasteTitleEl.textContent = copied
+            ? 'متن سفارش در حافظه کپی شد — در دایرکت Paste کنید'
+            : 'برای ارسال، روی دکمه کپی کلیک و در دایرکت Paste کنید';
+        }
+        showToast(copied ? 'متن سفارش کپی شد؛ در دایرکت @thepoo7an جای‌گذاری (Paste) کنید.' : 'دایرکت اینستاگرام باز شد؛ از دکمه کپی زیر فرم استفاده کنید.');
+        var igUrl = 'https://ig.me/m/thepoo7an';
         if (!openExternalSafe(igUrl)) {
           window.location.href = igUrl;
         }

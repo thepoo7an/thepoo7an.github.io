@@ -1,74 +1,77 @@
-import React, { useState, useEffect } from 'react';
-import { Play, Tag, PenLine, HelpCircle } from 'lucide-react';
+import React from 'react';
+import { Play, Sparkles, Tag, PenLine, HelpCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { useActiveSection } from '../hooks/useActiveSection';
 
 export const MobileTabBar: React.FC = () => {
   const { isEn } = useLanguage();
-  const [activeTab, setActiveTab] = useState<string>('');
+  const activeSection = useActiveSection();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['faq', 'pricing', 'portfolio'];
-      const scrollY = window.scrollY + 260;
-
-      for (const sectionId of sections) {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollY >= top && scrollY < top + height) {
-            setActiveTab(sectionId);
-            return;
-          }
-        }
-      }
-      if (window.scrollY < 360) {
-        setActiveTab('');
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const isPortfolioActive = activeSection === 'portfolio';
+  const isServicesActive =
+    activeSection === 'services' || activeSection === 'workflow';
+  const isPricingActive = activeSection === 'pricing';
+  const isFaqActive = activeSection === 'faq';
 
   return (
     <nav
-      className="md:hidden fixed bottom-0 inset-x-0 z-40 grid grid-cols-4 items-center bg-card/92 backdrop-blur-xl border-t border-border px-2 pt-1.5 pb-[calc(6px+env(safe-area-inset-bottom,0px))]"
+      className="md:hidden fixed bottom-0 inset-x-0 z-40 grid grid-cols-5 items-center bg-card/92 backdrop-blur-xl border-t border-border px-1 pt-1.5 pb-[calc(6px+env(safe-area-inset-bottom,0px))]"
       aria-label={isEn ? 'Mobile quick navigation' : 'ناوبری سریع موبایل'}
     >
       <a
         href="#portfolio"
-        className={`flex flex-col items-center justify-center gap-1 min-h-[48px] rounded-xl text-[11px] font-medium transition-colors active:scale-95 ${
-          activeTab === 'portfolio' ? 'text-primary font-semibold' : 'text-muted-foreground hover:text-foreground'
+        aria-current={isPortfolioActive ? 'location' : undefined}
+        className={`flex flex-col items-center justify-center gap-1 min-h-[48px] rounded-xl text-xs font-medium transition-colors active:scale-95 ${
+          isPortfolioActive
+            ? 'text-primary font-semibold'
+            : 'text-muted-foreground hover:text-foreground'
         }`}
       >
         <Play className="size-[18px]" aria-hidden="true" />
-        <span className="whitespace-nowrap">{isEn ? 'Works' : 'نمونه‌کارها'}</span>
+        <span className="whitespace-nowrap">{isEn ? 'Works' : 'آثار'}</span>
       </a>
 
       <a
-        href="#pricing"
-        className={`flex flex-col items-center justify-center gap-1 min-h-[48px] rounded-xl text-[11px] font-medium transition-colors active:scale-95 ${
-          activeTab === 'pricing' ? 'text-primary font-semibold' : 'text-muted-foreground hover:text-foreground'
+        href="#services"
+        aria-current={isServicesActive ? 'location' : undefined}
+        className={`flex flex-col items-center justify-center gap-1 min-h-[48px] rounded-xl text-xs font-medium transition-colors active:scale-95 ${
+          isServicesActive
+            ? 'text-primary font-semibold'
+            : 'text-muted-foreground hover:text-foreground'
         }`}
       >
-        <Tag className="size-[18px]" aria-hidden="true" />
-        <span className="whitespace-nowrap">{isEn ? 'Pricing' : 'تعرفه‌ها'}</span>
+        <Sparkles className="size-[18px]" aria-hidden="true" />
+        <span className="whitespace-nowrap">{isEn ? 'Services' : 'خدمات'}</span>
       </a>
 
       <a
         href="./order.html"
-        className="flex flex-col items-center justify-center gap-1 min-h-[48px] rounded-xl bg-primary text-primary-foreground text-[11px] font-bold shadow-token-sm transition-transform active:scale-95 mx-1"
+        className="flex flex-col items-center justify-center gap-1 min-h-[48px] rounded-xl bg-primary text-primary-foreground text-xs font-bold shadow-token-sm transition-transform active:scale-95 mx-0.5"
       >
         <PenLine className="size-[18px]" aria-hidden="true" />
-        <span className="whitespace-nowrap">{isEn ? 'Order' : 'ثبت سفارش'}</span>
+        <span className="whitespace-nowrap">{isEn ? 'Order' : 'سفارش'}</span>
+      </a>
+
+      <a
+        href="#pricing"
+        aria-current={isPricingActive ? 'location' : undefined}
+        className={`flex flex-col items-center justify-center gap-1 min-h-[48px] rounded-xl text-xs font-medium transition-colors active:scale-95 ${
+          isPricingActive
+            ? 'text-primary font-semibold'
+            : 'text-muted-foreground hover:text-foreground'
+        }`}
+      >
+        <Tag className="size-[18px]" aria-hidden="true" />
+        <span className="whitespace-nowrap">{isEn ? 'Pricing' : 'تعرفه'}</span>
       </a>
 
       <a
         href="#faq"
-        className={`flex flex-col items-center justify-center gap-1 min-h-[48px] rounded-xl text-[11px] font-medium transition-colors active:scale-95 ${
-          activeTab === 'faq' ? 'text-primary font-semibold' : 'text-muted-foreground hover:text-foreground'
+        aria-current={isFaqActive ? 'location' : undefined}
+        className={`flex flex-col items-center justify-center gap-1 min-h-[48px] rounded-xl text-xs font-medium transition-colors active:scale-95 ${
+          isFaqActive
+            ? 'text-primary font-semibold'
+            : 'text-muted-foreground hover:text-foreground'
         }`}
       >
         <HelpCircle className="size-[18px]" aria-hidden="true" />

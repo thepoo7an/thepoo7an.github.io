@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>تایپوگرافی لیریک و ادیت موزیک | THEPOO7AN</title>
 <meta name="description" content="سفارش تایپوگرافی لیریک موزیک، ادیت ویدیو با متن آهنگ و طراحی کاور موزیک — پویان کریمی (@thepoo7an).">
-<meta id="metaTheme" name="theme-color" content="#000000">
+<meta id="metaTheme" name="theme-color" content="#050506">
 <link rel="canonical" href="https://thepoo7an.github.io/">
 <link rel="preload" as="image" href="./images/portfolio/instagram/DbgAe6cNsdr.webp" type="image/webp" fetchpriority="high">
 <meta property="og:type" content="website">
@@ -63,7 +63,7 @@
       "name": "THEPOO7AN",
       "image": "https://thepoo7an.github.io/images/hero/logo.png",
       "url": "https://thepoo7an.github.io/",
-      "priceRange": "1500000-4900000 IRR",
+      "priceRange": "1500000-10000000 IRR",
       "openingHours": "Mo-Su 10:00-23:00",
       "sameAs": [
         "https://instagram.com/thepoo7an",
@@ -128,7 +128,7 @@
       "name": "هزینه لیریک ویدیو از چقدر است؟",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "تایپوگرافی لیریک از ۱۵۰٬۰۰۰ تومان، ادیت ویدیو + لیریک از ۳۰۰٬۰۰۰ تومان، پروژه ویژه از ۴۹۰٬۰۰۰ تومان. قیمت نهایی پس از بررسی فایل و توافق، قبل از شروع کار مشخص می‌شود و تا تحویل بدون تغییر خواهد بود."
+        "text": "تایپوگرافی لیریک پایه از ۱۵۰٬۰۰۰ تومان، ادیت ویدیو + لیریک از ۳۰۰٬۰۰۰ تومان و پکیج ماهانه ۴ ریلز از ۱٬۰۰۰٬۰۰۰ تومان. قیمت نهایی پس از بررسی فایل و توافق، قبل از شروع کار مشخص می‌شود و تا تحویل بدون تغییر خواهد بود."
       }
     },
     {
@@ -195,6 +195,8 @@
   try{ t = localStorage.getItem('tp7-theme') || localStorage.getItem('app_theme'); }catch(e){}
   if(!t){ t = (window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark'; }
   document.documentElement.setAttribute('data-theme', t);
+  var m = document.getElementById('metaTheme');
+  if(m){ m.setAttribute('content', t === 'light' ? '#fafafa' : '#050506'); }
 })();
 </script>
 </head>
