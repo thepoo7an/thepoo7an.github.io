@@ -40,6 +40,38 @@ const KNOWN_VIDEO_IDS = [
 const BROWSER_UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
+function normalizeTikTokHandle(handle) {
+  return String(handle || '').replace(/^@+/, '').trim().toLowerCase();
+}
+
+function extractHandleFromTikTokUrl(rawUrl) {
+  if (!rawUrl) return '';
+  const match = String(rawUrl).match(/tiktok\.com\/@([a-z0-9._-]+)/i);
+  return match ? normalizeTikTokHandle(match[1]) : '';
+}
+
+function isVerifiedOwnerHandle(handle) {
+  return normalizeTikTokHandle(handle) === normalizeTikTokHandle(USERNAME);
+}
+
+function extractOwnerVideoIdsFromSearchHtml(html) {
+  const normalized = String(html || '');
+  let decoded = normalized;
+  try {
+    decoded = decodeURIComponent(normalized);
+  } catch {
+    // Keep original text if partial percent-encoding exists
+  }
+
+  const combined = `${normalized}\n${decoded}`;
+  const ownerVideoRegex = new RegExp(`tiktok\\.com\\/@${USERNAME}\\/video\\/(\\d+)`, 'gi');
+  const ids = new Set();
+  for (const match of combined.matchAll(ownerVideoRegex)) {
+    if (match[1]) ids.add(match[1]);
+  }
+  return Array.from(ids);
+}
+
 function resolveLocalThumb(id) {
   const webpRel = `./images/portfolio/tiktok/${id}.webp`;
   const webpAbs = path.resolve(process.cwd(), 'public/images/portfolio/tiktok', `${id}.webp`);
@@ -55,7 +87,7 @@ async function fetchVideoDetail(id, existingVideo) {
   const localThumb = existingVideo?.localThumbnailUrl || resolveLocalThumb(id);
 
   let title = existingVideo?.title || `Video #${id.slice(-4)}`;
-  let authorName = existingVideo?.authorName || USERNAME;
+  let authorName = '';
   let thumbnailUrl = existingVideo?.thumbnailUrl || '';
   let viewCount = typeof existingVideo?.viewCount === 'number' ? existingVideo.viewCount : 0;
   let likeCount = typeof existingVideo?.likeCount === 'number' ? existingVideo.likeCount : 0;
@@ -80,7 +112,7 @@ async function fetchVideoDetail(id, existingVideo) {
         const item = data?.['__DEFAULT_SCOPE__']?.['webapp.video-detail']?.itemInfo?.itemStruct;
         if (item) {
           if (item.desc && item.desc.trim()) title = item.desc;
-          if (item.author?.uniqueId) authorName = item.author.uniqueId;
+          if (item.author?.uniqueId) authorName = normalizeTikTokHandle(item.author.uniqueId);
           const cover = item.video?.cover || item.video?.originCover;
           if (cover) thumbnailUrl = cover;
           if (item.stats?.playCount !== undefined) viewCount = Number(item.stats.playCount) || 0;
@@ -90,22 +122,40 @@ async function fetchVideoDetail(id, existingVideo) {
       }
     }
   } catch {
-    // Fallback to oembed if video detail page fails
-    if (!thumbnailUrl || title.startsWith('Video #')) {
-      try {
-        const oembedRes = await fetch(
-          `https://www.tiktok.com/oembed?url=${encodeURIComponent(videoUrl)}`,
-          { signal: AbortSignal.timeout(5000) }
-        );
-        if (oembedRes.ok) {
-          const d = await oembedRes.json();
-          if (d.title) title = d.title;
-          if (d.author_name) authorName = d.author_name;
-          if (d.thumbnail_url) thumbnailUrl = d.thumbnail_url;
+    // Proceed to oEmbed verification fallback below
+  }
+
+  // Fallback to oEmbed whenever live detail page failed to verify ownership or metadata
+  if (!authorName || !thumbnailUrl || title.startsWith('Video #')) {
+    try {
+      const oembedRes = await fetch(
+        `https://www.tiktok.com/oembed?url=${encodeURIComponent(videoUrl)}`,
+        { signal: AbortSignal.timeout(5000) }
+      );
+      if (oembedRes.ok) {
+        const d = await oembedRes.json();
+        const oembedHandle =
+          normalizeTikTokHandle(d.author_unique_id) || extractHandleFromTikTokUrl(d.author_url);
+        if (oembedHandle && !authorName) {
+          authorName = oembedHandle;
         }
-      } catch {
-        // Ignore and use cached baseline
+        if (d.title && (!title || title.startsWith('Video #'))) title = d.title;
+        if (d.thumbnail_url && !thumbnailUrl) thumbnailUrl = d.thumbnail_url;
       }
+    } catch {
+      // Ignore and evaluate cached ownership fallback carefully below
+    }
+  }
+
+  // Only retain prior cached ownership if both live & oEmbed were unreachable AND the cached item was already verified
+  if (!authorName && existingVideo) {
+    const cachedOwner = normalizeTikTokHandle(existingVideo.authorName);
+    const cachedUrlOwner = extractHandleFromTikTokUrl(existingVideo.url);
+    const hasMetadata = Boolean(
+      existingVideo.createTime > 0 || existingVideo.thumbnailUrl || existingVideo.localThumbnailUrl
+    );
+    if (isVerifiedOwnerHandle(cachedOwner) && isVerifiedOwnerHandle(cachedUrlOwner) && hasMetadata) {
+      authorName = cachedOwner;
     }
   }
 
@@ -125,6 +175,14 @@ async function fetchVideoDetail(id, existingVideo) {
   };
 }
 
+function isAcceptedOwnerVideo(v) {
+  if (!v) return false;
+  const isOwner = isVerifiedOwnerHandle(v.authorName);
+  const isEmptyPlaceholder =
+    /^Video #\d+$/i.test(v.title || '') && !v.thumbnailUrl && !v.localThumbnailUrl && !(v.createTime > 0);
+  return isOwner && !isEmptyPlaceholder;
+}
+
 async function fetchTikTokVideos() {
   const existingMap = new Map();
   const discoveredIds = new Set(KNOWN_VIDEO_IDS);
@@ -135,8 +193,10 @@ async function fetchTikTokVideos() {
       const existingData = JSON.parse(fs.readFileSync(localJsonPath, 'utf-8'));
       if (Array.isArray(existingData.videos)) {
         for (const v of existingData.videos) {
-          existingMap.set(v.id, v);
-          discoveredIds.add(v.id);
+          if (isVerifiedOwnerHandle(v?.authorName)) {
+            existingMap.set(v.id, v);
+            discoveredIds.add(v.id);
+          }
         }
       }
     } catch {
@@ -144,20 +204,17 @@ async function fetchTikTokVideos() {
     }
   }
 
-  // Attempt lightweight search discovery for brand-new videos
+  // Attempt lightweight search discovery restricted strictly to @thepoo7an video URLs
   try {
-    const searchQueries = [`site:tiktok.com/@${USERNAME}/video`, `${USERNAME} tiktok video`];
-    for (const q of searchQueries) {
-      const res = await fetch(`https://html.duckduckgo.com/html/?q=${encodeURIComponent(q)}`, {
-        headers: { 'User-Agent': BROWSER_UA },
-        signal: AbortSignal.timeout(5000),
-      });
-      if (res.ok) {
-        const text = await res.text();
-        const matches = [...text.matchAll(/video\/(\d+)/g)].map((m) => m[1]);
-        for (const id of matches) {
-          discoveredIds.add(id);
-        }
+    const searchQuery = `site:tiktok.com/@${USERNAME}/video`;
+    const res = await fetch(`https://html.duckduckgo.com/html/?q=${encodeURIComponent(searchQuery)}`, {
+      headers: { 'User-Agent': BROWSER_UA },
+      signal: AbortSignal.timeout(5000),
+    });
+    if (res.ok) {
+      const text = await res.text();
+      for (const id of extractOwnerVideoIdsFromSearchHtml(text)) {
+        discoveredIds.add(id);
       }
     }
   } catch (err) {
@@ -174,10 +231,10 @@ async function fetchTikTokVideos() {
       chunk.map((id) => fetchVideoDetail(id, existingMap.get(id)))
     );
     for (const v of results) {
-      const isOwner = (v.authorName || '').toLowerCase() === USERNAME.toLowerCase();
-      const isEmptyPlaceholder = /^Video #\d+$/i.test(v.title || '') && !v.thumbnailUrl && !(v.createTime > 0);
-      if (isOwner && !isEmptyPlaceholder) {
+      if (isAcceptedOwnerVideo(v)) {
         videos.push(v);
+      } else {
+        console.warn(`Filtered out TikTok video ${v.id} (author="${v.authorName || 'unverified'}")`);
       }
     }
   }
@@ -351,8 +408,19 @@ async function ensureLocalTikTokThumb(video) {
         existing.mostViewedVideo?.id === mostViewedVideo?.id &&
         existing.mostViewedVideo?.viewCount === mostViewedVideo?.viewCount;
       const sameVideoCount = (existing.videos?.length || 0) === tiktokData.videos.length;
+      const sameVideos =
+        sameVideoCount &&
+        (existing.videos || []).every((v, idx) => {
+          const next = tiktokData.videos[idx];
+          return (
+            next &&
+            v.id === next.id &&
+            isVerifiedOwnerHandle(v.authorName) &&
+            v.localThumbnailUrl === next.localThumbnailUrl
+          );
+        });
 
-      if (sameStats && sameLatest && sameTop && sameVideoCount) {
+      if (sameStats && sameLatest && sameTop && sameVideos) {
         console.log('TikTok profile & videos are already up to date. Skipping disk write.');
         return;
       }

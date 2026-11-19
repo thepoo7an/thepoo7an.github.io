@@ -187,4 +187,24 @@ for (const file of mp4Files) {
 }
 console.log(`✅ PASS: All ${mp4Files.length} local MP4 portfolio videos verified with faststart (moov before mdat)`);
 
+// Test 8: Verify TikTok feed JSON ownership integrity
+for (const relPath of ['src/data/tiktok.json', 'public/data/tiktok.json']) {
+  const tiktokJsonPath = path.join(rootDir, relPath);
+  if (!fs.existsSync(tiktokJsonPath)) {
+    console.error(`❌ FAIL: Missing ${relPath}`);
+    process.exit(1);
+  }
+  const parsed = JSON.parse(fs.readFileSync(tiktokJsonPath, 'utf8'));
+  const candidates = [parsed.latestVideo, parsed.mostViewedVideo, ...(parsed.videos || [])].filter(Boolean);
+  for (const item of candidates) {
+    const owner = String(item.authorName || '').toLowerCase();
+    const url = String(item.url || '');
+    if (owner !== 'thepoo7an' || !url.includes('/@thepoo7an/video/')) {
+      console.error(`❌ FAIL: Non-owner TikTok entry (${item.id}, author="${item.authorName}") found in ${relPath}`);
+      process.exit(1);
+    }
+  }
+}
+console.log('✅ PASS: TikTok data feeds verified for strict @thepoo7an ownership');
+
 console.log('🎉 All Smoke Tests Passed Successfully!');

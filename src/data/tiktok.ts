@@ -52,9 +52,16 @@ export async function fetchLiveTikTokData(): Promise<TikTokData | null> {
     const jsonPath = `${base.replace(/\/$/, '')}/data/tiktok.json?t=${Date.now()}`;
     const localRes = await fetch(jsonPath, { cache: 'no-store' });
     if (localRes.ok) {
-      const data = await localRes.json();
-      if (data && data.username) {
-        return data as TikTokData;
+      const data = (await localRes.json()) as TikTokData;
+      if (data && data.username?.toLowerCase() === 'thepoo7an') {
+        const isOwner = (v?: TikTokVideo) =>
+          Boolean(v && (!v.authorName || v.authorName.toLowerCase() === 'thepoo7an'));
+        return {
+          ...data,
+          latestVideo: isOwner(data.latestVideo) ? data.latestVideo : undefined,
+          mostViewedVideo: isOwner(data.mostViewedVideo) ? data.mostViewedVideo : undefined,
+          videos: Array.isArray(data.videos) ? data.videos.filter((v) => isOwner(v)) : undefined,
+        };
       }
     }
   } catch {
