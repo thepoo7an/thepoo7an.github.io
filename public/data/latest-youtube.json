@@ -8,9 +8,10 @@
   "watchUrl": "https://www.youtube.com/watch?v=tU5XCWlE71o",
   "embedUrl": "https://www.youtube-nocookie.com/embed/tU5XCWlE71o",
   "thumbnailUrl": "https://i.ytimg.com/vi/tU5XCWlE71o/hqdefault.jpg",
+  "localThumbnailUrl": "./images/portfolio/youtube/tU5XCWlE71o.webp",
   "maxresThumbnailUrl": "https://i.ytimg.com/vi/tU5XCWlE71o/maxresdefault.jpg",
   "publishedAt": "2026-10-03T13:54:08+00:00",
-  "viewCount": 1205,
+  "viewCount": 1206,
   "mostViewed": {
     "videoId": "vfzuqy7H9wc",
     "title": "#ادیت #تایپو #تایپوگرافی #هیپهاپولوژیست #مامان #مادر",
@@ -35,7 +36,7 @@
       "maxresThumbnailUrl": "https://i.ytimg.com/vi/tU5XCWlE71o/maxresdefault.jpg",
       "publishedAt": "2026-10-03T13:54:08+00:00",
       "updatedAt": "2026-11-03T15:40:25+00:00",
-      "viewCount": 1205,
+      "viewCount": 1206,
       "localThumbnailUrl": "./images/portfolio/youtube/tU5XCWlE71o.webp"
     },
     {
@@ -48,7 +49,7 @@
       "maxresThumbnailUrl": "https://i.ytimg.com/vi/JYnctRh_Or0/maxresdefault.jpg",
       "publishedAt": "2026-09-28T07:27:32+00:00",
       "updatedAt": "2026-10-28T16:41:22+00:00",
-      "viewCount": 1228
+      "viewCount": 1231
     },
     {
       "videoId": "D9CkGAGQvvg",
@@ -83,8 +84,8 @@
       "thumbnailUrl": "https://i.ytimg.com/vi/KN6hGSYys_g/hqdefault.jpg",
       "maxresThumbnailUrl": "https://i.ytimg.com/vi/KN6hGSYys_g/maxresdefault.jpg",
       "publishedAt": "2026-09-18T18:10:31+00:00",
-      "updatedAt": "2026-10-19T19:05:16+00:00",
-      "viewCount": 1245
+      "updatedAt": "2026-11-21T02:21:32+00:00",
+      "viewCount": 1246
     },
     {
       "videoId": "RJl0fdS8p6o",
@@ -96,7 +97,7 @@
       "maxresThumbnailUrl": "https://i.ytimg.com/vi/RJl0fdS8p6o/maxresdefault.jpg",
       "publishedAt": "2026-09-16T16:30:33+00:00",
       "updatedAt": "2026-10-03T23:20:55+00:00",
-      "viewCount": 1355
+      "viewCount": 1356
     },
     {
       "videoId": "Eh0NDneIYqA",
@@ -108,7 +109,7 @@
       "maxresThumbnailUrl": "https://i.ytimg.com/vi/Eh0NDneIYqA/maxresdefault.jpg",
       "publishedAt": "2026-09-14T16:38:36+00:00",
       "updatedAt": "2026-10-15T04:51:34+00:00",
-      "viewCount": 1094
+      "viewCount": 1098
     },
     {
       "videoId": "xeBuPjkQMCg",
@@ -119,7 +120,7 @@
       "thumbnailUrl": "https://i.ytimg.com/vi/xeBuPjkQMCg/hqdefault.jpg",
       "maxresThumbnailUrl": "https://i.ytimg.com/vi/xeBuPjkQMCg/maxresdefault.jpg",
       "publishedAt": "2026-09-14T07:15:56+00:00",
-      "updatedAt": "2026-10-15T04:12:13+00:00",
+      "updatedAt": "2026-11-19T11:35:13+00:00",
       "viewCount": 1103
     },
     {
@@ -208,6 +209,5 @@
       "localThumbnailUrl": "./images/portfolio/youtube/vfzuqy7H9wc.webp"
     }
   ],
-  "lastUpdated": "2026-11-13T19:39:25.767Z",
-  "localThumbnailUrl": "./images/portfolio/youtube/tU5XCWlE71o.webp"
+  "lastUpdated": "2026-11-22T23:09:43.454Z"
 }
